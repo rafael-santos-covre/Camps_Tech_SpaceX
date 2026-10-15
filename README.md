@@ -42,6 +42,12 @@ Agendamentos de repositórios públicos podem ser desativados pelo GitHub após 
 
 Fonte: https://thespacedevs.com/llapi
 
+## Netlify
+O projeto também está preparado para publicação no Netlify pelo arquivo `netlify.toml`.
+Use `npm run build` e a pasta de saída `dist`. A interface pode ser hospedada no
+Netlify enquanto os lançamentos continuam sendo atualizados pelo fluxo agendado
+do GitHub Pages, sem exigir uma nova publicação do site a cada consulta.
+
 
 ## Fotos e vídeos de fundo
 - Abertura: pouso dos propulsores Falcon Heavy, vídeo do site oficial SpaceX.

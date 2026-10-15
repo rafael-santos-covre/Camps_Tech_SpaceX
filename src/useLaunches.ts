@@ -16,7 +16,12 @@ export function useLaunches() {
       controller = new AbortController()
       const timeout = setTimeout(() => controller?.abort(), 15000)
       try {
-        const response = await fetch(`${import.meta.env.BASE_URL}data/launches.json?t=${Date.now()}`, {
+        // GitHub Actions refreshes this file every 30 minutes. Keeping it as the
+        // data source lets Netlify serve the site without rebuilding on every update.
+        const dataUrl = import.meta.env.DEV
+          ? `${import.meta.env.BASE_URL}data/launches.json`
+          : 'https://rafaelsilvapythondev.github.io/Camps_Tech_SpaceX/data/launches.json'
+        const response = await fetch(`${dataUrl}?t=${Date.now()}`, {
           cache: 'no-store', signal: controller.signal,
         })
         if (!response.ok) throw new Error('Dados indisponíveis')
