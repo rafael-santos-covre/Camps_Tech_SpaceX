@@ -57,11 +57,12 @@ export default memo(function BackgroundMedia({ image, fallback, video, alt, cred
     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20 pointer-events-none" />
     <div className="absolute bottom-5 right-6 z-20 flex items-center gap-3 text-[10px] tracking-[0.13em] uppercase text-white/70">
       <span className="drop-shadow-lg">{credit}</span>
-      {video && enabled && !failed && <button type="button" onClick={() => setPaused(p => !p)}
-        aria-label={`${paused ? 'Reproduzir' : 'Pausar'} vídeo de fundo: ${alt}`}
+      {video && !failed && <button type="button" onClick={() => { if (!enabled) { setEnabled(true); setPaused(false) } else setPaused(p => !p) }}
+        aria-label={`${!enabled || paused ? 'Reproduzir' : 'Pausar'} vídeo de fundo: ${alt}`}
         className="border border-white/40 bg-black/50 px-3 py-2 hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-white">
-        {paused ? 'Reproduzir' : 'Pausar vídeo'}
+        {!enabled || paused ? 'Reproduzir vídeo' : 'Pausar vídeo'}
       </button>}
     </div>
   </div>
 })
+
