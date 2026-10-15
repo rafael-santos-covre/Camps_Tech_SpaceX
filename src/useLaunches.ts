@@ -16,13 +16,17 @@ export function useLaunches() {
       controller = new AbortController()
       const timeout = setTimeout(() => controller?.abort(), 15000)
       try {
-        const response = await fetch(`${import.meta.env.BASE_URL}data/launches.json`, {
+        const response = await fetch(`${import.meta.env.BASE_URL}data/launches.json?t=${Date.now()}`, {
           cache: 'no-store', signal: controller.signal,
         })
         if (!response.ok) throw new Error('Dados indisponíveis')
         const data: unknown = await response.json()
         if (!validSnapshot(data)) throw new Error('Dados inválidos')
-        if (alive) { setSnapshot(data); setError(false) }
+        if (alive) {
+          setSnapshot(previous => !previous || Date.parse(data.fetchedAt) >= Date.parse(previous.fetchedAt) ? data : previous)
+          setError(false)
+          setNow(Date.now())
+        }
       } catch {
         if (alive) setError(true)
       } finally {
@@ -34,11 +38,14 @@ export function useLaunches() {
     void refresh()
     const poll = setInterval(() => { if (!document.hidden) void refresh() }, 5 * 60_000)
     const tick = setInterval(() => setNow(Date.now()), 1000)
-    const visible = () => { if (!document.hidden) void refresh() }
+    const visible = () => { if (!document.hidden) { setNow(Date.now()); void refresh() } }
+    const online = () => { setNow(Date.now()); void refresh() }
     document.addEventListener('visibilitychange', visible)
+    window.addEventListener('online', online)
     return () => {
       alive = false; controller?.abort(); clearInterval(poll); clearInterval(tick)
       document.removeEventListener('visibilitychange', visible)
+      window.removeEventListener('online', online)
     }
   }, [])
   const stale = !!snapshot && now - Date.parse(snapshot.fetchedAt) > 2 * 60 * 60_000

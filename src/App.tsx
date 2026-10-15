@@ -1,40 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useLaunches } from "./useLaunches"
-import { orderLaunches, missionFromLaunch } from "./launches"
+import { orderLaunches, missionFromLaunch, countdownAt } from "./launches"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
-
-interface Countdown {
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
-  expired: boolean
-}
-
-function useCountdown(target: Date): Countdown {
-  const calc = () => {
-    const diff = target.getTime() - Date.now()
-    if (diff <= 0)
-      return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true }
-    const s = Math.floor(diff / 1000)
-    return {
-      days: Math.floor(s / 86400),
-      hours: Math.floor((s % 86400) / 3600),
-      minutes: Math.floor((s % 3600) / 60),
-      seconds: s % 60,
-      expired: false,
-    }
-  }
-  const [tick, setTick] = useState<Countdown>(calc)
-  useEffect(() => {
-    const id = setInterval(() => setTick(calc()), 1000)
-    return () => clearInterval(id)
-  }, [target])
-  return tick
-}
 
 function useInView(
   options?: IntersectionObserverInit,
@@ -188,8 +158,8 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
   )
 }
 
-function HeroCountdown({ mission }: { mission: { name: string; launchAt: Date } }) {
-  const cd = useCountdown(mission.launchAt)
+function HeroCountdown({ mission, now }: { mission: { name: string; launchAt: Date }; now: number }) {
+  const cd = countdownAt(mission.launchAt.getTime(), now)
   if (cd.expired) return null
   return (
     <div className="mt-10 pt-10 border-t border-white/10">
@@ -215,8 +185,8 @@ function HeroCountdown({ mission }: { mission: { name: string; launchAt: Date } 
   )
 }
 
-function MissionRowCountdown({ launchAt }: { launchAt: Date }) {
-  const cd = useCountdown(launchAt)
+function MissionRowCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
+  const cd = countdownAt(launchAt.getTime(), now)
   if (cd.expired)
     return (
       <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-[rgba(74,159,255,0.15)] text-[#4a9fff]">
@@ -499,7 +469,7 @@ export default function App() {
           <div
             style={{ animation: "fadeUp 0.9s ease forwards 1.1s", opacity: 0 }}
           >
-            {nextLaunch?.countdown && nextLaunch.launchAt && !stale && !error && <HeroCountdown mission={{ name: nextLaunch.name, launchAt: nextLaunch.launchAt }} />}
+            {nextLaunch?.countdown && nextLaunch.launchAt && !stale && !error && <HeroCountdown now={now} mission={{ name: nextLaunch.name, launchAt: nextLaunch.launchAt }} />}
           </div>
         </div>
 
@@ -781,10 +751,10 @@ export default function App() {
                 </div>
                 <div className="md:w-48 flex items-center">
                   {m.countdown && m.launchAt && !stale && !error ? (
-                    <MissionRowCountdown launchAt={m.launchAt} />
+                    <MissionRowCountdown launchAt={m.launchAt} now={now} />
                   ) : (
                     <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-white/8 text-white/60">
-                      {m.status}
+                      {m.countdown && (error || stale) ? "Aguardando atualização" : m.status}
                     </span>
                   )}
                 </div>

@@ -7,6 +7,17 @@ export interface Launch {
   vehicle: string
   location: string
 }
+// Derive every countdown from the same clock; never start a timer per render.
+export function countdownAt(target: number, now: number) {
+  const remaining = Math.max(0, Math.ceil((target - now) / 1000))
+  return {
+    days: Math.floor(remaining / 86400),
+    hours: Math.floor((remaining % 86400) / 3600),
+    minutes: Math.floor((remaining % 3600) / 60),
+    seconds: remaining % 60,
+    expired: target <= now,
+  }
+}
 export interface LaunchSnapshot {
   fetchedAt: string
   launches: Launch[]
