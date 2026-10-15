@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useLaunches } from "./useLaunches"
 import { orderLaunches, missionFromLaunch, countdownAt } from "./launches"
+import BackgroundMedia from "./BackgroundMedia"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
 
@@ -72,6 +73,7 @@ const VEHICLES = [
     stat: "330+",
     statLabel: "Lançamentos",
     img: "./images/falcon-9-demo-2.jpg",
+    video: "https://www.spacex.com/assets/videos/WebsiteF9Fairings_Anim_Render_Desktop.mp4",
     alt: "Falcon 9 da SpaceX decolando com a Crew Dragon durante a missão Demo-2 da NASA",
     credit: "DEMO-2 · NASA / JOEL KOWSKY",
   },
@@ -81,9 +83,10 @@ const VEHICLES = [
     desc: "Sistema de transporte totalmente reutilizável projetado para levar tripulação e carga à órbita da Terra, à Lua, a Marte e além.",
     stat: "150t",
     statLabel: "Carga útil até a LEO",
-    img: "https://images.unsplash.com/photo-1614729375290-b2a429db839b?w=800&h=1000&fit=crop&auto=format",
-    alt: "Starship",
-    credit: null,
+    img: "https://www.spacex.com/assets/images/vehicles/starship/starship_hero_d.jpg",
+    alt: "Starship na plataforma de lançamento",
+    video: "https://content.spacex.com/cms-assets/assets/V3_FS_WEB.mp4",
+    credit: "STARSHIP · SPACEX",
   },
   {
     name: "Dragon",
@@ -92,6 +95,7 @@ const VEHICLES = [
     stat: "45+",
     statLabel: "Missões",
     img: "./images/crew-dragon-endeavour.jpg",
+    video: "https://www.spacex.com/assets/videos/DragonTrunk_Animation_Render_Desktop_2.mp4",
     alt: "Crew Dragon Endeavour se aproximando da Estação Espacial Internacional acima da Terra durante a Crew-8",
     credit: "CREW-8 · NASA",
   },
@@ -408,12 +412,13 @@ export default function App() {
         id="missoes"
         className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden"
       >
-        <img
-          src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?w=1920&h=1080&fit=crop&auto=format"
-          alt="Foguete decolando da plataforma de lançamento"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+        <BackgroundMedia
+          image="https://sxcontent9668.azureedge.us/cms-assets/assets/Leading_Launch_Service_Desktop_06a98ac534.jpg"
+          fallback="./images/falcon-9-demo-2.jpg"
+          video="https://sxcontent9668.azureedge.us/cms-assets/assets/Space_X_Falcon_Heavy_UAS_Landing_DESKTOP_compress_b4568daf9c_5e2026727a.mp4"
+          alt="Propulsores do Falcon Heavy retornando para pouso"
+          credit="IMAGENS · SPACEX"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-24 md:pt-32 md:pb-28 w-full">
           <p
@@ -501,8 +506,11 @@ export default function App() {
       </div>
 
       {/* ── Vehicles ── */}
-      <section id="veiculos" className="py-24 md:py-36">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="veiculos" className="relative isolate min-h-[100svh] py-24 md:py-28 overflow-hidden">
+        <BackgroundMedia key={activeVehicle} image={VEHICLES[activeVehicle].img}
+          video={VEHICLES[activeVehicle].video} alt={VEHICLES[activeVehicle].alt}
+          credit="VÍDEO / RENDER · SPACEX" position="65% center" />
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pointer-events-none [&_button]:pointer-events-auto">
           {/* Heading slides in from left */}
           <div
             ref={vehiclesRef}
@@ -546,7 +554,7 @@ export default function App() {
           {/* Vehicle panels — content slides in from bottom, image from right */}
           {VEHICLES.map((v, i) => (
             <div key={i} className={activeVehicle === i ? "block" : "hidden"}>
-              <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="grid md:grid-cols-2 gap-12 items-center min-h-[420px]">
                 <div
                   className="order-2 md:order-1 transition-all duration-700"
                   style={{
@@ -597,30 +605,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <div
-                  className="order-1 md:order-2 relative aspect-[3/4] max-h-[520px] bg-[#0a0a0a] overflow-hidden transition-all duration-700"
-                  style={{
-                    opacity: vehiclesInView ? 1 : 0,
-                    transform: vehiclesInView
-                      ? "translateX(0)"
-                      : "translateX(40px)",
-                    transitionDelay: "350ms",
-                  }}
-                >
-                  <img
-                    src={v.img}
-                    alt={v.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-700"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  {v.credit && (
-                    <span className="absolute bottom-5 left-5 font-display text-xs tracking-widest text-white/60">
-                      {v.credit}
-                    </span>
-                  )}
-                </div>
+
               </div>
             </div>
           ))}
@@ -632,15 +617,8 @@ export default function App() {
         id="humanos"
         className="relative h-[80vh] min-h-[500px] flex items-center overflow-hidden"
       >
-        <img
-          src="./images/crew-dragon-endeavour.jpg"
-          alt="Crew Dragon Endeavour sobrevoando o Oceano Índico em aproximação à Estação Espacial Internacional"
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 w-full h-full md:left-auto md:right-0 md:w-2/3 object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/65 to-black/5" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <BackgroundMedia image="./images/crew-dragon-endeavour.jpg"
+          alt="Crew Dragon Endeavour sobre a Terra" credit="CREW DRAGON · NASA" position="70% center" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-2xl">
             <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4">
@@ -664,14 +642,13 @@ export default function App() {
             </button>
           </div>
         </div>
-        <span className="absolute bottom-6 right-6 z-10 font-display text-xs tracking-widest text-white/60">
-          ENDEAVOUR / CREW-8 · FOTO: NASA
-        </span>
+
       </section>
 
       {/* ── Launches ── */}
-      <section id="lancamentos" className="py-24 md:py-36 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="lancamentos" className="relative isolate py-24 md:py-36 bg-[#0a0a0a] overflow-hidden">
+        <div className="absolute inset-0 opacity-25"><BackgroundMedia image="./images/falcon-9-demo-2.jpg" alt="Falcon 9 em lançamento" credit="DEMO-2 · NASA" /></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
               <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
@@ -768,8 +745,9 @@ export default function App() {
       </section>
 
       {/* ── About ── */}
-      <section id="sobre" className="py-24 border-t border-white/8">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="sobre" className="relative isolate py-32 md:py-48 border-t border-white/8 overflow-hidden">
+        <BackgroundMedia image="https://www.spacex.com/assets/images/vehicles/starship/starship_hero_d.jpg" alt="Starship na base de lançamento" credit="STARSHIP · SPACEX" position="70% center" />
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div
             ref={aboutRef}
             className="grid md:grid-cols-2 gap-16 items-center"

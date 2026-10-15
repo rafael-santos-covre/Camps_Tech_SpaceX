@@ -42,3 +42,14 @@ Agendamentos de repositórios públicos podem ser desativados pelo GitHub após 
 
 Fonte: https://thespacedevs.com/llapi
 
+
+## Fotos e vídeos de fundo
+- Abertura: pouso dos propulsores Falcon Heavy, vídeo do site oficial SpaceX.
+- Frota: vídeos/renderizações específicos de Falcon 9, Starship e Dragon, com troca pelas abas.
+- Voos tripulados: fotografia da Crew Dragon/NASA.
+- Lançamentos: fotografia da Falcon 9/NASA como fundo discreto.
+- Sobre: fotografia da Starship/SpaceX.
+
+Os arquivos de vídeo são carregados dos servidores oficiais, sem som, em loop, somente quando a seção está visível. Há botão de pausa, imagem alternativa e respeito à preferência de movimento reduzido/economia de dados. A disponibilidade dos vídeos depende dos servidores de origem.
+
+Fontes de mídia: https://www.spacex.com/ e suas páginas /vehicles/falcon-9/, /vehicles/starship/ e /vehicles/dragon/. Imagens e vídeos identificados como SpaceX pertencem à SpaceX. Mantido o aviso de projeto escolar sem vínculo oficial.
