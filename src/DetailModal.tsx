@@ -11,7 +11,10 @@ export interface VehicleLike {
 
 export interface MissionLike {
   date: string
-  launchAt: Date
+  id: string
+  precise: boolean
+  statusId: number
+  launchAt: Date | null
   name: string
   vehicle: string
   status: string
@@ -117,13 +120,13 @@ export default function DetailModal({
       : state.kind === "notice"
         ? state.title
         : ""
-  const missionDate = mission
+  const missionDate = mission?.launchAt && mission.precise && mission.statusId !== 2
     ? new Intl.DateTimeFormat("pt-BR", {
         dateStyle: "long",
         timeStyle: "short",
         timeZone: "America/Sao_Paulo",
-      }).format(mission.launchAt)
-    : ""
+      }).format(mission.launchAt) + " (Brasília)"
+    : mission?.date ?? "Data a definir"
 
   return (
     <div

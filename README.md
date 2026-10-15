@@ -20,10 +20,25 @@ Para gerar a versão publicada: npm run build. Para conferir: npm run preview.
 ## Observações
 - As imagens locais funcionam também no endereço com o nome do repositório.
 - Fontes do Google e imagens do Unsplash exigem acesso aos respectivos serviços.
-- Conteúdo de missões e datas está no código; não há atualização automática por API.
+- A seção de lançamentos usa a API Launch Library 2; os demais textos e estatísticas continuam editoriais.
 - O recorde do simulador é salvo somente no navegador do visitante.
 - Foi mantida a opção original de não indexação pelos buscadores (meta robots em index.html).
 - Configurações e arquivos internos do editor Figma foram retirados da versão de publicação.
 
 Referência: https://vite.dev/guide/static-deploy.html#github-pages
+
+## Lançamentos reais
+A seção consulta um arquivo gerado com dados da Launch Library 2, do The Space Devs, filtrado pela agência SpaceX (121). São consultados os próximos 15 e os últimos 15 lançamentos, sem necessidade de chave de API.
+
+O fluxo do GitHub Actions atualiza os dados a cada 30 minutos, além de cada publicação manual ou alteração na main. Horários agendados podem atrasar. O navegador verifica o arquivo a cada 5 minutos enquanto a página está visível. Não é uma transmissão em tempo real.
+
+Os resultados de sucesso/falha vêm da API. Quando uma data vence sem resultado confirmado, aparece Aguardando atualização. Só há contagem regressiva para horário preciso e status confirmado. Todos os horários exibidos usam America/Sao_Paulo.
+
+Se a API falhar, preserva-se a consulta publicada mais recente (ou a cópia incluída no projeto); a data da consulta não é falsamente renovada. Após duas horas sem atualização, o site avisa e desativa contagens regressivas. Sem dados válidos, mostra erro em vez de missões inventadas.
+
+Para atualizar localmente: npm run update-launches. Para testar: npm test e npx tsc --noEmit.
+
+Agendamentos de repositórios públicos podem ser desativados pelo GitHub após 60 dias sem atividade. Se isso acontecer, reative o fluxo na aba Actions. A data da última consulta no site ajuda a identificar interrupções.
+
+Fonte: https://thespacedevs.com/llapi
 

@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react"
+import { useLaunches } from "./useLaunches"
+import { orderLaunches, missionFromLaunch } from "./launches"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
 
@@ -132,57 +134,6 @@ const RAW_STATS = [
   { raw: 99.5, suffix: "%", label: "Sucesso das Missões" },
 ]
 
-const MISSIONS = [
-  {
-    date: "13 out 2026",
-    launchAt: new Date("2026-10-13T14:00:00Z"),
-    name: "Starlink 12-4",
-    vehicle: "Falcon 9",
-    status: "Em breve",
-    location: "LC-39A, Kennedy Space Center",
-  },
-  {
-    date: "18 out 2026",
-    launchAt: new Date("2026-10-18T09:30:00Z"),
-    name: "CRS-33",
-    vehicle: "Falcon 9 / Dragon",
-    status: "Em breve",
-    location: "LC-39A, Kennedy Space Center",
-  },
-  {
-    date: "28 set 2026",
-    launchAt: new Date("2026-09-28T11:15:00Z"),
-    name: "Crew-10",
-    vehicle: "Falcon 9 / Dragon",
-    status: "Sucesso",
-    location: "SLC-40, Cape Canaveral",
-  },
-  {
-    date: "14 set 2026",
-    launchAt: new Date("2026-09-14T08:00:00Z"),
-    name: "Transporter-15",
-    vehicle: "Falcon 9",
-    status: "Sucesso",
-    location: "SLC-4E, Vandenberg",
-  },
-  {
-    date: "29 ago 2026",
-    launchAt: new Date("2026-08-29T22:45:00Z"),
-    name: "Starship IFT-8",
-    vehicle: "Starship",
-    status: "Sucesso",
-    location: "Starbase, Texas",
-  },
-]
-
-const MISSIONS_ARCHIVE = [
-  { date: "12 ago 2026", launchAt: new Date("2026-08-12T06:20:00Z"), name: "Starlink 11-9", vehicle: "Falcon 9", status: "Sucesso", location: "SLC-40, Cape Canaveral" },
-  { date: "27 jul 2026", launchAt: new Date("2026-07-27T17:05:00Z"), name: "Axiom-5", vehicle: "Falcon 9 / Dragon", status: "Sucesso", location: "LC-39A, Kennedy Space Center" },
-  { date: "09 jul 2026", launchAt: new Date("2026-07-09T03:40:00Z"), name: "Starship IFT-7", vehicle: "Starship", status: "Sucesso", location: "Starbase, Texas" },
-  { date: "21 jun 2026", launchAt: new Date("2026-06-21T12:00:00Z"), name: "SES O3b mPOWER", vehicle: "Falcon 9", status: "Sucesso", location: "SLC-40, Cape Canaveral" },
-  { date: "03 jun 2026", launchAt: new Date("2026-06-03T09:10:00Z"), name: "CRS-32", vehicle: "Falcon 9 / Dragon", status: "Sucesso", location: "SLC-40, Cape Canaveral" },
-]
-
 type FooterLink = {
   label: string
   href?: string
@@ -221,8 +172,6 @@ const FOOTER_COLS: { title: string; links: FooterLink[] }[] = [
   },
 ]
 
-// nearest upcoming launch for the hero strip
-const NEXT_LAUNCH = MISSIONS.find((m) => m.status === "Em breve")!
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -239,13 +188,13 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
   )
 }
 
-function HeroCountdown() {
-  const cd = useCountdown(NEXT_LAUNCH.launchAt)
+function HeroCountdown({ mission }: { mission: { name: string; launchAt: Date } }) {
+  const cd = useCountdown(mission.launchAt)
   if (cd.expired) return null
   return (
     <div className="mt-10 pt-10 border-t border-white/10">
       <p className="font-display text-[10px] font-500 tracking-[0.25em] uppercase text-[#4a9fff] mb-4">
-        Próximo Lançamento — {NEXT_LAUNCH.name}
+        Próximo Lançamento — {mission.name}
       </p>
       <div className="flex items-start gap-5 md:gap-8">
         <CountdownUnit value={cd.days} label="Dias" />
@@ -271,7 +220,7 @@ function MissionRowCountdown({ launchAt }: { launchAt: Date }) {
   if (cd.expired)
     return (
       <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-[rgba(74,159,255,0.15)] text-[#4a9fff]">
-        Em breve
+        Aguardando atualização
       </span>
     )
   return (
@@ -361,7 +310,17 @@ export default function App() {
       setModal({ kind: "notice", title: l.label })
     } else if (l.expand) setShowAll(true)
   }
-  const missions = showAll ? [...MISSIONS, ...MISSIONS_ARCHIVE] : MISSIONS
+  const { snapshot, loading, error, now, stale } = useLaunches()
+  const allMissions = orderLaunches(snapshot?.launches ?? [], now).map(l => missionFromLaunch(l, now))
+  const nextLaunch = allMissions.find(m => [1, 2, 8].includes(m.statusId) && m.launchAt && m.launchAt.getTime() > now)
+  const previewMissions = [
+    ...allMissions.filter(m => ![3, 4, 7, 9].includes(m.statusId)).slice(0, 3),
+    ...allMissions.filter(m => [3, 4, 7, 9].includes(m.statusId)).slice(0, 3),
+  ]
+  const missions = showAll ? allMissions : previewMissions
+  const currentModal = modal?.kind === "mission"
+    ? { ...modal, mission: allMissions.find(m => m.id === modal.mission.id) ?? modal.mission }
+    : modal
 
   // Section refs + inView state
   const [statsRef, statsInView] = useInView({ threshold: 0.2 })
@@ -424,7 +383,7 @@ export default function App() {
           <div className="flex items-center gap-4">
             <button
               onClick={() =>
-                setModal({ kind: "mission", mission: NEXT_LAUNCH })
+                nextLaunch ? setModal({ kind: "mission", mission: nextLaunch }) : document.getElementById("lancamentos")?.scrollIntoView({ behavior: "smooth" })
               }
               className="hidden lg:inline-flex items-center gap-2 font-display text-[12px] font-600 tracking-[0.15em] uppercase px-5 py-2.5 border border-white/30 hover:border-white hover:bg-white hover:text-black transition-all duration-300"
             >
@@ -540,7 +499,7 @@ export default function App() {
           <div
             style={{ animation: "fadeUp 0.9s ease forwards 1.1s", opacity: 0 }}
           >
-            <HeroCountdown />
+            {nextLaunch?.countdown && nextLaunch.launchAt && !stale && !error && <HeroCountdown mission={{ name: nextLaunch.name, launchAt: nextLaunch.launchAt }} />}
           </div>
         </div>
 
@@ -758,7 +717,7 @@ export default function App() {
               aria-controls="lista-lancamentos"
               className="self-start md:self-auto inline-flex items-center gap-2 font-display text-[12px] font-600 tracking-[0.15em] uppercase text-white/50 hover:text-white transition-colors group"
             >
-              {showAll ? "Mostrar Menos" : "Todos os Lançamentos"}
+              {showAll ? "Mostrar Menos" : "Ver mais lançamentos"}
               <svg
                 width="14"
                 height="14"
@@ -779,6 +738,14 @@ export default function App() {
             </button>
           </div>
 
+          <div className="mb-8 text-sm text-white/55 space-y-2" aria-live="polite">
+            <p>Dados de <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer" className="text-[#4a9fff] underline">The Space Devs · Launch Library 2</a>. Horários de Brasília.</p>
+            <p>Atualização programada a cada 30 minutos; pode haver atrasos. Datas sujeitas a alteração.</p>
+            {snapshot && <p>Última consulta: {new Date(snapshot.fetchedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}.</p>}
+            {loading && <p>Carregando lançamentos da SpaceX…</p>}
+            {(stale || error) && <p className="text-amber-300">{snapshot ? "Atualização indisponível ou atrasada. Exibindo a última consulta; os dados podem ter mudado." : "Não foi possível carregar os lançamentos. Tente novamente em alguns minutos."}</p>}
+            {!loading && !error && !allMissions.length && <p>Nenhum lançamento disponível no momento.</p>}
+          </div>
           {/* Mission rows — stagger-fade */}
           <div
             id="lista-lancamentos"
@@ -787,7 +754,7 @@ export default function App() {
           >
             {missions.map((m, i) => (
               <button
-                key={m.launchAt.toISOString()}
+                key={m.id}
                 type="button"
                 onClick={() => setModal({ kind: "mission", mission: m })}
                 aria-label={`Ver detalhes da missão ${m.name}`}
@@ -798,7 +765,7 @@ export default function App() {
                     ? "translateY(0)"
                     : "translateY(16px)",
                   transition: "opacity 0.55s ease, transform 0.55s ease",
-                  transitionDelay: missionsInView ? `${i * 100}ms` : "0ms",
+                  transitionDelay: missionsInView ? `${Math.min(i, 5) * 100}ms` : "0ms",
                 }}
               >
                 <div className="font-display text-[12px] font-500 tracking-[0.1em] text-white/35 md:w-40">
@@ -813,7 +780,7 @@ export default function App() {
                   {m.vehicle}
                 </div>
                 <div className="md:w-48 flex items-center">
-                  {m.status === "Em breve" ? (
+                  {m.countdown && m.launchAt && !stale && !error ? (
                     <MissionRowCountdown launchAt={m.launchAt} />
                   ) : (
                     <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-white/8 text-white/60">
@@ -976,7 +943,7 @@ export default function App() {
         </div>
       </footer>
 
-      <DetailModal state={modal} vehicles={VEHICLES} onClose={closeModal} />
+      <DetailModal state={currentModal} vehicles={VEHICLES} onClose={closeModal} />
 
       {/* Hero entrance keyframes */}
       <style>{`
