@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustração técnica da Starship e do Super Heavy</title>
+  <desc id="desc">Sistema de dois estágios reutilizáveis em uma plataforma, com céu escuro e horizonte iluminado.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#050911"/><stop offset=".55" stop-color="#101a2a"/><stop offset="1" stop-color="#563d37"/></linearGradient>
+    <linearGradient id="steel" x2="1"><stop stop-color="#68737c"/><stop offset=".32" stop-color="#d7dde0"/><stop offset=".55" stop-color="#89949b"/><stop offset=".82" stop-color="#e2e5e5"/><stop offset="1" stop-color="#59646b"/></linearGradient>
+    <linearGradient id="flame" x2="0" y2="1"><stop stop-color="#fff5c5"/><stop offset=".25" stop-color="#ffa84d"/><stop offset="1" stop-color="#d24b25" stop-opacity="0"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ff9a51" stop-opacity=".62"/><stop offset="1" stop-color="#ff9a51" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="560" cy="620" r="360" fill="url(#glow)"/>
+  <g fill="#fff" opacity=".65"><circle cx="144" cy="172" r="2"/><circle cx="276" cy="107" r="1.5"/><circle cx="412" cy="215" r="1.5"/><circle cx="805" cy="126" r="2"/><circle cx="1010" cy="231" r="1.5"/><circle cx="941" cy="92" r="1"/><circle cx="104" cy="344" r="1"/></g>
+  <path d="M0 710h1200v190H0z" fill="#111820"/><path d="M0 710h1200" stroke="#ef8952" stroke-opacity=".5" stroke-width="3"/>
+  <!-- Starship upper stage -->
+  <path d="M565 175 Q600 86 635 175 L641 209 L659 494 Q600 527 541 494 L559 209Z" fill="url(#steel)" stroke="#edf0ef" stroke-opacity=".45" stroke-width="3"/>
+  <path d="M565 175 Q600 86 635 175" fill="#e5e8e8"/><path d="M556 404l-45 95 68-9 21-88M644 404l45 95-68-9-21-88" fill="#89949b" stroke="#d9dede" stroke-width="3"/>
+  <path d="M564 223h72M552 471h96" stroke="#46525b" stroke-width="6" opacity=".65"/><path d="M600 194v272" stroke="#fff" stroke-opacity=".25" stroke-width="3"/>
+  <!-- Super Heavy booster -->
+  <path d="M526 523 Q600 500 674 523 L666 707 Q600 731 534 707Z" fill="url(#steel)" stroke="#edf0ef" stroke-opacity=".42" stroke-width="3"/>
+  <path d="M534 681l-34 37 46-4M666 681l34 37-46-4" fill="#707c83" stroke="#c7ccce" stroke-width="3"/>
+  <path d="M546 554h108M539 675h122" stroke="#48535b" stroke-width="7" opacity=".65"/>
+  <g fill="#ffcf80" opacity=".9"><path d="M552 707l-8 98 28-67 9 75 16-83 15 84 14-82 15 79 8-75 23 67-5-96z" fill="url(#flame)"/></g>
+  <!-- Tower silhouette -->
+  <g fill="none" stroke="#69747d" stroke-width="9" opacity=".75"><path d="M786 220v502M861 250v472M786 268h75M786 346h75M786 424h75M786 502h75M786 580h75M786 658h75M786 268l75 78-75 78 75 78-75 78 75 78-75 78M861 268l-75 78 75 78-75 78 75 78-75 78 75 78"/><path d="M768 720h110"/></g>
+  <path d="M0 765h1200" stroke="#27313a" stroke-width="12"/><path d="M0 821h1200" stroke="#28323a" stroke-width="4" opacity=".8"/>
+  <text x="64" y="844" fill="#dce2e6" font-family="Arial,sans-serif" font-size="18" letter-spacing="5" opacity=".65">ILUSTRAÇÃO EDUCACIONAL · STARSHIP / SUPER HEAVY</text>
+</svg>

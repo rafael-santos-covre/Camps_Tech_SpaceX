@@ -19,6 +19,8 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -26,6 +28,26 @@ body {
   color: #fff;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-x: none;
+}
+
+button, a { -webkit-tap-highlight-color: transparent; }
+button { touch-action: manipulation; }
+img, video { max-width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+.printable-card-sheet { display: none; }
+@media print {
+  body * { visibility: hidden !important; }
+  .printable-card-sheet, .printable-card-sheet * { visibility: visible !important; }
+  .printable-card-sheet { display: block !important; position: absolute; inset: 0; padding: 12mm; color: #111 !important; background: #fff !important; font: 10pt/1.35 Arial, sans-serif; }
+  .printable-card-sheet h1 { font-size: 19pt; }
+  .printable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+  .printable-grid article { border: 1px solid #777; padding: 6mm; break-inside: avoid; }
+  .printable-card-sheet p, .printable-card-sheet li { color: #111 !important; }
 }
 
 /* Hide scrollbar while scrolling works */

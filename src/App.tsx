@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useLaunches } from "./useLaunches"
-import { orderLaunches, missionFromLaunch, countdownAt } from "./launches"
 import BackgroundMedia from "./BackgroundMedia"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
+import OfflineMissionCards from "./OfflineMissionCards"
+import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
 
@@ -32,36 +32,15 @@ function useInView(
   return [ref, inView]
 }
 
-function useCountUp(target: number, duration = 1400, active = false): number {
-  const [count, setCount] = useState(0)
-  const rafRef = useRef<number>(0)
-
-  useEffect(() => {
-    if (!active) return
-    const start = performance.now()
-    const tick = (now: number) => {
-      const elapsed = now - start
-      const progress = Math.min(elapsed / duration, 1)
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(eased * target * 10) / 10)
-      if (progress < 1) rafRef.current = requestAnimationFrame(tick)
-    }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [active, target, duration])
-
-  return count
-}
-
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { label: "Missões", id: "missoes" },
+  { label: "História", id: "marcos" },
   { label: "Veículos", id: "veiculos" },
-  { label: "Lançamentos", id: "lancamentos" },
-  { label: "Humanos", id: "humanos" },
-  { label: "Sobre", id: "sobre" },
+  { label: "Aplicações", id: "aplicacoes" },
+  { label: "Impactos", id: "impactos" },
+  { label: "Projeto", id: "sobre" },
+  { label: "Estande", id: "estande" },
   { label: "Simulador", id: "jogo" },
 ]
 
@@ -69,9 +48,9 @@ const VEHICLES = [
   {
     name: "Falcon 9",
     type: "Foguete Orbital",
-    desc: "O primeiro foguete reutilizável de classe orbital do mundo. Confiabilidade por meio da reutilização.",
-    stat: "330+",
-    statLabel: "Lançamentos",
+    desc: "Foguete orbital de dois estágios. Seu primeiro estágio pode pousar e voltar a voar em outras missões.",
+    stat: "Reutilizável",
+    statLabel: "1º estágio pode pousar e voar novamente",
     img: "./images/falcon-9-demo-2.jpg",
     video: "https://www.spacex.com/assets/videos/WebsiteF9Fairings_Anim_Render_Desktop.mp4",
     alt: "Falcon 9 da SpaceX decolando com a Crew Dragon durante a missão Demo-2 da NASA",
@@ -81,19 +60,19 @@ const VEHICLES = [
     name: "Starship",
     type: "Próxima Geração",
     desc: "Sistema de transporte totalmente reutilizável projetado para levar tripulação e carga à órbita da Terra, à Lua, a Marte e além.",
-    stat: "150t",
-    statLabel: "Carga útil até a LEO",
-    img: "https://www.spacex.com/assets/images/vehicles/starship/starship_hero_d.jpg",
-    alt: "Starship na plataforma de lançamento",
+    stat: "Em teste",
+    statLabel: "Sistema de dois estágios reutilizáveis em desenvolvimento",
+    img: "./images/starship-illustration.svg",
+    alt: "Ilustração técnica da Starship e do propulsor Super Heavy",
     video: "https://content.spacex.com/cms-assets/assets/V3_FS_WEB.mp4",
     credit: "STARSHIP · SPACEX",
   },
   {
     name: "Dragon",
     type: "Espaçonave",
-    desc: "A primeira espaçonave privada a entregar carga à Estação Espacial Internacional e a trazer astronautas de volta à Terra.",
-    stat: "45+",
-    statLabel: "Missões",
+    desc: "Espaçonave reutilizável que transporta carga e tripulação e pode acoplar à Estação Espacial Internacional.",
+    stat: "ISS",
+    statLabel: "Carga e tripulação em órbita baixa",
     img: "./images/crew-dragon-endeavour.jpg",
     video: "https://www.spacex.com/assets/videos/DragonTrunk_Animation_Render_Desktop_2.mp4",
     alt: "Crew Dragon Endeavour se aproximando da Estação Espacial Internacional acima da Terra durante a Crew-8",
@@ -101,166 +80,14 @@ const VEHICLES = [
   },
 ]
 
-const RAW_STATS = [
-  { raw: 395, suffix: "", label: "Total de Lançamentos" },
-  { raw: 353, suffix: "", label: "Pousos Bem-Sucedidos" },
-  { raw: 312, suffix: "", label: "Reutilizações" },
-  { raw: 99.5, suffix: "%", label: "Sucesso das Missões" },
+const PROJECT_FACTS = [
+  { label: "Fundação", value: "2002", detail: "SpaceX criada por Elon Musk" },
+  { label: "Reutilização", value: "Falcon 9", detail: "O primeiro estágio retorna para pousar" },
+  { label: "Conectividade", value: "Starlink", detail: "Internet por uma rede de satélites" },
+  { label: "Transporte", value: "Dragon", detail: "Carga e pessoas rumo à estação espacial" },
 ]
-
-type FooterLink = {
-  label: string
-  href?: string
-  vehicle?: string
-  expand?: boolean
-  notice?: boolean
-}
-
-const FOOTER_COLS: { title: string; links: FooterLink[] }[] = [
-  {
-    title: "Veículos",
-    links: [
-      { label: "Falcon 9", vehicle: "Falcon 9" },
-      { label: "Falcon Heavy", href: "#veiculos" },
-      { label: "Dragon", vehicle: "Dragon" },
-      { label: "Starship", vehicle: "Starship" },
-    ],
-  },
-  {
-    title: "Missões",
-    links: [
-      { label: "Todas as Missões", href: "#lancamentos", expand: true },
-      { label: "ISS", href: "#humanos" },
-      { label: "Lua", vehicle: "Starship" },
-      { label: "Marte", vehicle: "Starship" },
-    ],
-  },
-  {
-    title: "Empresa",
-    links: [
-      { label: "Sobre", href: "#sobre" },
-      { label: "Carreiras", notice: true },
-      { label: "Notícias", notice: true },
-      { label: "Contato", notice: true },
-    ],
-  },
-]
-
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-
-function CountdownUnit({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="flex flex-col items-center">
-      <span className="font-display text-3xl md:text-4xl font-800 tabular-nums leading-none tracking-tight text-white">
-        {String(value).padStart(2, "0")}
-      </span>
-      <span className="font-display text-[9px] font-500 tracking-[0.2em] uppercase text-white/35 mt-1">
-        {label}
-      </span>
-    </div>
-  )
-}
-
-function HeroCountdown({ mission, now }: { mission: { name: string; launchAt: Date }; now: number }) {
-  const cd = countdownAt(mission.launchAt.getTime(), now)
-  if (cd.expired) return null
-  return (
-    <div className="mt-10 pt-10 border-t border-white/10">
-      <p className="font-display text-[10px] font-500 tracking-[0.25em] uppercase text-[#4a9fff] mb-4">
-        Próximo Lançamento — {mission.name}
-      </p>
-      <div className="flex items-start gap-5 md:gap-8">
-        <CountdownUnit value={cd.days} label="Dias" />
-        <span className="font-display text-2xl font-300 text-white/20 mt-1">
-          :
-        </span>
-        <CountdownUnit value={cd.hours} label="Horas" />
-        <span className="font-display text-2xl font-300 text-white/20 mt-1">
-          :
-        </span>
-        <CountdownUnit value={cd.minutes} label="Min" />
-        <span className="font-display text-2xl font-300 text-white/20 mt-1">
-          :
-        </span>
-        <CountdownUnit value={cd.seconds} label="Seg" />
-      </div>
-    </div>
-  )
-}
-
-function MissionRowCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
-  const cd = countdownAt(launchAt.getTime(), now)
-  if (cd.expired)
-    return (
-      <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-[rgba(74,159,255,0.15)] text-[#4a9fff]">
-        Aguardando atualização
-      </span>
-    )
-  return (
-    <div className="flex items-center gap-1.5">
-      {[
-        { v: cd.days, l: "D" },
-        { v: cd.hours, l: "H" },
-        { v: cd.minutes, l: "M" },
-        { v: cd.seconds, l: "S" },
-      ].map(({ v, l }, i) => (
-        <div key={l} className="flex items-center gap-1.5">
-          <div className="flex flex-col items-center bg-[rgba(74,159,255,0.08)] border border-[rgba(74,159,255,0.2)] px-1.5 py-1 min-w-[32px]">
-            <span className="font-display text-[13px] font-700 tabular-nums leading-none text-[#4a9fff]">
-              {String(v).padStart(2, "0")}
-            </span>
-            <span className="font-display text-[8px] font-500 tracking-[0.15em] text-[#4a9fff]/50">
-              {l}
-            </span>
-          </div>
-          {i < 3 && (
-            <span className="font-display text-[10px] text-white/20">:</span>
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function StatCard({
-  raw,
-  suffix,
-  label,
-  index,
-  active,
-}: {
-  raw: number
-  suffix: string
-  label: string
-  index: number
-  active: boolean
-}) {
-  const count = useCountUp(raw, 1200 + index * 120, active)
-  const display =
-    raw % 1 !== 0 ? count.toFixed(1) : Math.floor(count).toString()
-
-  return (
-    <div
-      className={`py-8 px-6 text-center transition-all duration-700 ${
-        index < RAW_STATS.length - 1 ? "border-r border-white/8" : ""
-      }`}
-      style={{
-        opacity: active ? 1 : 0,
-        transform: active ? "translateY(0)" : "translateY(20px)",
-        transitionDelay: `${index * 80}ms`,
-      }}
-    >
-      <div className="font-display text-4xl md:text-5xl font-800 tracking-tight text-white mb-1">
-        {display}
-        {suffix}
-      </div>
-      <div className="font-display text-[11px] font-500 tracking-[0.2em] uppercase text-white/40">
-        {label}
-      </div>
-    </div>
-  )
-}
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
@@ -269,37 +96,13 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeVehicle, setActiveVehicle] = useState(0)
   const [modal, setModal] = useState<ModalState>(null)
-  const [showAll, setShowAll] = useState(false)
   const closeModal = useCallback(() => setModal(null), [])
   const openVehicle = (name: string) => {
     const index = VEHICLES.findIndex((v) => v.name === name)
     if (index >= 0) setModal({ kind: "vehicle", index })
   }
-  const onFooterLink = (e: React.MouseEvent, l: FooterLink) => {
-    if (l.vehicle) {
-      e.preventDefault()
-      openVehicle(l.vehicle)
-    } else if (l.notice) {
-      e.preventDefault()
-      setModal({ kind: "notice", title: l.label })
-    } else if (l.expand) setShowAll(true)
-  }
-  const { snapshot, loading, error, now, stale } = useLaunches()
-  const allMissions = orderLaunches(snapshot?.launches ?? [], now).map(l => missionFromLaunch(l, now))
-  const nextLaunch = allMissions.find(m => [1, 2, 8].includes(m.statusId) && m.launchAt && m.launchAt.getTime() > now)
-  const previewMissions = [
-    ...allMissions.filter(m => ![3, 4, 7, 9].includes(m.statusId)).slice(0, 3),
-    ...allMissions.filter(m => [3, 4, 7, 9].includes(m.statusId)).slice(0, 3),
-  ]
-  const missions = showAll ? allMissions : previewMissions
-  const currentModal = modal?.kind === "mission"
-    ? { ...modal, mission: allMissions.find(m => m.id === modal.mission.id) ?? modal.mission }
-    : modal
-
-  // Section refs + inView state
-  const [statsRef, statsInView] = useInView({ threshold: 0.2 })
+  const [factsRef, factsInView] = useInView({ threshold: 0.2 })
   const [vehiclesRef, vehiclesInView] = useInView({ threshold: 0.1 })
-  const [missionsRef, missionsInView] = useInView({ threshold: 0.1 })
   const [aboutRef, aboutInView] = useInView({ threshold: 0.2 })
 
   useEffect(() => {
@@ -317,9 +120,10 @@ export default function App() {
             ? "bg-black/90 backdrop-blur-md border-b border-white/8"
             : "bg-transparent"
         }`}
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2">
+          <a href="#" className="flex items-center gap-2" aria-label="Tech CAMPS — início">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <path
                 d="M16 2L3 28h26L16 2z"
@@ -337,11 +141,11 @@ export default function App() {
               <circle cx="16" cy="16" r="3" fill="white" />
             </svg>
             <span className="font-display text-xl font-700 tracking-[0.15em] uppercase">
-              SPACEX
+              TECH CAMPS
             </span>
           </a>
 
-          <ul className="hidden lg:flex items-center gap-6">
+          <ul className="hidden xl:flex items-center gap-4 2xl:gap-6">
             {NAV_LINKS.map((link) => (
               <li key={link.id}>
                 <a
@@ -355,18 +159,18 @@ export default function App() {
           </ul>
 
           <div className="flex items-center gap-4">
-            <button
-              onClick={() =>
-                nextLaunch ? setModal({ kind: "mission", mission: nextLaunch }) : document.getElementById("lancamentos")?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="hidden lg:inline-flex items-center gap-2 font-display text-[12px] font-600 tracking-[0.15em] uppercase px-5 py-2.5 border border-white/30 hover:border-white hover:bg-white hover:text-black transition-all duration-300"
+          <button
+              onClick={() => document.getElementById("marcos")?.scrollIntoView({ behavior: "smooth" })}
+              className="hidden xl:inline-flex items-center gap-2 font-display text-[12px] font-600 tracking-[0.15em] uppercase px-5 py-2.5 border border-white/30 hover:border-white hover:bg-white hover:text-black transition-all duration-300"
             >
-              Próximo Lançamento
+                Explorar marcos
             </button>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="lg:hidden flex flex-col gap-1.5 p-1"
+              className="xl:hidden flex flex-col gap-1.5 p-2 focus-visible:outline-2 focus-visible:outline-white"
               aria-label="Menu"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
             >
               <span
                 className={`block w-6 h-px bg-white transition-all duration-300 ${
@@ -388,8 +192,9 @@ export default function App() {
         </div>
 
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-300 ${
-            menuOpen ? "max-h-64 border-t border-white/8" : "max-h-0"
+          id="mobile-menu"
+          className={`xl:hidden overflow-y-auto transition-all duration-300 ${
+            menuOpen ? "max-h-[calc(100svh-4rem)] border-t border-white/8" : "max-h-0 overflow-hidden"
           }`}
         >
           <div className="bg-black px-6 py-4 flex flex-col gap-4">
@@ -409,7 +214,7 @@ export default function App() {
 
       {/* ── Hero ── */}
       <section
-        id="missoes"
+          id="inicio"
         className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden"
       >
         <BackgroundMedia
@@ -425,10 +230,10 @@ export default function App() {
             className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4"
             style={{ animation: "fadeUp 0.8s ease forwards 0.3s", opacity: 0 }}
           >
-            Tornando a Vida Multiplanetária
+            PROJETO ESTUDANTIL · TECNOLOGIA ESPACIAL
           </p>
           <h1
-            className="font-display text-[72px] md:text-[120px] font-800 leading-none tracking-tight uppercase mb-6 max-w-4xl"
+            className="font-display text-[clamp(3.1rem,12vw,4.5rem)] md:text-[120px] font-800 leading-none tracking-tight uppercase mb-6 max-w-4xl"
             style={{ animation: "fadeUp 0.9s ease forwards 0.5s", opacity: 0 }}
           >
             A Humanidade
@@ -441,8 +246,8 @@ export default function App() {
             className="font-body text-white/60 text-base md:text-lg max-w-md mb-10 leading-relaxed"
             style={{ animation: "fadeUp 0.9s ease forwards 0.75s", opacity: 0 }}
           >
-            A SpaceX projeta, fabrica e lança foguetes e espaçonaves avançados
-            com o objetivo final de possibilitar a vida em vários planetas.
+            Um panorama educativo sobre os veículos, serviços, avanços e desafios
+            da SpaceX, preparado pelo grupo Tech CAMPS.
           </p>
           <div
             className="flex flex-wrap gap-4"
@@ -464,18 +269,14 @@ export default function App() {
               </svg>
             </a>
             <a
-              href="#lancamentos"
+              href="#aplicacoes"
               className="inline-flex items-center gap-3 font-display text-[13px] font-600 tracking-[0.15em] uppercase border border-white/30 text-white px-8 py-4 hover:border-white transition-colors duration-200"
             >
-              Últimos Lançamentos
+              Como a tecnologia é usada
             </a>
           </div>
 
-          <div
-            style={{ animation: "fadeUp 0.9s ease forwards 1.1s", opacity: 0 }}
-          >
-            {nextLaunch?.countdown && nextLaunch.launchAt && !stale && !error && <HeroCountdown now={now} mission={{ name: nextLaunch.name, launchAt: nextLaunch.launchAt }} />}
-          </div>
+          <p className="relative z-10 mt-8 text-xs text-white/55">Projeto educacional independente, sem vínculo oficial com a SpaceX.</p>
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
@@ -495,15 +296,21 @@ export default function App() {
       </section>
 
       {/* ── Stats ── */}
-      <div ref={statsRef} className="border-y border-white/8 bg-[#0a0a0a]">
+      <div ref={factsRef} className="border-y border-white/8 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {RAW_STATS.map((s, i) => (
-              <StatCard key={i} {...s} index={i} active={statsInView} />
+            {PROJECT_FACTS.map((fact, i) => (
+              <div key={fact.label} className={`py-7 px-4 md:px-6 transition-all duration-700 ${i % 2 === 0 ? "border-r border-white/8" : ""} ${i < 2 ? "border-b md:border-b-0 border-white/8" : ""} ${i === 2 ? "md:border-l md:border-white/8" : ""}`} style={{ opacity: factsInView ? 1 : 0, transform: factsInView ? "translateY(0)" : "translateY(16px)", transitionDelay: `${i * 80}ms` }}>
+                <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#4a9fff] mb-2">{fact.label}</p>
+                <p className="font-display text-xl md:text-2xl font-700 uppercase">{fact.value}</p>
+                <p className="font-body text-xs text-white/45 mt-1 leading-relaxed">{fact.detail}</p>
+              </div>
             ))}
           </div>
         </div>
       </div>
+
+      <HistoryTimeline />
 
       {/* ── Vehicles ── */}
       <section id="veiculos" className="relative isolate min-h-[100svh] py-24 md:py-28 overflow-hidden">
@@ -524,13 +331,15 @@ export default function App() {
               Frota
             </p>
             <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none">
-              Nossos Veículos
+              Veículos SpaceX
             </h2>
           </div>
 
           {/* Tabs */}
           <div
-            className="flex gap-0 mb-12 border-b border-white/8 transition-all duration-700"
+            className="flex gap-0 mb-12 border-b border-white/8 transition-all duration-700 overflow-x-auto"
+            role="group"
+            aria-label="Selecionar veículo"
             style={{
               opacity: vehiclesInView ? 1 : 0,
               transitionDelay: "150ms",
@@ -539,7 +348,11 @@ export default function App() {
             {VEHICLES.map((v, i) => (
               <button
                 key={i}
+                type="button"
                 onClick={() => setActiveVehicle(i)}
+                aria-pressed={activeVehicle === i}
+                aria-controls={`vehicle-panel-${i}`}
+                id={`vehicle-tab-${i}`}
                 className={`font-display text-[12px] font-600 tracking-[0.15em] uppercase px-6 py-4 transition-all duration-200 border-b-2 -mb-px ${
                   activeVehicle === i
                     ? "border-white text-white"
@@ -553,7 +366,7 @@ export default function App() {
 
           {/* Vehicle panels — content slides in from bottom, image from right */}
           {VEHICLES.map((v, i) => (
-            <div key={i} className={activeVehicle === i ? "block" : "hidden"}>
+            <div key={i} id={`vehicle-panel-${i}`} role="region" aria-labelledby={`vehicle-tab-${i}`} hidden={activeVehicle !== i} className={activeVehicle === i ? "block" : "hidden"}>
               <div className="grid md:grid-cols-2 gap-12 items-center min-h-[420px]">
                 <div
                   className="order-2 md:order-1 transition-all duration-700"
@@ -618,7 +431,7 @@ export default function App() {
         className="relative h-[80vh] min-h-[500px] flex items-center overflow-hidden"
       >
         <BackgroundMedia image="./images/crew-dragon-endeavour.jpg"
-          alt="Crew Dragon Endeavour sobre a Terra" credit="CREW DRAGON · NASA" position="70% center" />
+          video={VEHICLES[2].video} alt="Crew Dragon em órbita sobre a Terra" credit="FOTO · NASA / VÍDEO · SPACEX" position="70% center" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-2xl">
             <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4">
@@ -645,108 +458,12 @@ export default function App() {
 
       </section>
 
-      {/* ── Launches ── */}
-      <section id="lancamentos" className="relative isolate py-24 md:py-36 bg-[#0a0a0a] overflow-hidden">
-        <div className="absolute inset-0 opacity-25"><BackgroundMedia image="./images/falcon-9-demo-2.jpg" alt="Falcon 9 em lançamento" credit="DEMO-2 · NASA" /></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
-              <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
-                Registro de Missões
-              </p>
-              <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none">
-                Lançamentos
-              </h2>
-            </div>
-            <button
-              onClick={() => setShowAll((v) => !v)}
-              aria-expanded={showAll}
-              aria-controls="lista-lancamentos"
-              className="self-start md:self-auto inline-flex items-center gap-2 font-display text-[12px] font-600 tracking-[0.15em] uppercase text-white/50 hover:text-white transition-colors group"
-            >
-              {showAll ? "Mostrar Menos" : "Ver mais lançamentos"}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                className={`transition-transform duration-200 ${
-                  showAll ? "rotate-180" : ""
-                }`}
-              >
-                <path
-                  d="M2.5 5l4.5 4 4.5-4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div className="mb-8 text-sm text-white/55 space-y-2" aria-live="polite">
-            <p>Dados de <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer" className="text-[#4a9fff] underline">The Space Devs · Launch Library 2</a>. Horários de Brasília.</p>
-            <p>Atualização programada a cada 30 minutos; pode haver atrasos. Datas sujeitas a alteração.</p>
-            {snapshot && <p>Última consulta: {new Date(snapshot.fetchedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}.</p>}
-            {loading && <p>Carregando lançamentos da SpaceX…</p>}
-            {(stale || error) && <p className="text-amber-300">{snapshot ? "Atualização indisponível ou atrasada. Exibindo a última consulta; os dados podem ter mudado." : "Não foi possível carregar os lançamentos. Tente novamente em alguns minutos."}</p>}
-            {!loading && !error && !allMissions.length && <p>Nenhum lançamento disponível no momento.</p>}
-          </div>
-          {/* Mission rows — stagger-fade */}
-          <div
-            id="lista-lancamentos"
-            ref={missionsRef}
-            className="divide-y divide-white/8"
-          >
-            {missions.map((m, i) => (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setModal({ kind: "mission", mission: m })}
-                aria-label={`Ver detalhes da missão ${m.name}`}
-                className="w-full text-left flex flex-col md:flex-row md:items-center gap-4 md:gap-0 py-6 group cursor-pointer hover:bg-white/[0.02] px-4 -mx-4 transition-colors duration-200"
-                style={{
-                  opacity: missionsInView ? 1 : 0,
-                  transform: missionsInView
-                    ? "translateY(0)"
-                    : "translateY(16px)",
-                  transition: "opacity 0.55s ease, transform 0.55s ease",
-                  transitionDelay: missionsInView ? `${Math.min(i, 5) * 100}ms` : "0ms",
-                }}
-              >
-                <div className="font-display text-[12px] font-500 tracking-[0.1em] text-white/35 md:w-40">
-                  {m.date}
-                </div>
-                <div className="flex-1">
-                  <span className="font-display text-xl font-700 tracking-tight group-hover:text-[#4a9fff] transition-colors duration-200">
-                    {m.name}
-                  </span>
-                </div>
-                <div className="font-display text-[12px] font-500 tracking-[0.1em] uppercase text-white/40 md:w-56">
-                  {m.vehicle}
-                </div>
-                <div className="md:w-48 flex items-center">
-                  {m.countdown && m.launchAt && !stale && !error ? (
-                    <MissionRowCountdown launchAt={m.launchAt} now={now} />
-                  ) : (
-                    <span className="font-display text-[11px] font-600 tracking-[0.15em] uppercase px-3 py-1.5 bg-white/8 text-white/60">
-                      {m.countdown && (error || stale) ? "Aguardando atualização" : m.status}
-                    </span>
-                  )}
-                </div>
-                <div className="font-display text-[11px] font-500 tracking-[0.05em] text-white/30 md:w-52 hidden lg:block">
-                  {m.location}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ApplicationsSection />
+      <ImpactSection />
 
       {/* ── About ── */}
       <section id="sobre" className="relative isolate py-32 md:py-48 border-t border-white/8 overflow-hidden">
-        <BackgroundMedia image="https://www.spacex.com/assets/images/vehicles/starship/starship_hero_d.jpg" alt="Starship na base de lançamento" credit="STARSHIP · SPACEX" position="70% center" />
+        <BackgroundMedia image="./images/starship-illustration.svg" alt="Ilustração técnica da Starship e do propulsor Super Heavy" video={VEHICLES[1].video} credit="ILUSTRAÇÃO DO PROJETO · VÍDEO: SPACEX" position="70% center" />
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div
             ref={aboutRef}
@@ -760,12 +477,12 @@ export default function App() {
               }}
             >
               <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4">
-                Nossa Missão
+                Sobre este projeto
               </p>
               <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-8">
-                Por que
+                SpaceX
                 <br />
-                Construímos
+                em contexto
               </h2>
             </div>
             <div
@@ -777,18 +494,51 @@ export default function App() {
               }}
             >
               <p className="font-body text-white/60 text-base md:text-lg leading-relaxed mb-6">
-                A SpaceX foi fundada em 2002 com o objetivo final de possibilitar a
-                vida humana em vários planetas. Acreditamos que um futuro em que
-                a humanidade explora as estrelas é fundamentalmente mais
-                empolgante do que um em que isso não acontece.
+                A SpaceX foi fundada em 2002 por Elon Musk. A empresa desenvolve
+                foguetes, espaçonaves e serviços de conectividade por satélite.
+                Seus objetivos declarados incluem ampliar o acesso ao espaço e
+                desenvolver sistemas para missões à Lua e a Marte.
               </p>
               <p className="font-body text-white/50 text-sm md:text-base leading-relaxed">
-                Hoje a SpaceX é a principal provedora de lançamentos do mundo e a
-                única empresa a construir e operar com sucesso foguetes
-                reutilizáveis de classe orbital.
+                A reutilização de estágios orbitais também avança em outras
+                empresas: em novembro de 2025, a Blue Origin pousou o primeiro
+                estágio do New Glenn. O projeto mostra a trajetória da SpaceX
+                sem apresentar uma conquista do setor como exclusividade.
+              </p>
+              <p className="font-body text-white/45 text-sm leading-relaxed mt-6">
+                Este site é uma pesquisa de estudantes do Tech CAMPS. Não é uma
+                comunicação oficial da SpaceX; marcas e mídias pertencem aos
+                respectivos titulares.
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="estande" className="py-24 md:py-32 border-t border-white/8">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Experiência presencial</p>
+          <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-6">Roteiro do estande</h2>
+          <p className="font-body text-white/60 text-base md:text-lg max-w-2xl leading-relaxed mb-12">
+            Em cerca de seis minutos, cinco visitantes alternam entre piloto e equipe de apoio. Cada tentativa é curta; o grupo observa como inclinação, velocidade e combustível afetam o pouso.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-12">
+            {[
+              ["00:00–00:45", "Receber", "Apresentar o desafio e explicar que o jogo é uma simulação simplificada."],
+              ["00:45–01:30", "Preparar", "Mostrar os controles e distribuir os papéis de piloto, observador de velocidade, deriva, inclinação e combustível."],
+              ["01:30–05:15", "Tentar", "Cinco visitantes fazem uma tentativa rápida cada; a equipe comenta uma decisão e o resultado."],
+              ["05:15–06:00", "Concluir", "Relacionar os controles a um pouso propulsivo e explicar que o jogo não reproduz a física real do Falcon 9."],
+            ].map(([time, title, body]) => <article key={title} className="bg-[#080a0d] p-6">
+              <p className="font-display text-xs tracking-[0.15em] text-[#4a9fff] mb-3">{time}</p>
+              <h3 className="font-display text-2xl font-700 uppercase mb-2">{title}</h3>
+              <p className="font-body text-sm text-white/55 leading-relaxed">{body}</p>
+            </article>)}
+          </div>
+          <h3 className="font-display text-2xl font-700 uppercase mb-3">Se a conexão cair</h3>
+          <p className="font-body text-sm text-white/55 leading-relaxed max-w-2xl mb-6">
+            As cartas abaixo funcionam sem chamadas externas depois que esta página abre. Imprima ou salve esta página no aparelho antes da feira para ter uma alternativa caso o site não carregue.
+          </p>
+          <OfflineMissionCards />
         </div>
       </section>
 
@@ -803,18 +553,26 @@ export default function App() {
               Pouse o Foguete
             </h2>
             <p className="font-body text-white/60 text-base md:text-lg leading-relaxed max-w-xl">
-              Controle o propulsor e tente pousar o primeiro estágio com
-              segurança, como a Falcon 9 faz de verdade.
+              Uma simulação didática e simplificada. Você controla a inclinação
+              e o impulso; observe a velocidade vertical e horizontal, o
+              combustível e a posição sobre a plataforma.
             </p>
           </div>
           <LandingGame />
+          <p className="font-body text-xs text-white/40 mt-5 max-w-3xl leading-relaxed">
+            No voo real, sensores, computadores, motores, atmosfera e condições
+            de missão interagem de formas que este jogo não simula. A pontuação
+            é apenas um retorno do jogo, não uma medida de desempenho real.
+          </p>
         </div>
       </section>
+
+      <SourcesSection />
 
       {/* ── Footer ── */}
       <footer className="border-t border-white/8 bg-black">
         <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 mb-6">
                 <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
@@ -828,14 +586,18 @@ export default function App() {
                   <circle cx="16" cy="16" r="3" fill="white" />
                 </svg>
                 <span className="font-display text-base font-700 tracking-[0.15em] uppercase">
-                  SpaceX
+                  Tech CAMPS
                 </span>
               </div>
               <p className="font-body text-white/35 text-xs leading-relaxed">
-                Projetando o futuro dos voos espaciais tripulados desde 2002.
+                Pesquisa estudantil sobre tecnologia espacial e suas aplicações.
               </p>
             </div>
-            {FOOTER_COLS.map((col) => (
+            {[
+              { title: "Explorar", links: [{ label: "Marcos", href: "#marcos" }, { label: "Veículos", href: "#veiculos" }, { label: "Aplicações", href: "#aplicacoes" }] },
+              { title: "Aprender", links: [{ label: "Impactos", href: "#impactos" }, { label: "Simulador", href: "#jogo" }, { label: "Estande", href: "#estande" }] },
+              { title: "Projeto", links: [{ label: "Sobre o grupo", href: "#sobre" }, { label: "Fontes", href: "#fontes" }] },
+            ].map((col) => (
               <div key={col.title}>
                 <h4 className="font-display text-[11px] font-700 tracking-[0.2em] uppercase text-white/50 mb-4">
                   {col.title}
@@ -844,8 +606,7 @@ export default function App() {
                   {col.links.map((link) => (
                     <li key={link.label}>
                       <a
-                        href={link.href ?? "#"}
-                        onClick={(e) => onFooterLink(e, link)}
+                        href={link.href}
                         className="font-body text-xs text-white/40 hover:text-white/80 transition-colors duration-200"
                       >
                         {link.label}
@@ -861,8 +622,8 @@ export default function App() {
               Aviso — Fins Exclusivamente Estudantis
             </p>
             <p className="font-body text-xs md:text-sm text-white/60 leading-relaxed">
-              Este site é um trabalho escolar, desenvolvido apenas para fins
-              estudantis e sem fins comerciais. Não possui qualquer vínculo
+              Este site é um trabalho estudantil do Tech CAMPS, desenvolvido
+              para fins educacionais e sem fins comerciais. Não possui qualquer vínculo
               oficial com a SpaceX. Marcas, nomes e fotografias pertencem aos
               seus respectivos proprietários; as imagens da Falcon 9 e da Crew
               Dragon são da NASA.
@@ -870,20 +631,12 @@ export default function App() {
           </div>
           <div className="border-t border-white/8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="font-display text-[11px] tracking-[0.1em] uppercase text-white/25">
-              © 2026 SpaceX — Projeto escolar, uso estudantil.
+            © 2026 Tech CAMPS — Projeto educacional independente.
             </p>
             <div className="flex gap-6">
-              {["Privacidade", "Termos", "Fornecedores"].map((link) => (
-                <a
-                  key={link}
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setModal({ kind: "notice", title: link })
-                  }}
-                  className="font-display text-[11px] tracking-[0.1em] uppercase text-white/25 hover:text-white/60 transition-colors"
-                >
-                  {link}
+              {[["Fontes", "#fontes"], ["Voltar ao início", "#inicio"]].map(([label, href]) => (
+                <a key={label} href={href} className="font-display text-[11px] tracking-[0.1em] uppercase text-white/35 hover:text-white/70 transition-colors">
+                  {label}
                 </a>
               ))}
             </div>
@@ -891,7 +644,7 @@ export default function App() {
         </div>
       </footer>
 
-      <DetailModal state={currentModal} vehicles={VEHICLES} onClose={closeModal} />
+      <DetailModal state={modal} vehicles={VEHICLES} onClose={closeModal} />
 
       {/* Hero entrance keyframes */}
       <style>{`

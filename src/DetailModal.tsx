@@ -29,7 +29,7 @@ export type ModalState =
 
 const DETAILS: Record<
   string,
-  { history: string; specs: [string, string][]; highlights: string[] }
+  { history: string; specs: [string, string][]; highlights: string[]; source: string }
 > = {
   "Falcon 9": {
     history:
@@ -47,6 +47,7 @@ const DETAILS: Record<
       "Usado para missões de satélites, cargas e tripulação",
       "Propelentes: querosene (RP-1) e oxigênio líquido",
     ],
+    source: "https://www.spacex.com/vehicles/falcon-9/",
   },
   Starship: {
     history:
@@ -56,7 +57,7 @@ const DETAILS: Record<
       ["Diâmetro", "9 m"],
       ["Motores Super Heavy", "33 × Raptor"],
       ["Motores da nave", "6 × Raptor"],
-      ["Carga útil (LEO)", "100–150 t"],
+      ["Status", "Em desenvolvimento"],
       ["Propelentes", "Metano e O₂ líquidos"],
     ],
     highlights: [
@@ -64,6 +65,7 @@ const DETAILS: Record<
       "Reabastecimento em órbita para missões além da Terra",
       "Candidata a missões lunares e marcianas",
     ],
+    source: "https://www.spacex.com/vehicles/starship/",
   },
   Dragon: {
     history:
@@ -81,6 +83,7 @@ const DETAILS: Record<
       "Acoplamento automático com a ISS",
       "Cápsula reutilizável em várias missões",
     ],
+    source: "https://www.spacex.com/vehicles/dragon/",
   },
 }
 
@@ -205,6 +208,9 @@ export default function DetailModal({
                   </li>
                 ))}
               </ul>
+              <a href={d.source} target="_blank" rel="noreferrer" className="inline-flex mt-7 font-display text-[11px] tracking-[0.15em] uppercase text-[#75b8ff] underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-white">
+                Fonte oficial SpaceX ↗
+              </a>
             </div>
           </div>
         ) : mission ? (

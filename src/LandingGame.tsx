@@ -285,11 +285,13 @@ export default function LandingGame() {
   const visible = useRef(false)
   const bestRef = useRef(0)
   const wakeRef = useRef<() => void>(() => {})
+  const [result, setResult] = useState("")
   const [, setTouch] = useState(0)
 
   const startOrRestart = () => {
     const g = gameRef.current
     if (g.status === "playing") return
+    setResult("")
     gameRef.current = newGame(g)
     gameRef.current.status = "playing"
     wakeRef.current()
@@ -328,6 +330,11 @@ export default function LandingGame() {
       const g = gameRef.current
       const before = g.status
       step(g, controls.current, dt)
+      if (before === "playing" && g.status === "landed") {
+        setResult("Pouso estável nesta simulação: velocidade e inclinação ficaram dentro dos limites do jogo. A pontuação também considera o combustível restante.")
+      } else if (before === "playing" && g.status === "crashed") {
+        setResult(`A tentativa terminou: ${g.message.toLowerCase()}. Revise qual indicador mudou por último e ajuste uma decisão na próxima tentativa.`)
+      }
       if (before === "playing" && g.status === "landed") {
         if (g.score > bestRef.current) {
           bestRef.current = g.score
@@ -403,6 +410,13 @@ export default function LandingGame() {
 
   return (
     <div id="landing-game-slot" className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4 border-l-2 border-[#4a9fff] pl-4">
+        <div>
+          <p className="font-display text-xs tracking-[0.16em] uppercase text-[#4a9fff] mb-1">Como jogar</p>
+          <p className="font-body text-xs sm:text-sm text-white/55 leading-relaxed">No computador: ← / → ou A / D inclinam; ↑, W ou espaço acionam o propulsor. No celular: mantenha pressionado um dos controles abaixo. Toque no simulador para iniciar ou reiniciar.</p>
+        </div>
+        <p className="font-display text-[10px] tracking-[0.12em] uppercase text-white/35 shrink-0">5 tentativas curtas no estande</p>
+      </div>
       <canvas
         ref={canvasRef}
         tabIndex={0}
@@ -417,19 +431,20 @@ export default function LandingGame() {
           e.currentTarget.focus()
           if (gameRef.current.status !== "playing") startOrRestart()
         }}
-        className="block w-full aspect-[16/9] min-h-[240px] bg-black border border-white/10 focus:border-[#4a9fff]/60 outline-none cursor-pointer"
+        className="block w-full aspect-[16/9] bg-black border border-white/10 focus:border-[#4a9fff]/60 outline-none md:cursor-pointer"
       />
       <div className="flex gap-2 mt-2">
-        <button className={btn} {...hold("left")}>
+        <button aria-label="Girar para a esquerda" className={btn} {...hold("left")}>
           ◀ Girar
         </button>
-        <button className={btn} {...hold("thrust")}>
+        <button aria-label="Acionar propulsor" className={btn} {...hold("thrust")}>
           ▲ Propulsor
         </button>
-        <button className={btn} {...hold("right")}>
+        <button aria-label="Girar para a direita" className={btn} {...hold("right")}>
           Girar ▶
         </button>
       </div>
+      <p aria-live="polite" className="font-body text-sm text-white/65 mt-4 min-h-6">{result}</p>
       <p className="font-body text-xs text-white/35 mt-3">
         Pouse sobre a plataforma com velocidade vertical abaixo de 45 m/s,
         horizontal abaixo de 30 m/s e o foguete quase na vertical.

@@ -7,9 +7,10 @@ interface Props {
   alt: string
   credit: string
   position?: string
+  priority?: boolean
 }
 
-export default memo(function BackgroundMedia({ image, fallback, video, alt, credit, position = 'center' }: Props) {
+export default memo(function BackgroundMedia({ image, fallback, video, alt, credit, position = 'center', priority = false }: Props) {
   const container = useRef<HTMLDivElement>(null)
   const player = useRef<HTMLVideoElement>(null)
   const [inView, setInView] = useState(false)
@@ -45,7 +46,7 @@ export default memo(function BackgroundMedia({ image, fallback, video, alt, cred
     return () => { active = false; el.pause() }
   }, [loadVideo, visible, paused])
   return <div ref={container} className="absolute inset-0 overflow-hidden">
-    <img src={image} alt={alt} loading="lazy" decoding="async"
+    <img src={image} alt={alt} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async"
       onError={e => { if (fallback && !e.currentTarget.src.endsWith(fallback.replace('./', '/'))) { e.currentTarget.onerror = null; e.currentTarget.src = fallback } }}
       className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: position }} />
     {loadVideo && <video ref={player} src={video} muted loop playsInline preload="none" aria-hidden="true"
@@ -55,7 +56,7 @@ export default memo(function BackgroundMedia({ image, fallback, video, alt, cred
       style={{ objectPosition: position }} />}
     <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/10 pointer-events-none" />
     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20 pointer-events-none" />
-    <div className="absolute bottom-5 right-6 z-20 flex items-center gap-3 text-[10px] tracking-[0.13em] uppercase text-white/70">
+    <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 z-20 flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] tracking-[0.1em] uppercase text-white/70 max-w-[calc(100%-1.5rem)]">
       <span className="drop-shadow-lg">{credit}</span>
       {video && !failed && <button type="button" onClick={() => { if (!enabled) { setEnabled(true); setPaused(false) } else setPaused(p => !p) }}
         aria-label={`${!enabled || paused ? 'Reproduzir' : 'Pausar'} vídeo de fundo: ${alt}`}
