@@ -3,7 +3,7 @@ import './SpaceIntro.css'
 import { createConstellationMap } from './introConstellations'
 
 const clamp = (n: number) => Math.max(0, Math.min(1, n))
-export default function SpaceIntro({ children }: { children: ReactNode }) {
+export default function SpaceIntro({ children, onComplete }: { children: ReactNode; onComplete: () => void }) {
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = root.current!
@@ -23,6 +23,8 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
     let startedAt: number | null = null
     let complete = window.scrollY > 20 || Boolean(location.hash && location.hash !== '#inicio')
     let touchY = 0
+    let drag: { id: number; x: number; y: number } | null = null
+    let notified = false
     const duration = reduced ? 200 : 2600
     const start = () => { if (!complete && startedAt === null) startedAt = performance.now() }
     const wheel = (event: WheelEvent) => {
@@ -73,8 +75,25 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
       constellationMap = createConstellationMap(w,h,dpr)
       sample()
     }
-    const move = (e: PointerEvent) => { tx=e.clientX; ty=e.clientY; active=true }
-    const release = (e: PointerEvent) => { if (e.pointerType !== 'mouse') active = false }
+    const move = (e: PointerEvent) => {
+      tx=e.clientX; ty=e.clientY; active=true
+      if (!complete && drag?.id === e.pointerId) {
+        const up = drag.y - e.clientY
+        if (up > 24 && up > Math.abs(e.clientX - drag.x)) start()
+      }
+    }
+    const press = (e: PointerEvent) => {
+      move(e)
+      const overlay = el.querySelector<HTMLElement>('.intro-overlay')!
+      if (complete || e.button !== 0 || e.pointerType === 'touch' || !overlay.contains(e.target as Node)) return
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY }
+      overlay.setPointerCapture(e.pointerId)
+      el.dataset.dragging = 'true'
+    }
+    const release = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') active = false
+      if (drag?.id === e.pointerId) { drag = null; delete el.dataset.dragging }
+    }
     const leave = () => { active=false; tx=w/2;ty=h/2 }
     const draw = (time:number) => {
       const dt = Math.min(50,time-previous || 16); previous=time
@@ -83,6 +102,7 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
       const elapsed = startedAt === null ? 0 : clamp((time - startedAt) / duration)
       progress = complete ? 1 : elapsed * elapsed * (3 - 2 * elapsed)
       if (elapsed >= 1) complete = true
+      if (complete && !notified) { notified = true; onComplete() }
       el.dataset.state = complete ? 'complete' : startedAt === null ? 'waiting' : 'opening'
       el.style.setProperty('--curtain-y', `${reduced ? 0 : -progress * 105}%`)
       px+=(tx-px)*ease;py+=(ty-py)*ease
@@ -151,14 +171,14 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
     frame=requestAnimationFrame(draw)
     window.addEventListener('resize',resize)
     window.addEventListener('pointermove',move,{passive:true})
-    window.addEventListener('pointerdown',move,{passive:true})
+    window.addEventListener('pointerdown',press,{passive:true})
     window.addEventListener('pointerup',release,{passive:true})
     window.addEventListener('pointercancel',release,{passive:true})
     document.documentElement.addEventListener('pointerleave',leave)
     const skip = (e:Event) => { e.preventDefault(); start() }
     const links=el.querySelectorAll('[data-skip-cover]');links.forEach(l=>l.addEventListener('click',skip))
-    return ()=>{window.removeEventListener('pointerdown',move);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('wheel',wheel,true);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchmove',touchMove);window.removeEventListener('keydown',keyDown);window.removeEventListener('scroll',onScroll);disposed = true;cancelAnimationFrame(frame);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);document.documentElement.removeEventListener('pointerleave',leave);links.forEach(l=>l.removeEventListener('click',skip))}
-  },[])
+    return ()=>{window.removeEventListener('pointerdown',press);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('wheel',wheel,true);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchmove',touchMove);window.removeEventListener('keydown',keyDown);window.removeEventListener('scroll',onScroll);disposed = true;cancelAnimationFrame(frame);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);document.documentElement.removeEventListener('pointerleave',leave);links.forEach(l=>l.removeEventListener('click',skip))}
+  },[onComplete])
   return <div ref={root} className="space-intro cover-track">
     <div className="intro-stage">
       <div className="intro-content">{children}</div>
@@ -166,9 +186,8 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
         <div className="curtain-black"/><div className="cursor-light" aria-hidden="true"/>
         <canvas className="constellation-canvas" aria-hidden="true"/>
         <canvas className="star-canvas" aria-hidden="true"/>
-        <a className="skip-cover" href="#inicio" data-skip-cover>Pular abertura</a>
         <div className="cover-wordmark" aria-label="SpaceX">{[...'SpaceX'].map((l,i)=><span key={i} className="cover-letter" aria-hidden="true">{l}</span>)}</div>
-        <a className="intro-scroll-cue" href="#inicio" data-skip-cover><span>Arraste para cima</span><i/></a>
+        <a className="intro-scroll-cue" href="#inicio" data-skip-cover><span>Arraste para cima<span className="intro-desktop-hint"> ou role</span></span><i/></a>
       </div>
     </div>
   </div>

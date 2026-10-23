@@ -93,6 +93,8 @@ function StatItem({ value, label, suffix = '', index }: { value: number; label: 
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false)
+  const [introReady, setIntroReady] = useState(false)
+  const finishIntro = useCallback(() => setIntroReady(true), [])
   const [menuOpen, setMenuOpen] = useState(false)
   const [gameOpen, setGameOpen] = useState(false)
   const [modal, setModal] = useState<ModalState>(null)
@@ -166,7 +168,7 @@ export default function App() {
 
   return <div className="site-shell">
     <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
-    <header className={`site-header ${scrolled || menuOpen ? "is-solid" : ""}`}>
+    <header inert={!introReady} className={`site-header ${introReady ? "" : "intro-hidden"} ${scrolled || menuOpen ? "is-solid" : ""}`}>
       <a className="site-wordmark" href="#inicio" onClick={() => setMenuOpen(false)} aria-label="SpaceX — início">SpaceX</a>
       <nav className="desktop-nav" aria-label="Navegação principal">
         {NAV_LINKS.map(link => <a key={link.id} href={`#${link.id}`}>{link.label}</a>)}
@@ -181,7 +183,7 @@ export default function App() {
     </header>
 
     <main id="conteudo">
-      <SpaceIntro>
+      <SpaceIntro onComplete={finishIntro}>
       <section id="inicio" className="scene scene-hero" aria-labelledby="hero-heading">
         <BackgroundMedia image="/images/scenes/landing.webp" imageMobile="/images/scenes/landing-mobile.webp"
           video="https://sxcontent9668.azureedge.us/cms-assets/assets/Space_X_Falcon_Heavy_UAS_Landing_DESKTOP_compress_b4568daf9c_5e2026727a.mp4"
