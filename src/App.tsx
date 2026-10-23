@@ -102,10 +102,17 @@ export default function App() {
   const closeModal = useCallback(() => setModal(null), [])
 
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 40)
+    let frame = 0
+    const update = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 40)
+        frame = 0
+      })
+    }
     update()
     window.addEventListener("scroll", update, { passive: true })
-    return () => window.removeEventListener("scroll", update)
+    return () => { window.removeEventListener("scroll", update); cancelAnimationFrame(frame) }
   }, [])
   useEffect(() => {
     const close = (event: KeyboardEvent) => {
