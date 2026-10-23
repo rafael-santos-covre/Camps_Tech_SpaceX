@@ -1,3 +1,5 @@
+import AnimatedDetails from "./AnimatedDetails"
+
 const MILESTONES = [
   { year: "2002", title: "Fundação", text: "Elon Musk funda a Space Exploration Technologies Corp. (SpaceX), com a meta declarada de reduzir o custo do acesso ao espaço.", source: "https://ir.spacex.com/faqs-and-contact/" },
   { year: "2008", title: "Falcon 1 chega à órbita", text: "Após tentativas anteriores, o Falcon 1 se torna o primeiro foguete privado de propelente líquido a alcançar a órbita da Terra.", source: "https://www.nasa.gov/wp-content/uploads/2018/07/spacex_nasa_crs-7_presskit.pdf" },
@@ -34,10 +36,9 @@ export function HistoryTimeline() {
         <p>Da fundação em 2002 aos testes de novos veículos. Seis momentos para entender como a empresa chegou até aqui.</p>
       </div>
       <div className="timeline">
-        {MILESTONES.map((item, index) => <details key={item.year} className="timeline-item reveal" style={{ transitionDelay: `${Math.min(index, 5) * 70}ms` }} open={index === 0}>
-          <summary><span className="timeline-year">{item.year}</span><span>{item.title}</span><span className="disclosure-mark" aria-hidden="true" /></summary>
+        {MILESTONES.map((item, index) => <AnimatedDetails key={item.year} className="timeline-item reveal" style={{ transitionDelay: `${Math.min(index, 5) * 70}ms` }} defaultOpen={index === 0} summary={<><span className="timeline-year">{item.year}</span><span>{item.title}</span></>}>
           <div className="timeline-copy"><p>{item.text}</p><a href={item.source} target="_blank" rel="noreferrer">Consultar fonte</a></div>
-        </details>)}
+        </AnimatedDetails>)}
       </div>
     </div>
   </section>
@@ -62,21 +63,21 @@ export function ImpactSection() {
     <div className="reading-width section-intro">
       <div className="section-heading reveal"><h2 id="impact-heading">Avançar também<br />é avaliar.</h2><p>Novas possibilidades trazem responsabilidades. Conheça os benefícios e os limites dessas tecnologias.</p></div>
       <div className="impact-disclosures">
-        <details className="plain-disclosure"><summary>Possibilidades<span className="disclosure-mark" aria-hidden="true" /></summary>
+        <AnimatedDetails className="plain-disclosure" summary="Possibilidades">
           <ul>
             <li>Reutilizar estágios pode reduzir o material descartado por voo e ampliar a frequência de lançamentos. O resultado depende dos custos de recuperação, manutenção e operação.</li>
             <li>Satélites apoiam comunicação, pesquisa, monitoramento ambiental e resposta a emergências.</li>
             <li>Missões tripuladas e de carga viabilizam pesquisa e operações na estação espacial.</li>
           </ul>
-        </details>
-        <details className="plain-disclosure"><summary>Desafios<span className="disclosure-mark" aria-hidden="true" /></summary>
+        </AnimatedDetails>
+        <AnimatedDetails className="plain-disclosure" summary="Desafios">
           <ul>
             <li>A infraestrutura espacial exige investimento, energia, espectro de rádio e locais de lançamento.</li>
             <li>Mais objetos em órbita exigem rastreamento de detritos, prevenção de colisões e retirada segura de satélites ao fim da vida útil.</li>
             <li>A internet por satélite depende de equipamentos, cobertura e capacidade local. Não substitui redes terrestres em todos os cenários.</li>
             <li>Lançamentos têm riscos técnicos e impactos ambientais, sonoros e sobre comunidades próximas. A reutilização não elimina esses desafios.</li>
           </ul>
-        </details>
+        </AnimatedDetails>
       </div>
     </div>
   </section>
@@ -85,10 +86,10 @@ export function ImpactSection() {
 export function SourcesSection() {
   return <section id="fontes" className="sources-section">
     <div className="reading-width">
-      <details className="plain-disclosure sources-disclosure"><summary>Fontes e referências<span className="disclosure-mark" aria-hidden="true" /></summary>
+      <AnimatedDetails className="plain-disclosure sources-disclosure" summary="Fontes e referências">
         <ul className="sources-list">{SOURCES.map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label}<span aria-hidden="true">↗</span></a></li>)}</ul>
         <p className="small-note">Fotografias e vídeo disponibilizados pela SpaceX. Informações consultadas em outubro de 2026.</p>
-      </details>
+      </AnimatedDetails>
     </div>
   </section>
 }

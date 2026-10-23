@@ -128,6 +128,7 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .project-details summary { display: inline-flex; align-items: center; gap: 12px; list-style: none; }
 .project-details summary::marker, .project-details summary::-webkit-details-marker { display: none; content: ''; }
 .timeline-copy { padding: 0 34px 24px 128px; }
+.timeline-item > .disclosure-panel > .disclosure-panel-inner { padding-top: 4px; }
 .timeline-copy p { font-size: 15px; }
 .timeline-copy a { font-size: 13px; display: inline-block; margin-top: 14px; text-decoration: underline; text-underline-offset: 4px; color: #ccc; }
 #aplicacoes { border-top: 1px solid #ffffff20; }
@@ -138,6 +139,7 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .plain-disclosure { border-bottom: 1px solid #ffffff28; }
 .plain-disclosure summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 0; font-size: 20px; }
 .impact-disclosures .plain-disclosure:first-child { border-top: 1px solid #ffffff28; }
+.plain-disclosure .disclosure-panel-inner { padding-bottom: 20px; }
 .plain-disclosure ul { margin: 0; padding: 0 0 20px 20px; list-style: disc; color: #b8b8b8; }
 .plain-disclosure li { font-size: 16px; line-height: 1.65; padding: 0 0 14px 0; }
 .simulation-section { border-top: 1px solid #ffffff20; padding-bottom: 90px; }
@@ -147,7 +149,8 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .sources-section { padding: 0 7vw 70px; }
 .sources-disclosure { border-top: 1px solid #ffffff28; }
 .sources-disclosure summary { font-size: 17px; }
-.sources-disclosure .sources-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 60px; padding: 24px 0; list-style: none; }
+.sources-disclosure .disclosure-panel-inner { padding-top: 24px; }
+.sources-disclosure .sources-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 60px; padding: 0 0 24px; list-style: none; }
 .sources-list a { display: flex; justify-content: space-between; gap: 20px; padding: 8px 0; text-decoration: none; font-size: 15px; }
 .sources-list a:hover { color: #fff; }
 .sources-disclosure .small-note { margin: 0 0 25px; }
@@ -159,7 +162,9 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .site-footer p { color: #999; font-size: 13px; line-height: 1.65; max-width: 760px; }
 .project-details { margin-top: 18px; font-size: 13px; color: #bbb; }
 .project-details summary { width: fit-content; }
-.project-details p { margin-top: 16px; }
+.project-details .disclosure-panel-inner { padding-top: 16px; }
+.project-details p { margin-top: 0; }
+.project-details p + p { margin-top: 16px; }
 @keyframes rise-in { from { opacity: 0; transform: translate3d(0,22px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
 @keyframes cue-bob { 0%,100% { translate: 0 0; } 50% { translate: 0 6px; } }
 .reveal { opacity: 0; transform: translate3d(0,36px,0); transition: opacity 1.35s ease, transform 1.35s cubic-bezier(.2,.75,.25,1); }
@@ -280,3 +285,16 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .launch-list.constellation-surface{background:#050608}
 
 @media(prefers-reduced-motion:reduce){.disclosure-mark,.disclosure-mark::before,.disclosure-mark::after{transition:none}}
+
+/* The panel itself expands with the disclosure, not only the plus/minus icon. */
+.disclosure-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-7px);
+  transition: grid-template-rows .58s cubic-bezier(.22,.61,.36,1), opacity .38s ease, transform .58s cubic-bezier(.22,.61,.36,1);
+}
+.disclosure-panel-inner { min-height: 0; overflow: hidden; }
+details[open]:not([data-closing]) > .disclosure-panel { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
+@media(prefers-reduced-motion:reduce){.disclosure-panel{transition:none;transform:none}}
+details[data-closing] > summary .disclosure-mark::after { transform: rotate(90deg); }

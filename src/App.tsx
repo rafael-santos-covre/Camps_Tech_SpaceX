@@ -3,6 +3,7 @@ import Lenis from "lenis"
 import SpaceIntro from "./SpaceIntro"
 import SiteConstellations from "./SiteConstellations"
 import BackgroundMedia, { type BackgroundMediaHandle } from "./BackgroundMedia"
+import AnimatedDetails from "./AnimatedDetails"
 import DetailModal, { type ModalState } from "./DetailModal"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
 import { useLaunches } from "./useLaunches"
@@ -287,10 +288,10 @@ export default function App() {
         <div className="footer-links"><a href="#marcos">História</a><a href="#fontes">Fontes</a><a href="#inicio">Voltar ao início</a></div>
       </div>
       <p>Projeto educacional independente do Tech CAMPS, sem vínculo com a SpaceX. Fotografias e vídeo: SpaceX. Marcas e mídias pertencem aos respectivos titulares.</p>
-      <details className="project-details"><summary>Sobre o projeto<span className="disclosure-mark" aria-hidden="true" /></summary>
+      <AnimatedDetails className="project-details" summary="Sobre o projeto">
         <p>Pesquisa estudantil sobre a trajetória da SpaceX, suas tecnologias, aplicações e impactos. A empresa foi fundada em 2002 por Elon Musk, com objetivos que incluem ampliar o acesso ao espaço e desenvolver sistemas para missões à Lua e a Marte.</p>
         <p>A reutilização também avança em outras empresas: em novembro de 2025, a Blue Origin pousou o primeiro estágio do New Glenn. Conheça as fontes institucionais usadas nesta pesquisa na seção de referências.</p>
-      </details>
+      </AnimatedDetails>
     </footer>
     <DetailModal state={modal} vehicles={VEHICLES} onClose={closeModal} />
   </div>
