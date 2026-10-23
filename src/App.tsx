@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react"
 import Lenis from "lenis"
+import SpaceIntro from "./SpaceIntro"
 import BackgroundMedia from "./BackgroundMedia"
 import DetailModal, { type ModalState } from "./DetailModal"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
@@ -180,6 +181,7 @@ export default function App() {
     </header>
 
     <main id="conteudo">
+      <SpaceIntro>
       <section id="inicio" className="scene scene-hero" aria-labelledby="hero-heading">
         <BackgroundMedia image="/images/scenes/landing.webp" imageMobile="/images/scenes/landing-mobile.webp"
           video="https://sxcontent9668.azureedge.us/cms-assets/assets/Space_X_Falcon_Heavy_UAS_Landing_DESKTOP_compress_b4568daf9c_5e2026727a.mp4"
@@ -198,6 +200,8 @@ export default function App() {
         <a className="scroll-cue" href="#estatisticas"><span>Rolar</span><i /></a>
         <span className="project-note">Projeto educacional independente</span>
       </section>
+
+      </SpaceIntro>
 
       <section id="estatisticas" className="stats-strip" aria-label="Estatísticas de voos SpaceX">
         <div className="stats-inner">
