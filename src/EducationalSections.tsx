@@ -36,7 +36,7 @@ export function HistoryTimeline() {
         <p>Da fundação em 2002 aos testes de novos veículos. Seis momentos para entender como a empresa chegou até aqui.</p>
       </div>
       <div className="timeline">
-        {MILESTONES.map((item, index) => <AnimatedDetails key={item.year} className="timeline-item reveal" style={{ transitionDelay: `${Math.min(index, 5) * 70}ms` }} defaultOpen={index === 0} summary={<><span className="timeline-year">{item.year}</span><span>{item.title}</span></>}>
+        {MILESTONES.map((item, index) => <AnimatedDetails key={item.year} className="timeline-item reveal" style={{ transitionDelay: `${Math.min(index, 5) * 70}ms` }} summary={<><span className="timeline-year">{item.year}</span><span>{item.title}</span></>}>
           <div className="timeline-copy"><p>{item.text}</p><a href={item.source} target="_blank" rel="noreferrer">Consultar fonte</a></div>
         </AnimatedDetails>)}
       </div>
