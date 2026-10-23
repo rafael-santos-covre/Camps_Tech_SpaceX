@@ -93,6 +93,7 @@ function StatItem({ value, label, suffix = '', index }: { value: number; label: 
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false)
+  const [headerHidden, setHeaderHidden] = useState(false)
   const [introReady, setIntroReady] = useState(false)
   const finishIntro = useCallback(() => setIntroReady(true), [])
   const [menuOpen, setMenuOpen] = useState(false)
@@ -121,10 +122,27 @@ export default function App() {
 
   useEffect(() => {
     let frame = 0
+    let previousY = window.scrollY
+    let direction = 0
+    let distance = 0
     const update = () => {
       if (frame) return
       frame = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 40)
+        // Clamp elastic overscroll and ignore tiny movements to avoid flickering.
+        const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+        const y = Math.max(0, Math.min(maxY, window.scrollY))
+        const delta = y - previousY
+        const nextDirection = Math.sign(delta)
+        setScrolled(y > 40)
+        if (y < 80) {
+          setHeaderHidden(false)
+          distance = 0
+        } else if (nextDirection !== 0) {
+          distance = nextDirection === direction ? distance + Math.abs(delta) : Math.abs(delta)
+          direction = nextDirection
+          if (distance >= (direction > 0 ? 28 : 12)) setHeaderHidden(direction > 0)
+        }
+        previousY = y
         frame = 0
       })
     }
@@ -168,7 +186,7 @@ export default function App() {
 
   return <div className="site-shell">
     <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
-    <header inert={!introReady} className={`site-header ${introReady ? "" : "intro-hidden"} ${scrolled || menuOpen ? "is-solid" : ""}`}>
+    <header inert={!introReady} className={`site-header ${introReady && headerHidden && !menuOpen ? "is-scroll-hidden" : ""} ${introReady ? "" : "intro-hidden"} ${scrolled || menuOpen ? "is-solid" : ""}`}>
       <a className="site-wordmark" href="#inicio" onClick={() => setMenuOpen(false)} aria-label="SpaceX — início">SpaceX</a>
       <nav className="desktop-nav" aria-label="Navegação principal">
         {NAV_LINKS.map(link => <a key={link.id} href={`#${link.id}`}>{link.label}</a>)}

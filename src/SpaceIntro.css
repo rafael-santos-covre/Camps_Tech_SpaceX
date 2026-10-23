@@ -28,3 +28,6 @@
 .site-header.intro-hidden{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-16px)}
 @media(pointer:coarse){.intro-desktop-hint{display:none}}
 @media(prefers-reduced-motion:reduce){.site-header{transition:none}}
+
+.site-header.is-scroll-hidden:not(:focus-within){transform:translateY(-110%);opacity:0;pointer-events:none;transition:background .25s,opacity .35s ease,transform .5s cubic-bezier(.22,.61,.36,1)}
+@media(prefers-reduced-motion:reduce){.site-header.is-scroll-hidden:not(:focus-within){transition:none}}
