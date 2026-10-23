@@ -26,7 +26,7 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
     // Once triggered, the full reveal completes regardless of gesture speed.
-    const duration = 5800 // Restored from the version before the latest timing adjustment.
+    const duration = 2600 // The opening always completes at a steady pace after the gesture.
     const start = () => {
       if (!complete && startedAt === null) {
         startedAt = performance.now()
