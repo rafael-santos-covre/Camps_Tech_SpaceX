@@ -26,7 +26,7 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
     // Once triggered, the full reveal completes regardless of gesture speed.
-    const duration = 10000 // Keep the requested slow curtain even when reduced-motion is enabled.
+    const duration = 5800 // Restored from the version before the latest timing adjustment.
     const start = () => {
       if (!complete && startedAt === null) {
         startedAt = performance.now()
