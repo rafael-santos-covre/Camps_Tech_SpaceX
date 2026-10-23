@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import BackgroundMedia from "./BackgroundMedia"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
-import VisitorChallenge from "./VisitorChallenge"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
@@ -40,7 +39,6 @@ const NAV_LINKS = [
   { label: "Aplicações", id: "aplicacoes" },
   { label: "Impactos", id: "impactos" },
   { label: "Projeto", id: "sobre" },
-  { label: "Desafio", id: "desafio" },
   { label: "Simulador", id: "jogo" },
 ]
 
@@ -515,17 +513,6 @@ export default function App() {
         </div>
       </section>
 
-      <section id="desafio" className="py-24 md:py-32 border-t border-white/8">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Atividade interativa</p>
-          <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-6">Decida o próximo movimento</h2>
-          <p className="font-body text-white/60 text-base md:text-lg max-w-2xl leading-relaxed mb-8">
-            Analise cada situação, escolha uma ação e veja o efeito esperado. Depois, experimente suas ideias no simulador de pouso.
-          </p>
-          <VisitorChallenge />
-        </div>
-      </section>
-
       {/* ── Minigame ── */}
       <section id="jogo" className="py-24 md:py-36 bg-[#0a0a0a] border-t border-white/8">
         <div className="max-w-7xl mx-auto px-6">
@@ -579,7 +566,7 @@ export default function App() {
             </div>
             {[
               { title: "Explorar", links: [{ label: "Marcos", href: "#marcos" }, { label: "Veículos", href: "#veiculos" }, { label: "Aplicações", href: "#aplicacoes" }] },
-              { title: "Aprender", links: [{ label: "Impactos", href: "#impactos" }, { label: "Simulador", href: "#jogo" }, { label: "Desafio", href: "#desafio" }] },
+              { title: "Aprender", links: [{ label: "Impactos", href: "#impactos" }, { label: "Simulador", href: "#jogo" }] },
               { title: "Projeto", links: [{ label: "Sobre este projeto", href: "#sobre" }, { label: "Fontes", href: "#fontes" }] },
             ].map((col) => (
               <div key={col.title}>

@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+// Temporarily hidden from the public site; retain this visitor quiz for later reactivation.
+
 const CARDS = [
   {
     title: "Aproximação rápida",

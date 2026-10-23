@@ -25,9 +25,8 @@ O site não precisa de variáveis de ambiente nem de servidor próprio. Os víde
 
 ## Feira e acesso sem conexão
 
-- O service worker guarda os arquivos do site depois da primeira visita e abre uma atividade de pouso quando uma navegação falha sem conexão.
-- A atividade pública apresenta cinco situações de decisão e explica o efeito esperado de cada escolha.
-- O desafio e o simulador não dependem de chamadas externas depois que o site abriu.
+- O service worker guarda os arquivos do site depois da primeira visita e mostra uma tela simples de reconexão quando uma navegação falha sem conexão.
+- O simulador não depende de chamadas externas depois que o site abriu.
 - Vídeos não iniciam quando o visitante prefere movimento reduzido ou usa a opção de economia de dados; também podem ser pausados.
 
 ## Conteúdo e fontes
