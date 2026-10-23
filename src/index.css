@@ -118,10 +118,15 @@ button, a, summary { outline-offset: 6px; }
 .timeline-item summary { display: grid; grid-template-columns: 110px 1fr 16px; align-items: center; gap: 18px; padding: 22px 0; font-size: 16px; line-height: 1.4; list-style: none; }
 summary::-webkit-details-marker { display: none; }
 .timeline-year { color: #aaa; font-size: 14px; }
-.disclosure-mark { position: relative; width: 12px; height: 12px; flex-shrink: 0; }
-.disclosure-mark::before, .disclosure-mark::after { content: ''; position: absolute; background: #bbb; left: 0; top: 5px; width: 12px; height: 1px; }
+.disclosure-mark { position: relative; display: inline-block; width: 12px; height: 12px; flex-shrink: 0; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
+.disclosure-mark::before, .disclosure-mark::after { content: ''; position: absolute; background: #bbb; left: 0; top: 5px; width: 12px; height: 1px; transition: background-color .25s ease, transform .38s cubic-bezier(.22,.61,.36,1); transform-origin: center; }
 .disclosure-mark::after { transform: rotate(90deg); }
 details[open] > summary .disclosure-mark::after { transform: rotate(0); }
+summary:hover .disclosure-mark { transform: scale(1.16); }
+summary:hover .disclosure-mark::before, summary:hover .disclosure-mark::after { background: #fff; }
+summary:focus-visible .disclosure-mark { transform: scale(1.16); }
+.project-details summary { display: inline-flex; align-items: center; gap: 12px; list-style: none; }
+.project-details summary::marker, .project-details summary::-webkit-details-marker { display: none; content: ''; }
 .timeline-copy { padding: 0 34px 24px 128px; }
 .timeline-copy p { font-size: 15px; }
 .timeline-copy a { font-size: 13px; display: inline-block; margin-top: 14px; text-decoration: underline; text-underline-offset: 4px; color: #ccc; }
@@ -273,3 +278,5 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
 
 /* Keep the launch-list effect on an opaque panel, separate from the photo. */
 .launch-list.constellation-surface{background:#050608}
+
+@media(prefers-reduced-motion:reduce){.disclosure-mark,.disclosure-mark::before,.disclosure-mark::after{transition:none}}
