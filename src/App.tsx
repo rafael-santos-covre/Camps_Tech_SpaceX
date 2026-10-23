@@ -49,9 +49,12 @@ const VEHICLES = [
     desc: "Foguete orbital de dois estágios. Seu primeiro estágio pode pousar e voltar a voar em outras missões.",
     stat: "Reutilizável",
     statLabel: "1º estágio pode pousar e voar novamente",
-    img: "./images/falcon-9-demo-2.jpg",
-    alt: "Falcon 9 da SpaceX decolando com a Crew Dragon durante a missão Demo-2 da NASA",
-    credit: "Falcon 9 · missão Demo-2 · NASA / Joel Kowsky",
+    img: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Star10_22_090325_DSC_5054_desktop_880fa69c3c.jpg",
+    mobileImg: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Star10_22_090325_DSC_5058_mobile_cdcdcdbda6.jpg",
+    fallback: "./images/falcon-9-demo-2.jpg",
+    alt: "Foguete Falcon 9 da SpaceX em lançamento para uma missão Starlink",
+    credit: "SpaceX · missão Starlink",
+    source: "https://www.spacex.com/vehicles/falcon-9/",
   },
   {
     name: "Starship",
@@ -59,9 +62,12 @@ const VEHICLES = [
     desc: "Sistema de transporte totalmente reutilizável projetado para levar tripulação e carga à órbita da Terra, à Lua, a Marte e além.",
     stat: "Em teste",
     statLabel: "Sistema de dois estágios reutilizáveis em desenvolvimento",
-    img: "./images/starship-illustration.svg",
-    alt: "Ilustração técnica da Starship e do propulsor Super Heavy",
-    credit: "Ilustração educacional · Tech CAMPS",
+    img: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Flight_14_Website_Desktop_3_117bbcce82.jpg",
+    mobileImg: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Flight_14_Website_Mobile_2_c6d0642687.jpg",
+    fallback: "./images/starship-illustration.svg",
+    alt: "Starship durante o voo de teste 14, em registro oficial da SpaceX",
+    credit: "SpaceX · voo de teste 14",
+    source: "https://www.spacex.com/vehicles/starship/",
   },
   {
     name: "Dragon",
@@ -69,9 +75,12 @@ const VEHICLES = [
     desc: "Espaçonave reutilizável que transporta carga e tripulação e pode acoplar à Estação Espacial Internacional.",
     stat: "ISS",
     statLabel: "Carga e tripulação em órbita baixa",
-    img: "./images/crew-dragon-endeavour.jpg",
-    alt: "Crew Dragon Endeavour se aproximando da Estação Espacial Internacional acima da Terra durante a Crew-8",
-    credit: "Crew-8 · NASA",
+    img: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Crew_6_Docking_Desktop_49c4a5f261.jpg",
+    mobileImg: "https://sxcontent9668.azureedge.us/cms-assets/assets/medium_Crew_6_Docking_Mobile_7349c73698.jpg",
+    fallback: "./images/crew-dragon-endeavour.jpg",
+    alt: "Crew Dragon da SpaceX aproximando-se da Estação Espacial Internacional durante a Crew-6",
+    credit: "SpaceX · Crew-6",
+    source: "https://www.spacex.com/vehicles/dragon/",
   },
 ]
 
@@ -117,7 +126,7 @@ export default function App() {
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2" aria-label="Tech CAMPS — início">
+          <a href="#" className="flex items-center gap-2" aria-label="SpaceX — início do projeto educacional">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <path
                 d="M16 2L3 28h26L16 2z"
@@ -134,8 +143,8 @@ export default function App() {
               />
               <circle cx="16" cy="16" r="3" fill="white" />
             </svg>
-            <span className="font-display text-xl font-700 tracking-[0.15em] uppercase">
-              TECH CAMPS
+            <span className="font-display text-xl font-700 tracking-[0.05em]">
+              SpaceX
             </span>
           </a>
 
@@ -213,6 +222,7 @@ export default function App() {
       >
         <BackgroundMedia
           image="https://sxcontent9668.azureedge.us/cms-assets/assets/Leading_Launch_Service_Desktop_06a98ac534.jpg"
+          imageMobile="https://sxcontent9668.azureedge.us/cms-assets/assets/Leading_Launch_Service_Mobile_02_41fdea4331.jpg"
           fallback="./images/falcon-9-demo-2.jpg"
           video="https://sxcontent9668.azureedge.us/cms-assets/assets/Space_X_Falcon_Heavy_UAS_Landing_DESKTOP_compress_b4568daf9c_5e2026727a.mp4"
           alt="Propulsores do Falcon Heavy retornando para pouso"
@@ -387,16 +397,28 @@ export default function App() {
                 </div>
                 <figure className="order-1 md:order-2">
                   <div className={`relative overflow-hidden bg-[#0A0A0A] ${v.name === "Falcon 9" ? "aspect-[3/4] md:aspect-[4/3]" : "aspect-[4/3]"}`}>
-                    <img
-                      src={v.img}
-                      alt={v.alt}
-                      loading={i === activeVehicle ? "eager" : "lazy"}
-                      decoding="async"
-                      className={`absolute inset-0 h-full w-full ${v.name === "Dragon" ? "object-cover" : "object-contain p-5 sm:p-8 md:p-10"}`}
-                    />
+                    <picture>
+                      <source media="(max-width: 767px)" srcSet={v.mobileImg} />
+                      <img
+                        src={v.img}
+                        alt={v.alt}
+                        loading={i === activeVehicle ? "eager" : "lazy"}
+                        decoding="async"
+                        onError={(event) => {
+                          if (v.fallback && !event.currentTarget.src.endsWith(v.fallback.replace("./", "/"))) {
+                            event.currentTarget.onerror = null
+                            event.currentTarget.parentElement?.querySelector("source")?.removeAttribute("srcset")
+                            event.currentTarget.src = v.fallback
+                          }
+                        }}
+                        className={`absolute inset-0 h-full w-full ${v.name === "Dragon" ? "object-cover" : "object-contain p-5 sm:p-8 md:p-10"}`}
+                      />
+                    </picture>
                   </div>
                   <figcaption className="mt-3 text-right font-body text-xs text-white/45">
-                    {v.credit}
+                    <a href={v.source} target="_blank" rel="noreferrer" className="hover:text-white/75 underline underline-offset-4">
+                      {v.credit} · fonte oficial ↗
+                    </a>
                   </figcaption>
                 </figure>
               </div>
@@ -410,8 +432,11 @@ export default function App() {
         id="humanos"
         className="relative h-[80vh] min-h-[500px] flex items-center overflow-hidden"
       >
-        <BackgroundMedia image="./images/crew-dragon-endeavour.jpg"
-          alt="Crew Dragon Endeavour em órbita sobre a Terra durante a missão Crew-8" credit="NASA · Crew-8" position="70% center" />
+        <BackgroundMedia image="https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_6_Docking_Desktop_49c4a5f261.jpg"
+          imageMobile="https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_6_Docking_Mobile_7349c73698.jpg"
+          fallback="./images/crew-dragon-endeavour.jpg"
+          alt="Crew Dragon da SpaceX aproximando-se da Estação Espacial Internacional durante a Crew-6"
+          credit="SpaceX · Crew-6" position="70% center" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-2xl">
             <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4">
@@ -576,9 +601,9 @@ export default function App() {
             <p className="font-body text-xs md:text-sm text-white/60 leading-relaxed">
               Este site é um trabalho estudantil do Tech CAMPS, desenvolvido
               para fins educacionais e sem fins comerciais. Não possui qualquer vínculo
-              oficial com a SpaceX. Marcas, nomes e fotografias pertencem aos
-              seus respectivos proprietários; as imagens da Falcon 9 e da Crew
-              Dragon são da NASA.
+              oficial com a SpaceX. Marcas, nomes, fotografias e vídeos pertencem
+              aos seus respectivos titulares; as mídias da SpaceX estão identificadas
+              nas legendas e ligadas às fontes oficiais.
             </p>
           </div>
           <div className="border-t border-white/8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
