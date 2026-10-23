@@ -1,4 +1,4 @@
-const CACHE = 'tech-camps-spacex-v1'
+const CACHE = 'tech-camps-spacex-v2'
 const CORE = ['/', '/offline-cards.html', '/manifest.webmanifest', '/icons/rocket.svg', '/icons/rocket-180.png', '/icons/rocket-192.png', '/icons/rocket-512.png']
 
 self.addEventListener('install', (event) => {

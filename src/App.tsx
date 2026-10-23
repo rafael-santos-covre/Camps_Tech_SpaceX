@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import BackgroundMedia from "./BackgroundMedia"
 import LandingGame from "./LandingGame"
 import DetailModal, { type ModalState } from "./DetailModal"
-import OfflineMissionCards from "./OfflineMissionCards"
+import VisitorChallenge from "./VisitorChallenge"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
@@ -40,7 +40,7 @@ const NAV_LINKS = [
   { label: "Aplicações", id: "aplicacoes" },
   { label: "Impactos", id: "impactos" },
   { label: "Projeto", id: "sobre" },
-  { label: "Estande", id: "estande" },
+  { label: "Desafio", id: "desafio" },
   { label: "Simulador", id: "jogo" },
 ]
 
@@ -515,30 +515,14 @@ export default function App() {
         </div>
       </section>
 
-      <section id="estande" className="py-24 md:py-32 border-t border-white/8">
+      <section id="desafio" className="py-24 md:py-32 border-t border-white/8">
         <div className="max-w-7xl mx-auto px-6">
-          <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Experiência presencial</p>
-          <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-6">Roteiro do estande</h2>
-          <p className="font-body text-white/60 text-base md:text-lg max-w-2xl leading-relaxed mb-12">
-            Em cerca de seis minutos, cinco visitantes alternam entre piloto e equipe de apoio. Cada tentativa é curta; o grupo observa como inclinação, velocidade e combustível afetam o pouso.
+          <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Atividade interativa</p>
+          <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-6">Decida o próximo movimento</h2>
+          <p className="font-body text-white/60 text-base md:text-lg max-w-2xl leading-relaxed mb-8">
+            Analise cada situação, escolha uma ação e veja o efeito esperado. Depois, experimente suas ideias no simulador de pouso.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-12">
-            {[
-              ["00:00–00:45", "Receber", "Apresentar o desafio e explicar que o jogo é uma simulação simplificada."],
-              ["00:45–01:30", "Preparar", "Mostrar os controles e distribuir os papéis de piloto, observador de velocidade, deriva, inclinação e combustível."],
-              ["01:30–05:15", "Tentar", "Cinco visitantes fazem uma tentativa rápida cada; a equipe comenta uma decisão e o resultado."],
-              ["05:15–06:00", "Concluir", "Relacionar os controles a um pouso propulsivo e explicar que o jogo não reproduz a física real do Falcon 9."],
-            ].map(([time, title, body]) => <article key={title} className="bg-[#080a0d] p-6">
-              <p className="font-display text-xs tracking-[0.15em] text-[#4a9fff] mb-3">{time}</p>
-              <h3 className="font-display text-2xl font-700 uppercase mb-2">{title}</h3>
-              <p className="font-body text-sm text-white/55 leading-relaxed">{body}</p>
-            </article>)}
-          </div>
-          <h3 className="font-display text-2xl font-700 uppercase mb-3">Se a conexão cair</h3>
-          <p className="font-body text-sm text-white/55 leading-relaxed max-w-2xl mb-6">
-            As cartas abaixo funcionam sem chamadas externas depois que esta página abre. Imprima ou salve esta página no aparelho antes da feira para ter uma alternativa caso o site não carregue.
-          </p>
-          <OfflineMissionCards />
+          <VisitorChallenge />
         </div>
       </section>
 
@@ -595,8 +579,8 @@ export default function App() {
             </div>
             {[
               { title: "Explorar", links: [{ label: "Marcos", href: "#marcos" }, { label: "Veículos", href: "#veiculos" }, { label: "Aplicações", href: "#aplicacoes" }] },
-              { title: "Aprender", links: [{ label: "Impactos", href: "#impactos" }, { label: "Simulador", href: "#jogo" }, { label: "Estande", href: "#estande" }] },
-              { title: "Projeto", links: [{ label: "Sobre o grupo", href: "#sobre" }, { label: "Fontes", href: "#fontes" }] },
+              { title: "Aprender", links: [{ label: "Impactos", href: "#impactos" }, { label: "Simulador", href: "#jogo" }, { label: "Desafio", href: "#desafio" }] },
+              { title: "Projeto", links: [{ label: "Sobre este projeto", href: "#sobre" }, { label: "Fontes", href: "#fontes" }] },
             ].map((col) => (
               <div key={col.title}>
                 <h4 className="font-display text-[11px] font-700 tracking-[0.2em] uppercase text-white/50 mb-4">
