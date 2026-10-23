@@ -50,9 +50,8 @@ const VEHICLES = [
     stat: "Reutilizável",
     statLabel: "1º estágio pode pousar e voar novamente",
     img: "./images/falcon-9-demo-2.jpg",
-    video: "https://www.spacex.com/assets/videos/WebsiteF9Fairings_Anim_Render_Desktop.mp4",
     alt: "Falcon 9 da SpaceX decolando com a Crew Dragon durante a missão Demo-2 da NASA",
-    credit: "DEMO-2 · NASA / JOEL KOWSKY",
+    credit: "Falcon 9 · missão Demo-2 · NASA / Joel Kowsky",
   },
   {
     name: "Starship",
@@ -62,8 +61,7 @@ const VEHICLES = [
     statLabel: "Sistema de dois estágios reutilizáveis em desenvolvimento",
     img: "./images/starship-illustration.svg",
     alt: "Ilustração técnica da Starship e do propulsor Super Heavy",
-    video: "https://content.spacex.com/cms-assets/assets/V3_FS_WEB.mp4",
-    credit: "STARSHIP · SPACEX",
+    credit: "Ilustração educacional · Tech CAMPS",
   },
   {
     name: "Dragon",
@@ -72,9 +70,8 @@ const VEHICLES = [
     stat: "ISS",
     statLabel: "Carga e tripulação em órbita baixa",
     img: "./images/crew-dragon-endeavour.jpg",
-    video: "https://www.spacex.com/assets/videos/DragonTrunk_Animation_Render_Desktop_2.mp4",
     alt: "Crew Dragon Endeavour se aproximando da Estação Espacial Internacional acima da Terra durante a Crew-8",
-    credit: "CREW-8 · NASA",
+    credit: "Crew-8 · NASA",
   },
 ]
 
@@ -100,7 +97,6 @@ export default function App() {
     if (index >= 0) setModal({ kind: "vehicle", index })
   }
   const [factsRef, factsInView] = useInView({ threshold: 0.2 })
-  const [vehiclesRef, vehiclesInView] = useInView({ threshold: 0.1 })
   const [aboutRef, aboutInView] = useInView({ threshold: 0.2 })
 
   useEffect(() => {
@@ -311,20 +307,9 @@ export default function App() {
       <HistoryTimeline />
 
       {/* ── Vehicles ── */}
-      <section id="veiculos" className="relative isolate min-h-[100svh] py-24 md:py-28 overflow-hidden">
-        <BackgroundMedia key={activeVehicle} image={VEHICLES[activeVehicle].img}
-          video={VEHICLES[activeVehicle].video} alt={VEHICLES[activeVehicle].alt}
-          credit="VÍDEO / RENDER · SPACEX" position="65% center" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pointer-events-none [&_button]:pointer-events-auto">
-          {/* Heading slides in from left */}
-          <div
-            ref={vehiclesRef}
-            className="mb-16 transition-all duration-700"
-            style={{
-              opacity: vehiclesInView ? 1 : 0,
-              transform: vehiclesInView ? "translateX(0)" : "translateX(-40px)",
-            }}
-          >
+      <section id="veiculos" className="relative isolate bg-black py-24 md:py-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-16">
             <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
               Frota
             </p>
@@ -333,15 +318,10 @@ export default function App() {
             </h2>
           </div>
 
-          {/* Tabs */}
           <div
-            className="flex gap-0 mb-12 border-b border-white/8 transition-all duration-700 overflow-x-auto"
+            className="flex gap-0 mb-10 border-b border-white/8 overflow-x-auto"
             role="group"
             aria-label="Selecionar veículo"
-            style={{
-              opacity: vehiclesInView ? 1 : 0,
-              transitionDelay: "150ms",
-            }}
           >
             {VEHICLES.map((v, i) => (
               <button
@@ -362,20 +342,10 @@ export default function App() {
             ))}
           </div>
 
-          {/* Vehicle panels — content slides in from bottom, image from right */}
           {VEHICLES.map((v, i) => (
             <div key={i} id={`vehicle-panel-${i}`} role="region" aria-labelledby={`vehicle-tab-${i}`} hidden={activeVehicle !== i} className={activeVehicle === i ? "block" : "hidden"}>
-              <div className="grid md:grid-cols-2 gap-12 items-center min-h-[420px]">
-                <div
-                  className="order-2 md:order-1 transition-all duration-700"
-                  style={{
-                    opacity: vehiclesInView ? 1 : 0,
-                    transform: vehiclesInView
-                      ? "translateY(0)"
-                      : "translateY(32px)",
-                    transitionDelay: "250ms",
-                  }}
-                >
+              <div className="grid md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] gap-8 md:gap-14 items-center">
+                <div className="order-2 md:order-1">
                   <p className="font-display text-[11px] font-500 tracking-[0.25em] uppercase text-white/40 mb-4">
                     {v.type}
                   </p>
@@ -415,8 +385,20 @@ export default function App() {
                     </svg>
                   </button>
                 </div>
-
-
+                <figure className="order-1 md:order-2">
+                  <div className={`relative overflow-hidden bg-[#0A0A0A] ${v.name === "Falcon 9" ? "aspect-[3/4] md:aspect-[4/3]" : "aspect-[4/3]"}`}>
+                    <img
+                      src={v.img}
+                      alt={v.alt}
+                      loading={i === activeVehicle ? "eager" : "lazy"}
+                      decoding="async"
+                      className={`absolute inset-0 h-full w-full ${v.name === "Dragon" ? "object-cover" : "object-contain p-5 sm:p-8 md:p-10"}`}
+                    />
+                  </div>
+                  <figcaption className="mt-3 text-right font-body text-xs text-white/45">
+                    {v.credit}
+                  </figcaption>
+                </figure>
               </div>
             </div>
           ))}
@@ -429,7 +411,7 @@ export default function App() {
         className="relative h-[80vh] min-h-[500px] flex items-center overflow-hidden"
       >
         <BackgroundMedia image="./images/crew-dragon-endeavour.jpg"
-          video={VEHICLES[2].video} alt="Crew Dragon em órbita sobre a Terra" credit="FOTO · NASA / VÍDEO · SPACEX" position="70% center" />
+          alt="Crew Dragon Endeavour em órbita sobre a Terra durante a missão Crew-8" credit="NASA · Crew-8" position="70% center" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-2xl">
             <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-4">
@@ -460,8 +442,7 @@ export default function App() {
       <ImpactSection />
 
       {/* ── About ── */}
-      <section id="sobre" className="relative isolate py-32 md:py-48 border-t border-white/8 overflow-hidden">
-        <BackgroundMedia image="./images/starship-illustration.svg" alt="Ilustração técnica da Starship e do propulsor Super Heavy" video={VEHICLES[1].video} credit="ILUSTRAÇÃO DO PROJETO · VÍDEO: SPACEX" position="70% center" />
+      <section id="sobre" className="relative isolate bg-[#0A0A0A] py-24 md:py-32 border-t border-white/8 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div
             ref={aboutRef}

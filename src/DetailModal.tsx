@@ -162,11 +162,11 @@ export default function DetailModal({
 
         {v && d ? (
           <div className="grid md:grid-cols-2">
-            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-black">
+            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-[#0a0a0a]">
               <img
                 src={v.img}
                 alt={v.alt}
-                className="absolute inset-0 w-full h-full object-cover"
+                className={`absolute inset-0 w-full h-full ${v.name === "Dragon" ? "object-cover" : "object-contain p-6 md:p-10"}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               {v.credit && (
