@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react"
+import Lenis from "lenis"
 import BackgroundMedia from "./BackgroundMedia"
 import DetailModal, { type ModalState } from "./DetailModal"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
@@ -100,6 +101,20 @@ export default function App() {
   const confirmedLaunch = launches.find(launch => [1, 2, 8].includes(launch.statusId) && canCountDown(launch, now))
   const stats = snapshot?.stats ?? { totalLaunches: 395, totalLandings: 353, totalReflights: 312 }
   const closeModal = useCallback(() => setModal(null), [])
+
+  // Smooth wheel scrolling on desktop; touch devices keep their native iOS/Android scroll.
+  useEffect(() => {
+    const lenis = new Lenis({
+      autoRaf: true,
+      smoothWheel: true,
+      syncTouch: false,
+      lerp: 0.075,
+      anchors: true,
+      respectReducedMotion: false,
+      prevent: (node) => Boolean(node.closest('[role="dialog"]')),
+    })
+    return () => lenis.destroy()
+  }, [])
 
   useEffect(() => {
     let frame = 0
