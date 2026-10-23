@@ -3,7 +3,7 @@ import './SpaceIntro.css'
 import { createConstellationMap } from './introConstellations'
 
 const clamp = (n: number) => Math.max(0, Math.min(1, n))
-export default function SpaceIntro({ children, onComplete }: { children: ReactNode; onComplete: () => void }) {
+export default function SpaceIntro({ children, onStart, onComplete }: { children: ReactNode; onStart: () => void; onComplete: () => void }) {
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = root.current!
@@ -26,7 +26,12 @@ export default function SpaceIntro({ children, onComplete }: { children: ReactNo
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
     const duration = reduced ? 200 : 2600
-    const start = () => { if (!complete && startedAt === null) startedAt = performance.now() }
+    const start = () => {
+      if (!complete && startedAt === null) {
+        startedAt = performance.now()
+        onStart()
+      }
+    }
     const wheel = (event: WheelEvent) => {
       if (complete || event.ctrlKey) return
       event.preventDefault()
@@ -178,7 +183,7 @@ export default function SpaceIntro({ children, onComplete }: { children: ReactNo
     const skip = (e:Event) => { e.preventDefault(); start() }
     const links=el.querySelectorAll('[data-skip-cover]');links.forEach(l=>l.addEventListener('click',skip))
     return ()=>{window.removeEventListener('pointerdown',press);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('wheel',wheel,true);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchmove',touchMove);window.removeEventListener('keydown',keyDown);window.removeEventListener('scroll',onScroll);disposed = true;cancelAnimationFrame(frame);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);document.documentElement.removeEventListener('pointerleave',leave);links.forEach(l=>l.removeEventListener('click',skip))}
-  },[onComplete])
+  },[onStart, onComplete])
   return <div ref={root} className="space-intro cover-track">
     <div className="intro-stage">
       <div className="intro-content">{children}</div>

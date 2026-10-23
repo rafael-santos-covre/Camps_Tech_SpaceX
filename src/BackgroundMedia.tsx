@@ -8,9 +8,10 @@ interface Props {
   credit: string
   position?: string
   priority?: boolean
+  playbackEnabled?: boolean
 }
 
-export default memo(function BackgroundMedia({ image, imageMobile, video, alt, credit, position = 'center', priority = false }: Props) {
+export default memo(function BackgroundMedia({ image, imageMobile, video, alt, credit, position = 'center', priority = false, playbackEnabled = true }: Props) {
   const container = useRef<HTMLDivElement>(null)
   const player = useRef<HTMLVideoElement>(null)
   const [inView, setInView] = useState(false)
@@ -38,7 +39,7 @@ export default memo(function BackgroundMedia({ image, imageMobile, video, alt, c
     return () => { observer.disconnect(); reduce.removeEventListener('change', update); document.removeEventListener('visibilitychange', visibility) }
   }, [])
 
-  const shouldPlay = !!video && (autoPlay || requested) && inView && visible && !paused && !failed
+  const shouldPlay = playbackEnabled && !!video && (autoPlay || requested) && inView && visible && !paused && !failed
   useEffect(() => { if (shouldPlay) setLoaded(true) }, [shouldPlay])
   useEffect(() => {
     const element = player.current
