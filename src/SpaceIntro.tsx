@@ -17,7 +17,7 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     const letters = Array.from(el.querySelectorAll<HTMLElement>('.cover-letter'))
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    let w = innerWidth, h = innerHeight, frame = 0, previous = 0, progress = 0
+    let w = innerWidth, h = innerHeight, frame = 0, previous = 0, progress = 0, elapsedProgress = 0
     let px = w / 2, py = h / 2, tx = px, ty = py, active = false
     let tiltX = 0, tiltY = 0
     let startedAt: number | null = null
@@ -26,7 +26,7 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
     // Once triggered, the full reveal completes regardless of gesture speed.
-    const duration = reduced ? 200 : 5800
+    const duration = 10000 // Keep the requested slow curtain even when reduced-motion is enabled.
     const start = () => {
       if (!complete && startedAt === null) {
         startedAt = performance.now()
@@ -116,12 +116,15 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
       const ease = reduced ? 1 : 1-Math.exp(-dt/320)
       const tiltEase = reduced ? 1 : 1-Math.exp(-dt/420)
 
-      const elapsed = startedAt === null ? 0 : clamp((time - startedAt) / duration)
+      // Advance from rendered frames, with a bounded delta. Long main-thread or
+      // background-tab pauses cannot jump the curtain to the end on the next frame.
+      if (startedAt !== null && !complete) elapsedProgress += Math.min(dt, 32) / duration
+      const elapsed = clamp(elapsedProgress)
       progress = complete ? 1 : elapsed * elapsed * (3 - 2 * elapsed)
       if (elapsed >= 1) complete = true
       if (complete && !notified) { notified = true; onComplete() }
       el.dataset.state = complete ? 'complete' : startedAt === null ? 'waiting' : 'opening'
-      el.style.setProperty('--curtain-y', `${reduced ? 0 : -progress * 105}%`)
+      el.style.setProperty('--curtain-y', `${-progress * 105}%`)
       px+=(tx-px)*ease;py+=(ty-py)*ease
       const idle = reduced?0:Math.sin(time*.00065)
       tiltX+=((active?-(py/h-.5)*12:idle*1.8)-tiltX)*tiltEase
