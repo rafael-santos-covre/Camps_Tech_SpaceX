@@ -25,7 +25,8 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     let touchY = 0
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
-    const duration = reduced ? 200 : 3400
+    // Once triggered, the full reveal completes regardless of gesture speed.
+    const duration = reduced ? 200 : 5800
     const start = () => {
       if (!complete && startedAt === null) {
         startedAt = performance.now()
@@ -112,7 +113,8 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     const leave = () => { active=false; tx=w/2;ty=h/2 }
     const draw = (time:number) => {
       const dt = Math.min(50,time-previous || 16); previous=time
-      const ease = 1-Math.exp(-dt/130)
+      const ease = reduced ? 1 : 1-Math.exp(-dt/320)
+      const tiltEase = reduced ? 1 : 1-Math.exp(-dt/420)
 
       const elapsed = startedAt === null ? 0 : clamp((time - startedAt) / duration)
       progress = complete ? 1 : elapsed * elapsed * (3 - 2 * elapsed)
@@ -122,19 +124,20 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
       el.style.setProperty('--curtain-y', `${reduced ? 0 : -progress * 105}%`)
       px+=(tx-px)*ease;py+=(ty-py)*ease
       const idle = reduced?0:Math.sin(time*.00065)
-      tiltX+=((active?-(py/h-.5)*12:idle*1.8)-tiltX)*ease
-      tiltY+=((active?(px/w-.5)*20:Math.cos(time*.0005)*2.5)-tiltY)*ease
+      tiltX+=((active?-(py/h-.5)*12:idle*1.8)-tiltX)*tiltEase
+      tiltY+=((active?(px/w-.5)*20:Math.cos(time*.0005)*2.5)-tiltY)*tiltEase
       el.style.setProperty('--pointer-x',`${px}px`);el.style.setProperty('--pointer-y',`${py}px`)
-      el.style.setProperty('--veil',`${1-clamp((progress-.12)/.83)}`)
-      el.style.setProperty('--cue-opacity',`${1-clamp(progress*4)}`)
+      el.style.setProperty('--veil',`${1-clamp((progress-.28)/.72)}`)
+      el.style.setProperty('--cue-opacity',`${1-clamp(progress*2.5)}`)
       el.style.setProperty('--image-scale',`${1.12-progress*.12}`)
-      el.style.setProperty('--copy-opacity',`${clamp((progress-.55)/.4)}`)
-      el.style.setProperty('--copy-y',`${(1-clamp((progress-.5)/.5))*55}px`)
-      logo.style.transform=`perspective(800px) rotateX(${reduced?0:tiltX}deg) rotateY(${reduced?0:tiltY}deg) translateY(${reduced?0:idle*4-progress*110}px)`
+      el.style.setProperty('--copy-opacity',`${clamp((progress-.48)/.52)}`)
+      el.style.setProperty('--copy-y',`${(1-clamp((progress-.48)/.52))*40}px`)
+      logo.style.transform=`perspective(800px) rotateX(${reduced?0:tiltX}deg) rotateY(${reduced?0:tiltY}deg) translateY(${reduced?0:idle*4-progress*70}px)`
       letters.forEach((letter,i)=>{
-        const p=clamp((progress-.08-i*.035)/.56)
-        letter.style.opacity=`${1-p}`
-        letter.style.filter=`blur(${reduced ? 0 : p*p*17}px)`
+        // Keep the word readable longer, spreading dissolution across the reveal.
+        const p=clamp((progress-.12-i*.012)/.8)
+        letter.style.opacity=`${1-p*p}`
+        letter.style.filter=`blur(${reduced ? 0 : p*p*p*11}px)`
         // A small elastic warp follows the same eased pointer as the overall tilt.
         const position = (i - 2.5) / 2.5
         const warp = reduced ? 0 : (tiltY / 10) * (1 - p)
