@@ -1,10 +1,10 @@
 const MILESTONES = [
-  { year: "2002", title: "Fundação", text: "Elon Musk funda a Space Exploration Technologies Corp. (SpaceX), com a meta declarada de reduzir o custo do acesso ao espaço.", source: "https://www.spacex.com/" },
-  { year: "2008", title: "Falcon 1 chega à órbita", text: "Após tentativas anteriores, o Falcon 1 se torna o primeiro foguete privado de propelente líquido a alcançar a órbita da Terra.", source: "https://www.nasa.gov/history/20-years-of-spacex/" },
-  { year: "2012", title: "Dragon visita a estação espacial", text: "A Dragon completa a primeira missão de carga comercial a acoplar à Estação Espacial Internacional (ISS).", source: "https://www.nasa.gov/news-release/nasa-spacex-celebrate-successful-cargo-delivery-to-space-station/" },
-  { year: "2015 · 2017", title: "Pouso e reutilização do Falcon 9", text: "O primeiro estágio do Falcon 9 pousa em 2015 e volta a voar em 2017. Recuperar e reutilizar o estágio passa a fazer parte das operações da empresa.", source: "https://www.nasa.gov/news-release/nasa-spacex-launch-first-reused-rocket-on-commercial-resupply-mission/" },
-  { year: "2020", title: "Tripulação parte dos EUA", text: "A missão Demo-2 leva astronautas da NASA à ISS a bordo da Crew Dragon, em um voo tripulado operacional a partir dos Estados Unidos.", source: "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight/" },
-  { year: "6 mar 2025", title: "Teste de voo 8 da Starship", text: "O teste ocorreu em 6 de março. A nave foi perdida durante o voo; o evento não deve ser apresentado como sucesso integral.", source: "https://www.faa.gov/newsroom/faa-closes-spacex-starship-flight-8-investigation" },
+  { year: "2002", title: "Fundação", text: "Elon Musk funda a Space Exploration Technologies Corp. (SpaceX), com a meta declarada de reduzir o custo do acesso ao espaço.", source: "https://ir.spacex.com/faqs-and-contact/" },
+  { year: "2008", title: "Falcon 1 chega à órbita", text: "Após tentativas anteriores, o Falcon 1 se torna o primeiro foguete privado de propelente líquido a alcançar a órbita da Terra.", source: "https://www.nasa.gov/wp-content/uploads/2018/07/spacex_nasa_crs-7_presskit.pdf" },
+  { year: "2012", title: "Dragon visita a estação espacial", text: "A Dragon completa a primeira missão de carga comercial a acoplar à Estação Espacial Internacional (ISS).", source: "https://www.nasa.gov/image-article/dragon-approaches-station/" },
+  { year: "2015 · 2017", title: "Pouso e reutilização do Falcon 9", text: "O primeiro estágio do Falcon 9 pousa em 2015 e volta a voar em 2017. Recuperar e reutilizar o estágio passa a fazer parte das operações da empresa.", source: "https://www.spacex.com/mission/" },
+  { year: "2020", title: "Tripulação parte dos EUA", text: "A missão Demo-2 leva astronautas da NASA à ISS a bordo da Crew Dragon, em um voo tripulado operacional a partir dos Estados Unidos.", source: "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight-of-spacex-crew-dragon/" },
+  { year: "6 mar 2025", title: "Teste de voo 8 da Starship", text: "O teste ocorreu em 6 de março. A nave foi perdida durante o voo; o evento não deve ser apresentado como sucesso integral.", source: "https://www.faa.gov/newsroom/statements/general-statements#Mishap" },
 ]
 
 const APPLICATIONS = [
@@ -19,10 +19,11 @@ const SOURCES = [
   ["SpaceX — Dragon", "https://www.spacex.com/vehicles/dragon/"],
   ["SpaceX — Starship", "https://www.spacex.com/vehicles/starship/"],
   ["SpaceX — Starlink", "https://www.starlink.com/"],
-  ["NASA — história da SpaceX", "https://www.nasa.gov/history/20-years-of-spacex/"],
-  ["NASA — Demo-2", "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight/"],
-  ["FAA — investigação do voo 8 da Starship", "https://www.faa.gov/newsroom/faa-closes-spacex-starship-flight-8-investigation"],
-  ["Blue Origin — New Glenn", "https://www.blueorigin.com/news/new-glenn-ng-2-mission"],
+  ["SpaceX — fundação da empresa", "https://ir.spacex.com/faqs-and-contact/"],
+  ["NASA — marcos iniciais da SpaceX", "https://www.nasa.gov/wp-content/uploads/2018/07/spacex_nasa_crs-7_presskit.pdf"],
+  ["NASA — Demo-2", "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight-of-spacex-crew-dragon/"],
+  ["FAA — investigação do voo 8 da Starship", "https://www.faa.gov/newsroom/statements/general-statements#Mishap"],
+  ["Blue Origin — missão NG-2", "https://www.blueorigin.com/missions/ng-2"],
 ]
 
 export function HistoryTimeline() {
