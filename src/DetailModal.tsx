@@ -5,6 +5,9 @@ export interface VehicleLike {
   type: string
   desc: string
   img: string
+  detailImg?: string
+  detailAlt?: string
+  detailCredit?: string
   alt: string
   credit: string | null
 }
@@ -100,7 +103,17 @@ export default function DetailModal({
 
   useEffect(() => {
     if (!state) return
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose()
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose()
+      if (event.key !== "Tab") return
+      const dialog = closeRef.current?.closest('[role="dialog"]')
+      const targets = dialog?.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [tabindex="0"]')
+      if (!targets?.length) return
+      const first = targets[0], last = targets[targets.length - 1]
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+    }
     window.addEventListener("keydown", onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = "hidden"
@@ -108,6 +121,7 @@ export default function DetailModal({
     return () => {
       window.removeEventListener("keydown", onKey)
       document.body.style.overflow = prev
+      previouslyFocused?.focus()
     }
   }, [state, onClose])
 
@@ -164,14 +178,14 @@ export default function DetailModal({
           <div className="grid md:grid-cols-2">
             <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-[#0a0a0a]">
               <img
-                src={v.img}
-                alt={v.alt}
-                className={`absolute inset-0 w-full h-full ${v.name === "Dragon" ? "object-cover" : "object-contain p-6 md:p-10"}`}
+                src={v.detailImg ?? v.img}
+                alt={v.detailAlt ?? v.alt}
+                className="absolute inset-0 w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               {v.credit && (
                 <span className="absolute bottom-4 left-4 font-display text-xs tracking-widest text-white/60">
-                  {v.credit}
+                  {v.detailCredit ?? v.credit}
                 </span>
               )}
             </div>
@@ -179,7 +193,7 @@ export default function DetailModal({
               <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
                 {v.type}
               </p>
-              <h3 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-6">
+              <h3 className="font-display text-4xl md:text-5xl font-semibold uppercase tracking-tight leading-none mb-6">
                 {v.name}
               </h3>
               <p className="font-body text-white/60 text-sm md:text-base leading-relaxed mb-8">

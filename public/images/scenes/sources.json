@@ -1,0 +1,22 @@
+{
+  "landing": [
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Leading_Launch_Service_Desktop_06a98ac534.jpg",
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Leading_Launch_Service_Mobile_02_41fdea4331.jpg"
+  ],
+  "falcon": [
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_9_outsideloop_IMG_9794_desktop_6efa2efe57.jpg",
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_9_outsideloop_IMG_9794_mobile_817eb541ec.jpg"
+  ],
+  "starship": [
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Revolutionizing_Space_Tech_Desktop_ec67ad03c2.jpg",
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Revolutionizing_Space_Tech_Mobile_45093b17b7.jpg"
+  ],
+  "dragon": [
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_6_Docking_Desktop_49c4a5f261.jpg",
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Crew_6_Docking_Mobile_7349c73698.jpg"
+  ],
+  "crew": [
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Advancing_Human_Spaceflight_Desktop_61c8ba1c67.jpg",
+    "https://sxcontent9668.azureedge.us/cms-assets/assets/Advancing_Human_Spaceflight_Mobile_af242fde31.jpg"
+  ]
+}

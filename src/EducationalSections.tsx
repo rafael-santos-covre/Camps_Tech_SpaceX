@@ -3,8 +3,8 @@ const MILESTONES = [
   { year: "2008", title: "Falcon 1 chega à órbita", text: "Após tentativas anteriores, o Falcon 1 se torna o primeiro foguete privado de propelente líquido a alcançar a órbita da Terra.", source: "https://www.nasa.gov/wp-content/uploads/2018/07/spacex_nasa_crs-7_presskit.pdf" },
   { year: "2012", title: "Dragon visita a estação espacial", text: "A Dragon completa a primeira missão de carga comercial a acoplar à Estação Espacial Internacional (ISS).", source: "https://www.nasa.gov/image-article/dragon-approaches-station/" },
   { year: "2015 · 2017", title: "Pouso e reutilização do Falcon 9", text: "O primeiro estágio do Falcon 9 pousa em 2015 e volta a voar em 2017. Recuperar e reutilizar o estágio passa a fazer parte das operações da empresa.", source: "https://www.spacex.com/mission/" },
-  { year: "2020", title: "Tripulação parte dos EUA", text: "A missão Demo-2 leva astronautas da NASA à ISS a bordo da Crew Dragon, em um voo tripulado operacional a partir dos Estados Unidos.", source: "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight-of-spacex-crew-dragon/" },
-  { year: "6 mar 2025", title: "Teste de voo 8 da Starship", text: "O teste ocorreu em 6 de março. A nave foi perdida durante o voo; o evento não deve ser apresentado como sucesso integral.", source: "https://www.faa.gov/newsroom/statements/general-statements#Mishap" },
+  { year: "2020", title: "Tripulação parte dos EUA", text: "A missão Demo-2 leva astronautas da NASA à ISS a bordo da Crew Dragon, em um voo de teste tripulado a partir dos Estados Unidos.", source: "https://www.nasa.gov/news-release/nasa-astronauts-launch-from-america-in-historic-test-flight-of-spacex-crew-dragon/" },
+  { year: "6 mar 2025", title: "Teste de voo 8 da Starship", text: "A nave foi perdida durante o voo de teste de 6 de março, evidenciando os riscos técnicos de um sistema ainda em desenvolvimento.", source: "https://www.faa.gov/newsroom/statements/general-statements#Mishap" },
 ]
 
 const APPLICATIONS = [
@@ -27,72 +27,68 @@ const SOURCES = [
 ]
 
 export function HistoryTimeline() {
-  return <section id="marcos" className="py-24 md:py-32 bg-[#080a0d] border-y border-white/8">
-    <div className="max-w-7xl mx-auto px-6">
-      <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Trajetória · fatos selecionados</p>
-      <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-5">Marcos da exploração</h2>
-      <p className="font-body text-sm md:text-base text-white/50 max-w-2xl leading-relaxed mb-12">Uma linha do tempo curta para contextualizar a empresa e o setor. Cada item aponta para uma fonte de referência.</p>
-      <ol className="grid md:grid-cols-2 gap-4">
-        {MILESTONES.map((item, i) => <li key={item.year + item.title} className="relative border border-white/10 bg-black/45 p-6 md:p-7">
-          <div className="flex items-baseline gap-4 mb-3"><span className="font-display text-3xl md:text-4xl font-800 text-[#4a9fff]">{item.year}</span><span className="h-px flex-1 bg-white/10" /><span className="font-display text-[10px] tracking-[0.2em] text-white/30">MARCO {String(i + 1).padStart(2, "0")}</span></div>
-          <h3 className="font-display text-xl md:text-2xl font-700 uppercase mb-2">{item.title}</h3>
-          <p className="font-body text-sm text-white/55 leading-relaxed mb-4">{item.text}</p>
-          <a href={item.source} target="_blank" rel="noreferrer" className="font-display text-[10px] uppercase tracking-[0.15em] text-[#75b8ff] hover:text-white focus-visible:outline-2 focus-visible:outline-white">Fonte ↗</a>
-        </li>)}
-      </ol>
-      <p className="font-body text-xs text-white/35 mt-7">As datas descrevem eventos passados; previsões de lançamento não são apresentadas como fatos.</p>
+  return <section id="marcos" className="reading-section" aria-labelledby="history-heading">
+    <div className="reading-width history-layout">
+      <div className="section-heading">
+        <h2 id="history-heading">Uma nova<br />trajetória.</h2>
+        <p>Da fundação em 2002 aos testes de novos veículos. Seis momentos para entender como a empresa chegou até aqui.</p>
+      </div>
+      <div className="timeline">
+        {MILESTONES.map((item, index) => <details key={item.year} className="timeline-item" open={index === 0}>
+          <summary><span className="timeline-year">{item.year}</span><span>{item.title}</span><span className="disclosure-mark" aria-hidden="true" /></summary>
+          <div className="timeline-copy"><p>{item.text}</p><a href={item.source} target="_blank" rel="noreferrer">Consultar fonte</a></div>
+        </details>)}
+      </div>
     </div>
   </section>
 }
 
 export function ApplicationsSection() {
-  return <section id="aplicacoes" className="py-24 md:py-32">
-    <div className="max-w-7xl mx-auto px-6">
-      <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Tecnologias e serviços</p>
-      <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-5">Do espaço ao cotidiano</h2>
-      <p className="font-body text-sm md:text-base text-white/50 max-w-2xl leading-relaxed mb-12">Foguetes, espaçonaves e telecomunicações atendem necessidades diferentes. Satélites e lançamentos também sustentam atividades de outras organizações.</p>
-      <div className="grid sm:grid-cols-2 gap-4">
-        {APPLICATIONS.map((item) => <article key={item.number} className="group border border-white/10 bg-[#080a0d] p-6 md:p-8 transition-colors hover:border-[#4a9fff]/50">
-          <div className="flex justify-between items-start mb-8"><span className="font-display text-sm text-[#4a9fff]">{item.number}</span><span className="font-display text-[9px] tracking-[0.16em] text-white/35 text-right">{item.tag}</span></div>
-          <h3 className="font-display text-2xl md:text-3xl font-700 uppercase mb-3">{item.title}</h3>
-          <p className="font-body text-sm text-white/55 leading-relaxed">{item.body}</p>
-        </article>)}
+  return <section id="aplicacoes" className="reading-section" aria-labelledby="applications-heading">
+    <div className="reading-width">
+      <div className="section-intro">
+        <h2 id="applications-heading">O espaço faz<br />parte da vida.</h2>
+        <p>Comunicação, pesquisa e conexões onde a infraestrutura terrestre não chega. A tecnologia espacial já está presente no cotidiano.</p>
+      </div>
+      <div className="applications-list">
+        {APPLICATIONS.map(item => <article key={item.number}><h3>{item.title}</h3><p>{item.body}</p></article>)}
       </div>
     </div>
   </section>
 }
 
 export function ImpactSection() {
-  return <section id="impactos" className="py-24 md:py-32 bg-[#080a0d] border-y border-white/8">
-    <div className="max-w-7xl mx-auto px-6">
-      <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Contribuições e limites</p>
-      <h2 className="font-display text-5xl md:text-7xl font-800 uppercase tracking-tight leading-none mb-12">O que a tecnologia resolve — e o que exige</h2>
-      <div className="grid md:grid-cols-2 gap-10 md:gap-16">
-        <div><h3 className="font-display text-2xl font-700 uppercase mb-5">Possibilidades</h3><ul className="space-y-4 text-sm text-white/60 leading-relaxed">
-          <li><span className="text-[#4a9fff] mr-2">↗</span>Reutilizar um estágio pode reduzir o material descartado por voo e ajudar a ampliar a frequência de lançamentos; o resultado depende do custo de recuperação, manutenção e operação.</li>
-          <li><span className="text-[#4a9fff] mr-2">↗</span>Satélites e conectividade podem apoiar comunicação, pesquisa, monitoramento ambiental e resposta a emergências.</li>
-          <li><span className="text-[#4a9fff] mr-2">↗</span>Missões tripuladas e de carga viabilizam pesquisa e operações na estação espacial.</li>
-        </ul></div>
-        <div><h3 className="font-display text-2xl font-700 uppercase mb-5">Desafios</h3><ul className="space-y-4 text-sm text-white/60 leading-relaxed">
-          <li><span className="text-amber-300 mr-2">!</span>Construir, lançar e manter infraestrutura espacial exige grande investimento e acesso ao solo, energia, espectro de rádio e locais de lançamento.</li>
-          <li><span className="text-amber-300 mr-2">!</span>Mais objetos em órbita aumentam a necessidade de rastrear detritos e evitar colisões; satélites precisam ser retirados de órbita com segurança ao fim da vida útil.</li>
-          <li><span className="text-amber-300 mr-2">!</span>Internet por satélite depende de equipamento, cobertura e capacidade local; não substitui redes terrestres em todos os cenários.</li>
-          <li><span className="text-amber-300 mr-2">!</span>Lançamentos têm riscos técnicos e impactos ambientais, sonoros e sobre comunidades próximas. A reutilização não elimina esses desafios.</li>
-        </ul></div>
+  return <section id="impactos" className="reading-section impact-section" aria-labelledby="impact-heading">
+    <div className="reading-width section-intro">
+      <div className="section-heading"><h2 id="impact-heading">Avançar também<br />é avaliar.</h2><p>Novas possibilidades trazem responsabilidades. Conheça os benefícios e os limites dessas tecnologias.</p></div>
+      <div className="impact-disclosures">
+        <details className="plain-disclosure"><summary>Possibilidades<span className="disclosure-mark" aria-hidden="true" /></summary>
+          <ul>
+            <li>Reutilizar estágios pode reduzir o material descartado por voo e ampliar a frequência de lançamentos. O resultado depende dos custos de recuperação, manutenção e operação.</li>
+            <li>Satélites apoiam comunicação, pesquisa, monitoramento ambiental e resposta a emergências.</li>
+            <li>Missões tripuladas e de carga viabilizam pesquisa e operações na estação espacial.</li>
+          </ul>
+        </details>
+        <details className="plain-disclosure"><summary>Desafios<span className="disclosure-mark" aria-hidden="true" /></summary>
+          <ul>
+            <li>A infraestrutura espacial exige investimento, energia, espectro de rádio e locais de lançamento.</li>
+            <li>Mais objetos em órbita exigem rastreamento de detritos, prevenção de colisões e retirada segura de satélites ao fim da vida útil.</li>
+            <li>A internet por satélite depende de equipamentos, cobertura e capacidade local. Não substitui redes terrestres em todos os cenários.</li>
+            <li>Lançamentos têm riscos técnicos e impactos ambientais, sonoros e sobre comunidades próximas. A reutilização não elimina esses desafios.</li>
+          </ul>
+        </details>
       </div>
     </div>
   </section>
 }
 
 export function SourcesSection() {
-  return <section id="fontes" className="py-20 border-t border-white/8">
-    <div className="max-w-7xl mx-auto px-6">
-      <p className="font-display text-[11px] tracking-[0.3em] uppercase text-[#4a9fff] mb-3">Leitura e checagem</p>
-      <h2 className="font-display text-3xl md:text-5xl font-800 uppercase tracking-tight mb-8">Fontes de consulta</h2>
-      <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {SOURCES.map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noreferrer" className="block h-full border border-white/10 p-4 font-body text-sm text-white/55 hover:text-white hover:border-[#4a9fff]/50 transition-colors focus-visible:outline-2 focus-visible:outline-white">{label} <span aria-hidden="true">↗</span></a></li>)}
-      </ul>
-      <p className="font-body text-xs text-white/35 mt-5">Fontes institucionais para os marcos e descrições. Consulta editorial: 22 de outubro de 2026. Os números de lançamento em tempo real foram retirados para evitar previsões desatualizadas.</p>
+  return <section id="fontes" className="sources-section">
+    <div className="reading-width">
+      <details className="plain-disclosure sources-disclosure"><summary>Fontes e referências<span className="disclosure-mark" aria-hidden="true" /></summary>
+        <ul className="sources-list">{SOURCES.map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label}<span aria-hidden="true">↗</span></a></li>)}</ul>
+        <p className="small-note">Fotografias e vídeo disponibilizados pela SpaceX. Informações consultadas em outubro de 2026.</p>
+      </details>
     </div>
   </section>
 }
