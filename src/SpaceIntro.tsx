@@ -1,12 +1,17 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import './SpaceIntro.css'
+import { createConstellationMap } from './introConstellations'
 
 const clamp = (n: number) => Math.max(0, Math.min(1, n))
 export default function SpaceIntro({ children }: { children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = root.current!
-    const canvas = el.querySelector('canvas')!
+    const canvas = el.querySelector<HTMLCanvasElement>('.star-canvas')!
+    const constellationCanvas = el.querySelector<HTMLCanvasElement>('.constellation-canvas')!
+    const constellationContext = constellationCanvas.getContext('2d')!
+    let constellationMap: HTMLCanvasElement | null = null
+    let illumination = 0
     const ctx = canvas.getContext('2d')!
     const logo = el.querySelector<HTMLElement>('.cover-wordmark')!
     const letters = Array.from(el.querySelectorAll<HTMLElement>('.cover-letter'))
@@ -62,9 +67,14 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
       const dpr = Math.min(devicePixelRatio,1.5)
       canvas.width=w*dpr; canvas.height=h*dpr
       ctx.setTransform(dpr,0,0,dpr,0,0)
+      constellationCanvas.width = canvas.width
+      constellationCanvas.height = canvas.height
+      constellationContext.setTransform(dpr,0,0,dpr,0,0)
+      constellationMap = createConstellationMap(w,h,dpr)
       sample()
     }
     const move = (e: PointerEvent) => { tx=e.clientX; ty=e.clientY; active=true }
+    const release = (e: PointerEvent) => { if (e.pointerType !== 'mouse') active = false }
     const leave = () => { active=false; tx=w/2;ty=h/2 }
     const draw = (time:number) => {
       const dt = Math.min(50,time-previous || 16); previous=time
@@ -100,6 +110,23 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
       const hero = el.querySelector<HTMLElement>('.intro-content')!
       hero.inert = progress < .8
       el.querySelector<HTMLElement>('.intro-overlay')!.inert = progress > .96
+      // The constellation layer sits behind the wordmark; reveal only the lit area.
+      illumination += ((active ? 1 : 0) - illumination) * (1 - Math.exp(-dt / 240))
+      constellationContext.clearRect(0,0,w,h)
+      if (constellationMap && illumination > .002 && progress < 1) {
+        constellationContext.globalCompositeOperation = 'source-over'
+        constellationContext.globalAlpha = illumination * (1-progress)
+        constellationContext.drawImage(constellationMap,0,0,w,h)
+        constellationContext.globalAlpha = 1
+        constellationContext.globalCompositeOperation = 'destination-in'
+        const light = constellationContext.createRadialGradient(px,py,0,px,py,260)
+        light.addColorStop(0,'rgba(255,255,255,1)')
+        light.addColorStop(.35,'rgba(255,255,255,.85)')
+        light.addColorStop(1,'rgba(255,255,255,0)')
+        constellationContext.fillStyle = light
+        constellationContext.fillRect(0,0,w,h)
+        constellationContext.globalCompositeOperation = 'source-over'
+      }
       ctx.clearRect(0,0,w,h)
       if(progress<1) {
         for(const s of stars) {
@@ -124,16 +151,20 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
     frame=requestAnimationFrame(draw)
     window.addEventListener('resize',resize)
     window.addEventListener('pointermove',move,{passive:true})
+    window.addEventListener('pointerdown',move,{passive:true})
+    window.addEventListener('pointerup',release,{passive:true})
+    window.addEventListener('pointercancel',release,{passive:true})
     document.documentElement.addEventListener('pointerleave',leave)
     const skip = (e:Event) => { e.preventDefault(); start() }
     const links=el.querySelectorAll('[data-skip-cover]');links.forEach(l=>l.addEventListener('click',skip))
-    return ()=>{window.removeEventListener('wheel',wheel,true);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchmove',touchMove);window.removeEventListener('keydown',keyDown);window.removeEventListener('scroll',onScroll);disposed = true;cancelAnimationFrame(frame);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);document.documentElement.removeEventListener('pointerleave',leave);links.forEach(l=>l.removeEventListener('click',skip))}
+    return ()=>{window.removeEventListener('pointerdown',move);window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('wheel',wheel,true);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchmove',touchMove);window.removeEventListener('keydown',keyDown);window.removeEventListener('scroll',onScroll);disposed = true;cancelAnimationFrame(frame);window.removeEventListener('resize',resize);window.removeEventListener('pointermove',move);document.documentElement.removeEventListener('pointerleave',leave);links.forEach(l=>l.removeEventListener('click',skip))}
   },[])
   return <div ref={root} className="space-intro cover-track">
     <div className="intro-stage">
       <div className="intro-content">{children}</div>
       <div className="intro-overlay">
         <div className="curtain-black"/><div className="cursor-light" aria-hidden="true"/>
+        <canvas className="constellation-canvas" aria-hidden="true"/>
         <canvas className="star-canvas" aria-hidden="true"/>
         <a className="skip-cover" href="#inicio" data-skip-cover>Pular abertura</a>
         <div className="cover-wordmark" aria-label="SpaceX">{[...'SpaceX'].map((l,i)=><span key={i} className="cover-letter" aria-hidden="true">{l}</span>)}</div>
