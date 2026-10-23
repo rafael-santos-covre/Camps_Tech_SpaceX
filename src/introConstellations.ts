@@ -5,6 +5,14 @@ const patterns = [
   { center: [.24, .73], points: [[-.6,-.22],[-.37,-.12],[-.15,.08],[.1,.13],[.43,.06],[.38,.34],[.08,.38]], edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]] }, // Big Dipper
   { center: [.77, .76], points: [[0,-.5],[0,-.13],[-.4,.08],[.4,.08],[.03,.5]], edges: [[0,1],[1,4],[2,1],[1,3]] }, // Cygnus
   { center: [.51, .16], points: [[0,-.3],[-.2,0],[.22,-.04],[.02,.36]], edges: [[0,3],[1,2]] }, // Southern Cross
+  { center: [.17, .1], scale: .6, points: [[-.45,-.2],[-.16,-.3],[.25,-.12],[.42,.22],[-.12,.3]], edges: [[0,1],[1,2],[2,3],[3,4],[4,0]] }, // Cepheus
+  { center: [.83, .1], scale: .6, points: [[-.4,-.23],[.4,-.23],[.4,.23],[-.4,.23]], edges: [[0,1],[1,2],[2,3],[3,0]] }, // Pegasus square
+  { center: [.5, .32], scale: .65, points: [[-.4,-.36],[-.12,-.1],[.35,-.18],[.18,.32],[-.27,.24]], edges: [[0,1],[1,2],[2,3],[3,4],[4,1]] }, // Lyra
+  { center: [.1, .5], scale: .5, points: [[-.22,-.46],[.18,-.2],[.06,.1],[.23,.35],[.03,.5],[-.2,.37]], edges: [[0,1],[1,2],[2,3],[3,4],[4,5]] }, // Scorpius
+  { center: [.9, .51], scale: .5, points: [[-.22,-.4],[.24,-.42],[-.18,0],[.2,.02],[-.35,.4],[.34,.39]], edges: [[0,1],[0,2],[1,3],[2,4],[3,5],[2,3]] }, // Gemini
+  { center: [.49, .72], scale: .6, points: [[-.32,-.37],[-.45,-.06],[-.12,.15],[.23,.12],[.4,.36],[-.35,.35]], edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,2]] }, // Leo
+  { center: [.5, .88], scale: .6, points: [[-.47,.15],[-.12,-.13],[.08,-.3],[.24,-.12],[.47,.16]], edges: [[0,1],[1,2],[2,3],[3,4]] }, // Aquila
+
 ]
 
 export function createConstellationMap(width: number, height: number, ratio: number) {
@@ -15,7 +23,8 @@ export function createConstellationMap(width: number, height: number, ratio: num
   ctx.scale(ratio, ratio)
   const size = Math.min(230, width * .36, height * .27)
   for (const pattern of patterns) {
-    const points = pattern.points.map(([x,y]) => [pattern.center[0]*width+x*size, pattern.center[1]*height+y*size])
+    const patternSize = size * (pattern.scale ?? 1)
+    const points = pattern.points.map(([x,y]) => [pattern.center[0]*width+x*patternSize, pattern.center[1]*height+y*patternSize])
     ctx.strokeStyle = 'rgba(137,174,218,.45)'
     ctx.lineWidth = .8
     ctx.beginPath()
