@@ -45,7 +45,7 @@ const VEHICLES = [
 
 function LaunchCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   const time = countdownAt(launchAt.getTime(), now)
-  return <div className="hero-countdown">{[[time.days, "dias"], [time.hours, "horas"], [time.minutes, "min"], [time.seconds, "seg"]].map(([n, label]) => <div key={label}><strong>{String(n).padStart(2, "0")}</strong><span>{label}</span></div>)}</div>
+  return <div className="hero-countdown">{[[time.days, "dias"], [time.hours, "horas"], [time.minutes, "min"], [time.seconds, "seg"]].map(([n, label], index) => <div className="countdown-unit" key={label}><strong>{String(n).padStart(2, "0")}</strong><span>{label}</span>{index < 3 && <i aria-hidden="true">:</i>}</div>)}</div>
 }
 function CompactCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   const time = countdownAt(launchAt.getTime(), now)
@@ -76,6 +76,20 @@ export default function App() {
     window.addEventListener("keydown", close)
     return () => window.removeEventListener("keydown", close)
   }, [])
+  useEffect(() => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)'))
+    if (!('IntersectionObserver' in window)) { targets.forEach(target => target.classList.add('is-visible')); return }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.14, rootMargin: '0px 0px -35px 0px' })
+    targets.forEach(target => observer.observe(target))
+    return () => observer.disconnect()
+  }, [])
 
   return <div className="site-shell">
     <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -100,27 +114,24 @@ export default function App() {
           alt="Os dois propulsores laterais do Falcon Heavy retornam às plataformas de pouso"
           credit="SpaceX · Falcon Heavy" priority />
         <div className="scene-inner">
-          <div className="scene-copy hero-copy">
+          <div className="scene-copy hero-copy reveal is-visible">
             <h1 id="hero-heading">Além da<br />Terra.</h1>
             <p>Conheça os veículos e as ideias que estão transformando o acesso ao espaço.</p>
             <a href="#veiculos" className="outline-button">Explorar veículos</a>
+            <div className="hero-launch"><p className="eyebrow">Próximo lançamento — {nextLaunch?.name ?? "SpaceX"}</p>
+              {nextLaunch?.launchAt ? <LaunchCountdown launchAt={nextLaunch.launchAt} now={now} /> : <p className="hero-launch-pending">{loading ? "Buscando programação atualizada" : error || stale ? "Atualização pendente · consulte as fontes oficiais" : "Data e horário a confirmar"}</p>}
+            </div>
           </div>
         </div>
+        <a className="scroll-cue" href="#estatisticas"><span>Rolar</span><i /></a>
         <span className="project-note">Projeto educacional independente</span>
       </section>
 
-      <section className="stats-strip" aria-label="Estatísticas de voos SpaceX">
+      <section id="estatisticas" className="stats-strip" aria-label="Estatísticas de voos SpaceX">
         <div className="stats-inner">
-          {[[stats.totalLaunches, "Lançamentos"], [stats.totalLandings, "Pousos bem-sucedidos"], [stats.totalReflights, "Reutilizações"]].map(([value, label]) => <div className="stat-item" key={label}><strong>{Number(value).toLocaleString("pt-BR")}</strong><span>{label}</span></div>)}
+          {[[stats.totalLaunches, "Total de lançamentos"], [stats.totalLandings, "Pousos bem-sucedidos"], [stats.totalReflights, "Reutilizações"], [99.5, "Sucesso das missões", "%"]].map(([value, label, suffix], index) => <div className="stat-item reveal" key={label} style={{ transitionDelay: `${index * 90}ms` }}><strong>{Number(value).toLocaleString("pt-BR")}{suffix ?? ""}</strong><span>{label}</span></div>)}
         </div>
         <p className="stats-source">Estatísticas oficiais de Falcon 9 + Dragon · <a href="https://www.spacex.com/vehicles/falcon-9/" target="_blank" rel="noreferrer">fonte SpaceX</a></p>
-      </section>
-
-      <section className="countdown-strip" aria-live="polite"><div><p className="eyebrow">Próximo lançamento</p><h2>{nextLaunch?.name ?? launches.find(item => item.launchAt && item.launchAt.getTime() > now)?.name ?? "Missão SpaceX"}</h2><p>{nextLaunch ? `${nextLaunch.vehicle} · ${nextLaunch.location}` : launches.find(item => item.launchAt && item.launchAt.getTime() > now)?.status ?? (loading ? "Buscando horário atualizado…" : "Horário a confirmar")}</p></div>{nextLaunch ? <LaunchCountdown launchAt={nextLaunch.launchAt!} now={now} /> : <span className="countdown-pending">Contagem disponível quando o horário for confirmado</span>}</section>
-
-      <section id="lancamentos" className="launches-section"><div className="launches-heading"><div><p className="eyebrow">Agenda de voos</p><h2>Lançamentos</h2></div><span>{loading ? "Atualizando dados…" : error || stale ? "Última consulta disponível" : "A SpaceX pode alterar horários"}</span></div>
-        <div className="launch-list">{launches.length ? launches.slice(0, 5).map(launch => <div className="launch-row" key={launch.id}><div><strong>{launch.name}</strong><span>{launch.vehicle} · {launch.location}</span></div><span className="launch-date">{launch.launchAt && launch.launchAt.getTime() <= now ? "Aguardando atualização" : launch.date}{launch.launchAt && launch.launchAt.getTime() > now && launch.precise ? ` · ${new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" }).format(launch.launchAt)} BRT` : ""}</span><span className="launch-status">{launch.countdown ? <CompactCountdown launchAt={launch.launchAt!} now={now} /> : launchStatus(launch, now)}</span></div>) : <p className="launch-empty">{loading ? "Carregando agenda de lançamentos…" : "Não foi possível obter a agenda agora. Consulte o calendário oficial da SpaceX."} <a href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Ver calendário SpaceX ↗</a></p>}</div>
-        <p className="launch-disclaimer">Horários em Brasília. Dados: <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer">Launch Library 2</a>; datas podem mudar. {snapshot && <>Última consulta: {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" }).format(new Date(snapshot.fetchedAt))}.</>}</p>
       </section>
 
       <div id="veiculos" aria-label="Veículos SpaceX">
@@ -130,7 +141,7 @@ export default function App() {
           <BackgroundMedia image={vehicle.img} imageMobile={vehicle.mobileImg} alt={vehicle.alt}
             credit={vehicle.credit} position={vehicle.position} />
           <div className="scene-inner">
-            <div className="scene-copy">
+            <div className="scene-copy reveal">
               <h2 id={`${vehicle.id}-heading`}>{vehicle.name}</h2>
               <p>{vehicle.desc}</p>
               <button className="outline-button" onClick={() => setModal({ kind: "vehicle", index })}>Conhecer {vehicle.name}</button>
@@ -139,13 +150,19 @@ export default function App() {
         </section>)}
       </div>
 
-      <HistoryTimeline />
-      <ApplicationsSection />
-      <ImpactSection />
+      <section id="lancamentos" className="launches-section"><BackgroundMedia image="/images/scenes/landing.webp" imageMobile="/images/scenes/landing-mobile.webp" alt="Foguete Falcon 9 da SpaceX na plataforma de lançamento" credit="Imagens · SpaceX" position="center" /><div className="launches-shade" /><div className="launches-content"><div className="launches-heading"><div className="reveal"><p className="eyebrow">Registro de missões</p><h2>Lançamentos</h2></div><a className="more-launches" href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Ver mais lançamentos ↗</a></div>
+        <div className="launch-meta reveal"><p>Dados de <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer">The Space Devs · Launch Library 2</a>. Horários de Brasília.</p><p>{loading ? "Atualizando a cada 30 minutos…" : error || stale ? "Atualização indisponível; consulte os dados oficiais antes do lançamento." : "Atualização programada a cada 30 minutos; datas sujeitas a alteração."}</p>{snapshot && <p>Última consulta: {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "medium", timeZone: "America/Sao_Paulo" }).format(new Date(snapshot.fetchedAt))}.</p>}</div>
+        <div className="launch-list">{launches.length ? launches.slice(0, 6).map((launch, index) => <div className="launch-row reveal" key={launch.id} style={{ transitionDelay: `${Math.min(index, 5) * 65}ms` }}><span className="launch-date">{launch.launchAt && launch.launchAt.getTime() <= now ? "Aguardando atualização" : launch.date}</span><div className="launch-name"><strong>{launch.name}</strong></div><span className="launch-vehicle">{launch.vehicle}</span><span className="launch-status">{launch.countdown ? <CompactCountdown launchAt={launch.launchAt!} now={now} /> : launchStatus(launch, now)}</span><span className="launch-location">{launch.location}</span></div>) : <p className="launch-empty">{loading ? "Carregando agenda de lançamentos…" : "Não foi possível obter a agenda agora."} <a href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Calendário oficial SpaceX ↗</a></p>}</div>
+        <p className="launch-disclaimer">Previsões da Launch Library 2; horários em Brasília. Os dados podem mudar.</p></div>
+      </section>
+
+      <div className="reveal"><HistoryTimeline /></div>
+      <div className="reveal"><ApplicationsSection /></div>
+      <div className="reveal"><ImpactSection /></div>
 
       <section id="jogo" className="reading-section simulation-section" aria-labelledby="game-heading">
         <div className="reading-width">
-          <div className="section-intro">
+          <div className="section-intro reveal">
             <h2 id="game-heading">O desafio<br />de voltar.</h2>
             <div>
               <p>Chegar ao espaço é só uma parte da missão. Experimente controlar a inclinação e o impulso de um foguete até pousar na plataforma.</p>
@@ -159,7 +176,7 @@ export default function App() {
         </div>
       </section>
 
-      <SourcesSection />
+      <div className="reveal"><SourcesSection /></div>
     </main>
 
     <footer className="site-footer" id="sobre">
