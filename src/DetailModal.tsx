@@ -91,7 +91,7 @@ const DETAILS: Record<
   },
 }
 
-function AnimatedSpec({ value }: { value: string }) {
+function AnimatedSpec({ value, delay = 0 }: { value: string; delay?: number }) {
   const [shown, setShown] = useState('')
   useEffect(() => {
     const match = value.match(/\d[\d,.]*/)
@@ -105,17 +105,19 @@ function AnimatedSpec({ value }: { value: string }) {
     const decimals = raw.includes(',') ? raw.split(',')[1].length : raw.includes('.') ? raw.split('.')[1].length : 0
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShown(value); return }
     let frame = 0
-    const start = performance.now()
-    const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / 850)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      const number = (target * eased).toFixed(decimals).replace('.', ',')
-      setShown(`${before}${number}${after}`)
-      if (progress < 1) frame = requestAnimationFrame(tick)
-    }
-    frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [value])
+    const timeout = window.setTimeout(() => {
+      const start = performance.now()
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / 1500)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        const number = (target * eased).toFixed(decimals).replace('.', ',')
+        setShown(`${before}${number}${after}`)
+        if (progress < 1) frame = requestAnimationFrame(tick)
+      }
+      frame = requestAnimationFrame(tick)
+    }, delay)
+    return () => { window.clearTimeout(timeout); cancelAnimationFrame(frame) }
+  }, [value, delay])
   return <>{shown}</>
 }
 
@@ -185,7 +187,7 @@ export default function DetailModal({
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
         className={`relative w-full max-w-5xl max-h-full overflow-y-auto bg-[#0a0a0a] border border-white/10 ${v ? 'vehicle-modal' : ''}`}
-        style={{ animation: "modalIn 0.42s cubic-bezier(.2,.75,.25,1) both" }}
+        style={{ animation: "modalIn 0.8s cubic-bezier(.2,.75,.25,1) both" }}
       >
         <button
           ref={closeRef}
@@ -230,13 +232,13 @@ export default function DetailModal({
                 {d.history}
               </p>
               <dl className="grid grid-cols-2 gap-px bg-white/10 border border-white/10 mb-8">
-                {d.specs.map(([k, val]) => (
-                  <div key={k} className="modal-reveal spec-cell bg-[#0a0a0a] p-4" style={{ animationDelay: `${0.28 + d.specs.findIndex(([label]) => label === k) * 0.055}s` }}>
+                {d.specs.map(([k, val], index) => (
+                  <div key={k} className="modal-reveal spec-cell bg-[#0a0a0a] p-4" style={{ animationDelay: `${1.9 + index * 0.14}s` }}>
                     <dt className="font-display text-[10px] font-500 tracking-[0.2em] uppercase text-white/40 mb-1">
                       {k}
                     </dt>
                     <dd className="font-display text-xl font-700 tracking-tight">
-                      <AnimatedSpec value={val} />
+                      <AnimatedSpec value={val} delay={2300 + index * 140} />
                     </dd>
                   </div>
                 ))}

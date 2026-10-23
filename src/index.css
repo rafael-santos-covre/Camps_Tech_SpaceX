@@ -167,20 +167,21 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
 @keyframes modal-backdrop-in { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(5px); } }
 @keyframes modal-content-in { from { opacity: 0; transform: translate3d(0,18px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
 @keyframes modal-photo-in { from { opacity: .35; transform: scale(1.045); } to { opacity: 1; transform: scale(1); } }
-.modal-backdrop { animation: modal-backdrop-in .3s ease both; }
+@keyframes modal-photo-fade { from { opacity: .35; } to { opacity: 1; } }
+.modal-backdrop { animation: modal-backdrop-in .55s ease both; }
 .vehicle-modal { transform-origin: center; }
 .vehicle-modal-image { overflow: hidden; }
-.vehicle-modal-image img { animation: modal-photo-in 1s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy > .modal-reveal { opacity: 0; animation: modal-content-in .9s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy > .modal-reveal:nth-child(1) { animation-delay: .12s; }
-.vehicle-modal-copy > .modal-reveal:nth-child(2) { animation-delay: .2s; }
-.vehicle-modal-copy > .modal-reveal:nth-child(3) { animation-delay: .28s; }
-.vehicle-modal-copy .spec-cell { animation: modal-content-in .78s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy .highlight-line { animation: modal-content-in .76s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy .highlight-line:nth-child(1) { animation-delay: .5s; }
-.vehicle-modal-copy .highlight-line:nth-child(2) { animation-delay: .57s; }
-.vehicle-modal-copy .highlight-line:nth-child(3) { animation-delay: .64s; }
-.vehicle-modal-copy .modal-source { animation-delay: .72s; }
+.vehicle-modal-image img { animation: modal-photo-in 2s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy > .modal-reveal { opacity: 0; animation: modal-content-in 1.35s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy > .modal-reveal:nth-child(1) { animation-delay: .45s; }
+.vehicle-modal-copy > .modal-reveal:nth-child(2) { animation-delay: .85s; }
+.vehicle-modal-copy > .modal-reveal:nth-child(3) { animation-delay: 1.25s; }
+.vehicle-modal-copy .spec-cell { animation: modal-content-in 1.2s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy .highlight-line { animation: modal-content-in 1.15s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy .highlight-line:nth-child(1) { animation-delay: 2.9s; }
+.vehicle-modal-copy .highlight-line:nth-child(2) { animation-delay: 3.18s; }
+.vehicle-modal-copy .highlight-line:nth-child(3) { animation-delay: 3.46s; }
+.vehicle-modal-copy .modal-source { animation: modal-content-in 1s cubic-bezier(.2,.75,.25,1) both; animation-delay: 3.85s; }
 @media (max-width: 900px) {
   .site-header { height: calc(76px + env(safe-area-inset-top, 0px)); padding-inline: 6vw; }
   .site-wordmark { font-size: 30px; }
@@ -261,6 +262,6 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
   .scroll-cue { animation: none; }
   .reveal { transform: none; transition: opacity .9s ease; }
   .rise-child { transform: none; transition: opacity .8s ease; }
-  .modal-backdrop, .vehicle-modal, .vehicle-modal-image img, .vehicle-modal-copy .modal-reveal, .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line { animation-duration: .25s !important; }
-  .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line, .vehicle-modal-copy .modal-reveal { opacity: 1; }
+  .vehicle-modal-image img { animation-name: modal-photo-fade; }
+  .vehicle-modal-copy .modal-reveal, .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line { transform: none; }
 }
