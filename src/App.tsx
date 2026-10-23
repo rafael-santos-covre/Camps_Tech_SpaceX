@@ -45,11 +45,15 @@ const VEHICLES = [
 
 function LaunchCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   const time = countdownAt(launchAt.getTime(), now)
-  return <div className="hero-countdown">{[[time.days, "dias"], [time.hours, "horas"], [time.minutes, "min"], [time.seconds, "seg"]].map(([n, label], index) => <div className="countdown-unit" key={label}><strong>{String(n).padStart(2, "0")}</strong><span>{label}</span>{index < 3 && <i aria-hidden="true">:</i>}</div>)}</div>
+  return <div className="hero-countdown" aria-label={`${time.days} dias, ${time.hours} horas, ${time.minutes} minutos e ${time.seconds} segundos`}>
+    {[[time.days, "dias"], [time.hours, "horas"], [time.minutes, "min"], [time.seconds, "seg"]].map(([n, label]) => <div className="countdown-unit" key={label}><strong>{String(n).padStart(2, "0")}</strong><span>{label}</span></div>)}
+  </div>
 }
 function CompactCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   const time = countdownAt(launchAt.getTime(), now)
-  return <span className="compact-countdown">{time.days}d {String(time.hours).padStart(2, "0")}h {String(time.minutes).padStart(2, "0")}m {String(time.seconds).padStart(2, "0")}s</span>
+  return <span className="compact-countdown" aria-label={`${time.days} dias, ${time.hours} horas, ${time.minutes} minutos e ${time.seconds} segundos`}>
+    {[[time.days, "d"], [time.hours, "h"], [time.minutes, "m"], [time.seconds, "s"]].map(([value, unit]) => <span className="compact-countdown-unit" key={unit}><strong>{String(value).padStart(2, "0")}</strong><i>{unit}</i></span>)}
+  </span>
 }
 
 function useCountUp(target: number, active: boolean, duration = 1450) {
@@ -69,7 +73,7 @@ function useCountUp(target: number, active: boolean, duration = 1450) {
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
   }, [active, target, duration])
-  return active ? count : target
+  return count
 }
 
 function StatItem({ value, label, suffix = '', index }: { value: number; label: string; suffix?: string; index: number }) {
@@ -121,7 +125,7 @@ export default function App() {
           observer.unobserve(entry.target)
         }
       })
-    }, { threshold: 0.14, rootMargin: '0px 0px -35px 0px' })
+    }, { threshold: 0.06, rootMargin: '0px 0px -8% 0px' })
     targets.forEach(target => observer.observe(target))
     return () => observer.disconnect()
   }, [])
@@ -150,9 +154,9 @@ export default function App() {
           credit="SpaceX · Falcon Heavy" priority />
         <div className="scene-inner">
           <div className="scene-copy hero-copy reveal is-visible">
-            <h1 id="hero-heading">Além da<br />Terra.</h1>
-            <p>Conheça os veículos e as ideias que estão transformando o acesso ao espaço.</p>
-            <a href="#veiculos" className="outline-button">Explorar veículos</a>
+            <h1 className="rise-child" id="hero-heading">Além da<br />Terra.</h1>
+            <p className="rise-child">Conheça os veículos e as ideias que estão transformando o acesso ao espaço.</p>
+            <a href="#veiculos" className="outline-button rise-child">Explorar veículos</a>
             <div className="hero-launch"><p className="eyebrow">Próximo lançamento — {nextLaunch?.name ?? "SpaceX"}</p>
               {confirmedLaunch?.launchAt ? <LaunchCountdown launchAt={confirmedLaunch.launchAt} now={now} /> : <p className="hero-launch-pending">{nextLaunch?.status ?? (loading ? "Buscando programação atualizada" : error || stale ? "Atualização pendente · consulte as fontes oficiais" : "Data e horário a confirmar")}</p>}
             </div>
@@ -177,9 +181,9 @@ export default function App() {
             credit={vehicle.credit} position={vehicle.position} />
           <div className="scene-inner">
             <div className="scene-copy reveal">
-              <h2 id={`${vehicle.id}-heading`}>{vehicle.name}</h2>
-              <p>{vehicle.desc}</p>
-              <button className="outline-button" onClick={() => setModal({ kind: "vehicle", index })}>Conhecer {vehicle.name}</button>
+              <h2 className="rise-child" id={`${vehicle.id}-heading`}>{vehicle.name}</h2>
+              <p className="rise-child">{vehicle.desc}</p>
+              <button className="outline-button rise-child" onClick={() => setModal({ kind: "vehicle", index })}>Conhecer {vehicle.name}</button>
             </div>
           </div>
         </section>)}

@@ -24,20 +24,18 @@ export default memo(function BackgroundMedia({ image, imageMobile, video, alt, c
 
   useEffect(() => {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)')
-    const desktop = matchMedia('(min-width: 900px)')
     const update = () => {
       const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-      setAutoPlay(desktop.matches && !reduce.matches && !connection?.saveData)
+      setAutoPlay(!reduce.matches && !connection?.saveData)
     }
     update()
     reduce.addEventListener('change', update)
-    desktop.addEventListener('change', update)
     const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.1 })
     if (container.current) observer.observe(container.current)
     const visibility = () => setVisible(!document.hidden)
     visibility()
     document.addEventListener('visibilitychange', visibility)
-    return () => { observer.disconnect(); reduce.removeEventListener('change', update); desktop.removeEventListener('change', update); document.removeEventListener('visibilitychange', visibility) }
+    return () => { observer.disconnect(); reduce.removeEventListener('change', update); document.removeEventListener('visibilitychange', visibility) }
   }, [])
 
   const shouldPlay = !!video && (autoPlay || requested) && inView && visible && !paused && !failed
@@ -66,7 +64,7 @@ export default memo(function BackgroundMedia({ image, imageMobile, video, alt, c
     <div className="media-credit">
       <span>{credit}</span>
       {video && !failed && <button className="video-toggle" type="button"
-        aria-label={playing ? 'Pausar vídeo do Falcon Heavy' : 'Reproduzir vídeo do Falcon Heavy'}
+        aria-label={playing ? 'Pausar vídeo' : 'Reproduzir vídeo'}
         title={playing ? 'Pausar vídeo' : 'Reproduzir vídeo'}
         onClick={() => { setRequested(true); setPaused(playing) }}>
         {playing ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10" /></svg> : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z" /></svg>}

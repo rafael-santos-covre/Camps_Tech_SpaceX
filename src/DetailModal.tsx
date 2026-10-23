@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export interface VehicleLike {
   name: string
@@ -91,6 +91,34 @@ const DETAILS: Record<
   },
 }
 
+function AnimatedSpec({ value }: { value: string }) {
+  const [shown, setShown] = useState('')
+  useEffect(() => {
+    const match = value.match(/\d[\d,.]*/)
+    if (!match) { setShown(value); return }
+    if (/\b(?:19|20)\d{2}\b|\b(?:jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)\b/i.test(value)) { setShown(value); return }
+    const raw = match[0]
+    const target = Number(raw.replace(',', '.'))
+    if (!Number.isFinite(target)) { setShown(value); return }
+    const before = value.slice(0, match.index)
+    const after = value.slice((match.index ?? 0) + raw.length)
+    const decimals = raw.includes(',') ? raw.split(',')[1].length : raw.includes('.') ? raw.split('.')[1].length : 0
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShown(value); return }
+    let frame = 0
+    const start = performance.now()
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / 850)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      const number = (target * eased).toFixed(decimals).replace('.', ',')
+      setShown(`${before}${number}${after}`)
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [value])
+  return <>{shown}</>
+}
+
 export default function DetailModal({
   state,
   vehicles,
@@ -148,7 +176,7 @@ export default function DetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm modal-backdrop"
       onClick={onClose}
     >
       <div
@@ -156,8 +184,8 @@ export default function DetailModal({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-5xl max-h-full overflow-y-auto bg-[#0a0a0a] border border-white/10"
-        style={{ animation: "modalIn 0.3s ease forwards" }}
+        className={`relative w-full max-w-5xl max-h-full overflow-y-auto bg-[#0a0a0a] border border-white/10 ${v ? 'vehicle-modal' : ''}`}
+        style={{ animation: "modalIn 0.42s cubic-bezier(.2,.75,.25,1) both" }}
       >
         <button
           ref={closeRef}
@@ -177,7 +205,7 @@ export default function DetailModal({
 
         {v && d ? (
           <div className="grid md:grid-cols-2">
-            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-[#0a0a0a]">
+            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] bg-[#0a0a0a] vehicle-modal-image">
               <img
                 src={v.detailImg ?? v.img}
                 alt={v.detailAlt ?? v.alt}
@@ -191,24 +219,24 @@ export default function DetailModal({
                 </span>
               )}
             </div>
-            <div className="p-6 md:p-10">
-              <p className="font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
+            <div className="p-6 md:p-10 vehicle-modal-copy">
+              <p className="modal-reveal font-display text-[11px] font-500 tracking-[0.3em] uppercase text-[#4a9fff] mb-3">
                 {v.type}
               </p>
-              <h3 className="font-display text-4xl md:text-5xl font-semibold uppercase tracking-tight leading-none mb-6">
+              <h3 className="modal-reveal font-display text-4xl md:text-5xl font-semibold uppercase tracking-tight leading-none mb-6">
                 {v.name}
               </h3>
-              <p className="font-body text-white/60 text-sm md:text-base leading-relaxed mb-8">
+              <p className="modal-reveal font-body text-white/60 text-sm md:text-base leading-relaxed mb-8">
                 {d.history}
               </p>
               <dl className="grid grid-cols-2 gap-px bg-white/10 border border-white/10 mb-8">
                 {d.specs.map(([k, val]) => (
-                  <div key={k} className="bg-[#0a0a0a] p-4">
+                  <div key={k} className="modal-reveal spec-cell bg-[#0a0a0a] p-4" style={{ animationDelay: `${0.28 + d.specs.findIndex(([label]) => label === k) * 0.055}s` }}>
                     <dt className="font-display text-[10px] font-500 tracking-[0.2em] uppercase text-white/40 mb-1">
                       {k}
                     </dt>
                     <dd className="font-display text-xl font-700 tracking-tight">
-                      {val}
+                      <AnimatedSpec value={val} />
                     </dd>
                   </div>
                 ))}
@@ -217,14 +245,14 @@ export default function DetailModal({
                 {d.highlights.map((h) => (
                   <li
                     key={h}
-                    className="font-body text-sm text-white/55 flex gap-3"
+                    className="modal-reveal highlight-line font-body text-sm text-white/55 flex gap-3"
                   >
                     <span className="text-[#4a9fff]">—</span>
                     {h}
                   </li>
                 ))}
               </ul>
-              <a href={d.source} target="_blank" rel="noreferrer" className="inline-flex mt-7 font-display text-[11px] tracking-[0.15em] uppercase text-[#75b8ff] underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-white">
+              <a href={d.source} target="_blank" rel="noreferrer" className="modal-reveal modal-source inline-flex mt-7 font-display text-[11px] tracking-[0.15em] uppercase text-[#75b8ff] underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-white">
                 Fonte oficial SpaceX ↗
               </a>
             </div>

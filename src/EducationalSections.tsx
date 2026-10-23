@@ -29,12 +29,12 @@ const SOURCES = [
 export function HistoryTimeline() {
   return <section id="marcos" className="reading-section" aria-labelledby="history-heading">
     <div className="reading-width history-layout">
-      <div className="section-heading">
+      <div className="section-heading reveal">
         <h2 id="history-heading">Uma nova<br />trajetória.</h2>
         <p>Da fundação em 2002 aos testes de novos veículos. Seis momentos para entender como a empresa chegou até aqui.</p>
       </div>
       <div className="timeline">
-        {MILESTONES.map((item, index) => <details key={item.year} className="timeline-item" open={index === 0}>
+        {MILESTONES.map((item, index) => <details key={item.year} className="timeline-item reveal" style={{ transitionDelay: `${Math.min(index, 5) * 70}ms` }} open={index === 0}>
           <summary><span className="timeline-year">{item.year}</span><span>{item.title}</span><span className="disclosure-mark" aria-hidden="true" /></summary>
           <div className="timeline-copy"><p>{item.text}</p><a href={item.source} target="_blank" rel="noreferrer">Consultar fonte</a></div>
         </details>)}
@@ -46,12 +46,12 @@ export function HistoryTimeline() {
 export function ApplicationsSection() {
   return <section id="aplicacoes" className="reading-section" aria-labelledby="applications-heading">
     <div className="reading-width">
-      <div className="section-intro">
+      <div className="section-intro reveal">
         <h2 id="applications-heading">O espaço faz<br />parte da vida.</h2>
         <p>Comunicação, pesquisa e conexões onde a infraestrutura terrestre não chega. A tecnologia espacial já está presente no cotidiano.</p>
       </div>
       <div className="applications-list">
-        {APPLICATIONS.map(item => <article key={item.number}><h3>{item.title}</h3><p>{item.body}</p></article>)}
+        {APPLICATIONS.map((item, index) => <article className="reveal" style={{ transitionDelay: `${index * 80}ms` }} key={item.number}><h3>{item.title}</h3><p>{item.body}</p></article>)}
       </div>
     </div>
   </section>
@@ -60,7 +60,7 @@ export function ApplicationsSection() {
 export function ImpactSection() {
   return <section id="impactos" className="reading-section impact-section" aria-labelledby="impact-heading">
     <div className="reading-width section-intro">
-      <div className="section-heading"><h2 id="impact-heading">Avançar também<br />é avaliar.</h2><p>Novas possibilidades trazem responsabilidades. Conheça os benefícios e os limites dessas tecnologias.</p></div>
+      <div className="section-heading reveal"><h2 id="impact-heading">Avançar também<br />é avaliar.</h2><p>Novas possibilidades trazem responsabilidades. Conheça os benefícios e os limites dessas tecnologias.</p></div>
       <div className="impact-disclosures">
         <details className="plain-disclosure"><summary>Possibilidades<span className="disclosure-mark" aria-hidden="true" /></summary>
           <ul>
