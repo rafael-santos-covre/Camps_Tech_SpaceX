@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-10-23T07:51:28.521Z",
+  "fetchedAt": "2026-10-23T17:56:15.082Z",
   "launches": [
     {
       "id": "f6af629d-39b5-4f86-bc0c-f8776444a858",
       "name": "Starlink Group 15-15",
-      "net": "2026-10-23T21:30:00Z",
+      "net": "2026-10-23T22:28:53Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -13,7 +13,7 @@
     {
       "id": "e2886a96-5ce9-4f45-872f-4e25a00be837",
       "name": "Starlink Group 15-16",
-      "net": "2026-10-26T05:00:00Z",
+      "net": "2026-10-27T04:45:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -22,7 +22,7 @@
     {
       "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
       "name": "Starlink Group 15-18",
-      "net": "2026-10-29T04:17:00Z",
+      "net": "2026-10-30T04:02:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
