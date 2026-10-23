@@ -101,6 +101,7 @@ button, a, summary { outline-offset: 6px; }
 .launch-status { text-align: right; color: #ddd!important; }
 .compact-countdown { display: inline-block; padding: 7px 9px; border: 1px solid #398dd7; color: #68b5ff!important; font: 11px var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: .08em; }
 .launch-disclaimer { color: #777; font-size: 11px; line-height: 1.6; margin: 18px 0 0; }
+.launch-more { color: #777; font-size: 11px; margin: 14px 0 0; }
 .launch-empty { color: #aaa; font-size: 14px; padding: 24px 0; }
 .launch-empty a { display: inline-block; margin-left: 8px; color: white; text-underline-offset: 4px; }
 .reading-section { padding: 120px 7vw; }

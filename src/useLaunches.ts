@@ -6,6 +6,7 @@ export function useLaunches() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [now, setNow] = useState(Date.now)
+  const [snapshotRefreshedAt, setSnapshotRefreshedAt] = useState(Date.now)
   useEffect(() => {
     let alive = true
     let pending = false
@@ -39,6 +40,7 @@ export function useLaunches() {
         if (alive) {
           setSnapshot(previous => previous?.stats ? { ...data, stats: previous.stats } : !previous || Date.parse(data.fetchedAt) >= Date.parse(previous.fetchedAt) ? data : previous)
           setError(false)
+          setSnapshotRefreshedAt(Date.now())
           setNow(Date.now())
         }
       } catch {
@@ -49,7 +51,7 @@ export function useLaunches() {
         if (alive) setLoading(false)
       }
     }
-    const launchPoll = setInterval(() => { if (!document.hidden) void refresh() }, 30 * 60_000)
+    const launchPoll = setInterval(() => { if (!document.hidden) void refresh() }, 5 * 60_000)
     void refresh()
     const tick = setInterval(() => setNow(Date.now()), 1000)
     const visible = () => { if (!document.hidden) { setNow(Date.now()); void refresh() } }
@@ -62,6 +64,6 @@ export function useLaunches() {
       window.removeEventListener('online', online)
     }
   }, [])
-  const stale = !!snapshot && now - Date.parse(snapshot.fetchedAt) > 2 * 60 * 60_000
+  const stale = !!snapshot && now - snapshotRefreshedAt > 2 * 60 * 60_000
   return { snapshot, loading, error, now, stale }
 }

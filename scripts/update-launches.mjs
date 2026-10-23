@@ -25,11 +25,18 @@ export async function updateLaunches() {
   let snapshot
   try {
     const results = []
-    for (const endpoint of ['upcoming', 'previous']) {
-      const data = await getJson(`${base}${endpoint}/?lsp__id=121&limit=15&mode=normal`)
-      if (!Array.isArray(data.results) || data.results.length === 0) throw new Error('API sem lançamentos')
-      results.push(...data.results.map(normalizeLaunch))
+    let upcomingUrl = `${base}upcoming/?lsp__id=121&limit=100&mode=normal`
+    let pages = 0
+    while (upcomingUrl && pages < 5) {
+      const upcoming = await getJson(upcomingUrl)
+      if (!Array.isArray(upcoming.results) || upcoming.results.length === 0) throw new Error('API sem lançamentos futuros')
+      results.push(...upcoming.results.map(normalizeLaunch))
+      upcomingUrl = upcoming.next
+      pages++
     }
+    const previous = await getJson(`${base}previous/?lsp__id=121&limit=20&mode=normal`)
+    if (!Array.isArray(previous.results)) throw new Error('API com histórico inválido')
+    results.push(...previous.results.map(normalizeLaunch))
     snapshot = { fetchedAt: new Date().toISOString(), launches: [...new Map(results.map(l => [l.id, l])).values()] }
   } catch (error) {
     console.warn(`Não foi possível atualizar: ${error.message}. Preservando a última consulta.`)

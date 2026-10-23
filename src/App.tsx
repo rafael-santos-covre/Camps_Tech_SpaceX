@@ -49,7 +49,41 @@ function LaunchCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
 }
 function CompactCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   const time = countdownAt(launchAt.getTime(), now)
-  return <span className="compact-countdown">{time.days}d {String(time.hours).padStart(2, "0")}h {String(time.minutes).padStart(2, "0")}m</span>
+  return <span className="compact-countdown">{time.days}d {String(time.hours).padStart(2, "0")}h {String(time.minutes).padStart(2, "0")}m {String(time.seconds).padStart(2, "0")}s</span>
+}
+
+function useCountUp(target: number, active: boolean, duration = 1450) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!active) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) { setCount(target); return }
+    let frame = 0
+    const started = performance.now()
+    const tick = (at: number) => {
+      const progress = Math.min(1, (at - started) / duration)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(target * eased))
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [active, target, duration])
+  return active ? count : target
+}
+
+function StatItem({ value, label, suffix = '', index }: { value: number; label: string; suffix?: string; index: number }) {
+  const [active, setActive] = useState(false)
+  const ref = useCallback((element: HTMLDivElement | null) => {
+    if (!element || !('IntersectionObserver' in window)) { if (element) setActive(true); return }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setActive(true); observer.disconnect() }
+    }, { threshold: 0.45 })
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+  const count = useCountUp(value, active)
+  return <div ref={ref} className={`stat-item reveal ${active ? 'is-visible' : ''}`} style={{ transitionDelay: `${index * 90}ms` }}><strong>{count.toLocaleString("pt-BR")}{suffix}</strong><span>{label}</span></div>
 }
 
 export default function App() {
@@ -59,7 +93,8 @@ export default function App() {
   const [modal, setModal] = useState<ModalState>(null)
   const { snapshot, loading, error, now, stale } = useLaunches()
   const launches = orderLaunches(snapshot?.launches ?? [], now).map(launch => missionFromLaunch(launch, now))
-  const nextLaunch = launches.find(launch => canCountDown(launch, now))
+  const nextLaunch = launches.find(launch => [1, 2, 8].includes(launch.statusId) && launch.launchAt && launch.launchAt.getTime() > now)
+  const confirmedLaunch = launches.find(launch => [1, 2, 8].includes(launch.statusId) && canCountDown(launch, now))
   const stats = snapshot?.stats ?? { totalLaunches: 395, totalLandings: 353, totalReflights: 312 }
   const closeModal = useCallback(() => setModal(null), [])
 
@@ -119,7 +154,7 @@ export default function App() {
             <p>Conheça os veículos e as ideias que estão transformando o acesso ao espaço.</p>
             <a href="#veiculos" className="outline-button">Explorar veículos</a>
             <div className="hero-launch"><p className="eyebrow">Próximo lançamento — {nextLaunch?.name ?? "SpaceX"}</p>
-              {nextLaunch?.launchAt ? <LaunchCountdown launchAt={nextLaunch.launchAt} now={now} /> : <p className="hero-launch-pending">{loading ? "Buscando programação atualizada" : error || stale ? "Atualização pendente · consulte as fontes oficiais" : "Data e horário a confirmar"}</p>}
+              {confirmedLaunch?.launchAt ? <LaunchCountdown launchAt={confirmedLaunch.launchAt} now={now} /> : <p className="hero-launch-pending">{nextLaunch?.status ?? (loading ? "Buscando programação atualizada" : error || stale ? "Atualização pendente · consulte as fontes oficiais" : "Data e horário a confirmar")}</p>}
             </div>
           </div>
         </div>
@@ -129,7 +164,7 @@ export default function App() {
 
       <section id="estatisticas" className="stats-strip" aria-label="Estatísticas de voos SpaceX">
         <div className="stats-inner">
-          {[[stats.totalLaunches, "Total de lançamentos"], [stats.totalLandings, "Pousos bem-sucedidos"], [stats.totalReflights, "Reutilizações"], [99.5, "Sucesso das missões", "%"]].map(([value, label, suffix], index) => <div className="stat-item reveal" key={label} style={{ transitionDelay: `${index * 90}ms` }}><strong>{Number(value).toLocaleString("pt-BR")}{suffix ?? ""}</strong><span>{label}</span></div>)}
+          {[{ value: stats.totalLaunches, label: "Total de lançamentos" }, { value: stats.totalLandings, label: "Pousos bem-sucedidos" }, { value: stats.totalReflights, label: "Reutilizações" }, { value: 99.5, label: "Sucesso das missões", suffix: "%" }].map((stat, index) => <StatItem key={stat.label} {...stat} index={index} />)}
         </div>
         <p className="stats-source">Estatísticas oficiais de Falcon 9 + Dragon · <a href="https://www.spacex.com/vehicles/falcon-9/" target="_blank" rel="noreferrer">fonte SpaceX</a></p>
       </section>
@@ -151,8 +186,9 @@ export default function App() {
       </div>
 
       <section id="lancamentos" className="launches-section"><BackgroundMedia image="/images/scenes/landing.webp" imageMobile="/images/scenes/landing-mobile.webp" alt="Foguete Falcon 9 da SpaceX na plataforma de lançamento" credit="Imagens · SpaceX" position="center" /><div className="launches-shade" /><div className="launches-content"><div className="launches-heading"><div className="reveal"><p className="eyebrow">Registro de missões</p><h2>Lançamentos</h2></div><a className="more-launches" href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Ver mais lançamentos ↗</a></div>
-        <div className="launch-meta reveal"><p>Dados de <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer">The Space Devs · Launch Library 2</a>. Horários de Brasília.</p><p>{loading ? "Atualizando a cada 30 minutos…" : error || stale ? "Atualização indisponível; consulte os dados oficiais antes do lançamento." : "Atualização programada a cada 30 minutos; datas sujeitas a alteração."}</p>{snapshot && <p>Última consulta: {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "medium", timeZone: "America/Sao_Paulo" }).format(new Date(snapshot.fetchedAt))}.</p>}</div>
-        <div className="launch-list">{launches.length ? launches.slice(0, 6).map((launch, index) => <div className="launch-row reveal" key={launch.id} style={{ transitionDelay: `${Math.min(index, 5) * 65}ms` }}><span className="launch-date">{launch.launchAt && launch.launchAt.getTime() <= now ? "Aguardando atualização" : launch.date}</span><div className="launch-name"><strong>{launch.name}</strong></div><span className="launch-vehicle">{launch.vehicle}</span><span className="launch-status">{launch.countdown ? <CompactCountdown launchAt={launch.launchAt!} now={now} /> : launchStatus(launch, now)}</span><span className="launch-location">{launch.location}</span></div>) : <p className="launch-empty">{loading ? "Carregando agenda de lançamentos…" : "Não foi possível obter a agenda agora."} <a href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Calendário oficial SpaceX ↗</a></p>}</div>
+        <div className="launch-meta reveal"><p>Dados de <a href="https://thespacedevs.com/llapi" target="_blank" rel="noreferrer">The Space Devs · Launch Library 2</a>. Horários de Brasília.</p><p>{loading ? "Atualizando a cada 30 minutos…" : error || stale ? "Atualização indisponível; consulte os dados oficiais antes do lançamento." : "Missões anunciadas, inclusive datas estimadas. Atualização automática a cada 30 minutos."}</p>{snapshot && <p>Última consulta: {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "medium", timeZone: "America/Sao_Paulo" }).format(new Date(snapshot.fetchedAt))}.</p>}</div>
+        <div className="launch-list">{launches.length ? launches.filter(launch => launch.statusId === 1 || launch.statusId === 2 || launch.statusId === 8).slice(0, 12).map((launch, index) => <div className="launch-row reveal" key={launch.id} style={{ transitionDelay: `${Math.min(index, 8) * 50}ms` }}><span className="launch-date">{launch.date}{launch.launchAt && launch.launchAt.getTime() > now && launch.precise ? ` · ${new Intl.DateTimeFormat("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" }).format(launch.launchAt)} BRT` : ""}</span><div className="launch-name"><strong>{launch.name}</strong></div><span className="launch-vehicle">{launch.vehicle}</span><span className="launch-status">{launch.countdown ? <CompactCountdown launchAt={launch.launchAt!} now={now} /> : launchStatus(launch, now)}</span><span className="launch-location">{launch.location}</span></div>) : <p className="launch-empty">{loading ? "Carregando agenda de lançamentos…" : "Não foi possível obter a agenda agora."} <a href="https://www.spacex.com/launches/" target="_blank" rel="noreferrer">Calendário oficial SpaceX ↗</a></p>}</div>
+        {launches.some(launch => [1, 2, 8].includes(launch.statusId)) && <p className="launch-more">Exibindo {Math.min(12, launches.filter(launch => [1, 2, 8].includes(launch.statusId)).length)} de {launches.filter(launch => [1, 2, 8].includes(launch.statusId)).length} missões anunciadas.</p>}
         <p className="launch-disclaimer">Previsões da Launch Library 2; horários em Brasília. Os dados podem mudar.</p></div>
       </section>
 
