@@ -51,7 +51,7 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
         const box = letter.getBoundingClientRect(), style = getComputedStyle(letter)
         c.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
         c.textBaseline = 'middle'; c.fillStyle = '#fff'
-        c.fillText(letter.textContent!, box.left, box.top + box.height / 2)
+        c.fillText(letter.textContent!, box.left + parseFloat(style.paddingLeft), box.top + box.height / 2)
       })
       const data = c.getImageData(0,0,w,h).data
       dust = []
@@ -90,8 +90,12 @@ export default function SpaceIntro({ children }: { children: ReactNode }) {
         const p=clamp((progress-.08-i*.035)/.56)
         letter.style.opacity=`${1-p}`
         letter.style.filter=`blur(${reduced ? 0 : p*p*17}px)`
-        letter.style.transform=`translate3d(${(i-2.5)*p*8}px,${-p*p*(35+i*7)}px,0) scale(${1+p*.12})`
-        letter.style.maskImage=`linear-gradient(to top, transparent ${p*115-15}%, black ${p*115+12}%)`
+        // A small elastic warp follows the same eased pointer as the overall tilt.
+        const position = (i - 2.5) / 2.5
+        const warp = reduced ? 0 : (tiltY / 10) * (1 - p)
+        const bend = reduced ? 0 : (tiltX / 6) * (1 - p)
+        letter.style.transform=`translate3d(${(i-2.5)*p*8}px,${-p*p*(35+i*7) + warp*position*2}px,0) skewY(${warp*position*1.8}deg) skewX(${bend*1.2}deg) scale(${1+p*.12+warp*position*.012},${1+p*.12-bend*position*.012})`
+        letter.style.maskImage=p > 0 ? `linear-gradient(to top, transparent ${p*115-15}%, black ${p*115+12}%)` : 'none'
       })
       const hero = el.querySelector<HTMLElement>('.intro-content')!
       hero.inert = progress < .8
