@@ -4,7 +4,7 @@ import { createConstellationMap } from './introConstellations'
 // Background-only canvases: photographic scenes never receive this layer.
 export default function SiteConstellations() {
   useEffect(() => {
-    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('.reading-section, .stats-strip, .sources-section, .site-footer'))
+    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('.reading-section, .stats-strip, .sources-section, .site-footer, .launch-list'))
     const layers = surfaces.map(surface => {
       const canvas = document.createElement('canvas')
       canvas.className = 'site-constellation-canvas'
@@ -37,21 +37,23 @@ export default function SiteConstellations() {
         canvas.style.height = `${visibleHeight}px`
         ctx.setTransform(ratio,0,0,ratio,0,0)
         ctx.clearRect(0,0,width,visibleHeight)
-        if (!map || opacity < .002) continue
+        if (!map) continue
         const localX=x-box.left, localY=y-box.top-top
-        if (localY < -300 || localY > visibleHeight+300) continue
         ctx.globalCompositeOperation='source-over'
-        ctx.globalAlpha=opacity*.75
+        ctx.globalAlpha=.95
         const offset=top%tileHeight
         for(let at=-offset;at<visibleHeight;at+=tileHeight) ctx.drawImage(map,0,at,mapWidth,tileHeight)
         ctx.globalAlpha=1
         ctx.globalCompositeOperation='destination-in'
         const mask=ctx.createRadialGradient(localX,localY,0,localX,localY,260)
-        mask.addColorStop(0,'#fff');mask.addColorStop(.35,'rgba(255,255,255,.85)');mask.addColorStop(1,'rgba(255,255,255,0)')
+        // A quiet baseline remains visible without a mouse; the cursor adds emphasis.
+        mask.addColorStop(0,`rgba(255,255,255,${.38+.62*opacity})`)
+        mask.addColorStop(.35,`rgba(255,255,255,${.38+.47*opacity})`)
+        mask.addColorStop(1,'rgba(255,255,255,.38)')
         ctx.fillStyle=mask;ctx.fillRect(0,0,width,visibleHeight)
         ctx.globalCompositeOperation='destination-over'
         const light=ctx.createRadialGradient(localX,localY,0,localX,localY,300)
-        light.addColorStop(0,`rgba(16,36,64,${opacity*.32})`);light.addColorStop(1,'rgba(16,36,64,0)')
+        light.addColorStop(0,`rgba(24,46,78,${opacity*.45})`);light.addColorStop(1,'rgba(16,36,64,0)')
         ctx.fillStyle=light;ctx.fillRect(0,0,width,visibleHeight)
         ctx.globalCompositeOperation='source-over'
         // Also protect embedded media added inside otherwise textual sections.

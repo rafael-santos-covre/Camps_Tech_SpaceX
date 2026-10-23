@@ -25,7 +25,7 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
     let touchY = 0
     let drag: { id: number; x: number; y: number } | null = null
     let notified = false
-    const duration = reduced ? 200 : 2600
+    const duration = reduced ? 200 : 3400
     const start = () => {
       if (!complete && startedAt === null) {
         startedAt = performance.now()
@@ -48,7 +48,17 @@ export default function SpaceIntro({ children, onStart, onComplete }: { children
       if (complete || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return
       if (['ArrowDown', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); start() }
     }
-    const onScroll = () => { if (window.scrollY > 20) complete = true }
+    const onScroll = () => {
+      if (complete || window.scrollY <= 20) return
+      // Explicit section links may bypass the intro, but a gesture must not
+      // shorten an opening already in progress (including native touch inertia).
+      if (startedAt === null && location.hash && location.hash !== '#inicio') {
+        complete = true
+        return
+      }
+      start()
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    }
     window.addEventListener('wheel', wheel, { passive: false, capture: true })
     window.addEventListener('touchstart', touchStart, { passive: true })
     window.addEventListener('touchmove', touchMove, { passive: false })
