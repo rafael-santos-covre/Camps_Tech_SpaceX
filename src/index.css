@@ -156,9 +156,9 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
 .project-details p { margin-top: 16px; }
 @keyframes rise-in { from { opacity: 0; transform: translate3d(0,22px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
 @keyframes cue-bob { 0%,100% { translate: 0 0; } 50% { translate: 0 6px; } }
-.reveal { opacity: 0; transform: translate3d(0,28px,0); transition: opacity .85s ease, transform .85s cubic-bezier(.2,.75,.25,1); will-change: opacity, transform; }
+.reveal { opacity: 0; transform: translate3d(0,36px,0); transition: opacity 1.35s ease, transform 1.35s cubic-bezier(.2,.75,.25,1); will-change: opacity, transform; }
 .reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
-.rise-child { opacity: 0; transform: translate3d(0,22px,0); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.75,.25,1); }
+.rise-child { opacity: 0; transform: translate3d(0,28px,0); transition: opacity 1.05s ease, transform 1.05s cubic-bezier(.2,.75,.25,1); }
 .is-visible > .rise-child { opacity: 1; transform: translate3d(0,0,0); }
 .is-visible > .rise-child:nth-child(2) { transition-delay: .13s; }
 .is-visible > .rise-child:nth-child(3) { transition-delay: .24s; }
@@ -171,12 +171,12 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
 .vehicle-modal { transform-origin: center; }
 .vehicle-modal-image { overflow: hidden; }
 .vehicle-modal-image img { animation: modal-photo-in 1s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy > .modal-reveal { opacity: 0; animation: modal-content-in .55s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy > .modal-reveal { opacity: 0; animation: modal-content-in .9s cubic-bezier(.2,.75,.25,1) both; }
 .vehicle-modal-copy > .modal-reveal:nth-child(1) { animation-delay: .12s; }
 .vehicle-modal-copy > .modal-reveal:nth-child(2) { animation-delay: .2s; }
 .vehicle-modal-copy > .modal-reveal:nth-child(3) { animation-delay: .28s; }
-.vehicle-modal-copy .spec-cell { animation: modal-content-in .5s cubic-bezier(.2,.75,.25,1) both; }
-.vehicle-modal-copy .highlight-line { animation: modal-content-in .48s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy .spec-cell { animation: modal-content-in .78s cubic-bezier(.2,.75,.25,1) both; }
+.vehicle-modal-copy .highlight-line { animation: modal-content-in .76s cubic-bezier(.2,.75,.25,1) both; }
 .vehicle-modal-copy .highlight-line:nth-child(1) { animation-delay: .5s; }
 .vehicle-modal-copy .highlight-line:nth-child(2) { animation-delay: .57s; }
 .vehicle-modal-copy .highlight-line:nth-child(3) { animation-delay: .64s; }
@@ -259,8 +259,8 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
   .scroll-cue { animation: none; }
-  .reveal { transform: none; transition: opacity .3s ease; }
-  .rise-child { transform: none; transition: opacity .25s ease; }
+  .reveal { transform: none; transition: opacity .9s ease; }
+  .rise-child { transform: none; transition: opacity .8s ease; }
   .modal-backdrop, .vehicle-modal, .vehicle-modal-image img, .vehicle-modal-copy .modal-reveal, .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line { animation-duration: .25s !important; }
   .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line, .vehicle-modal-copy .modal-reveal { opacity: 1; }
 }

@@ -56,18 +56,17 @@ function CompactCountdown({ launchAt, now }: { launchAt: Date; now: number }) {
   </span>
 }
 
-function useCountUp(target: number, active: boolean, duration = 1450) {
+function useCountUp(target: number, active: boolean, duration = 2200) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     if (!active) return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) { setCount(target); return }
+    setCount(0)
     let frame = 0
     const started = performance.now()
     const tick = (at: number) => {
       const progress = Math.min(1, (at - started) / duration)
       const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(target * eased))
+      setCount(Number((target * eased).toFixed(target % 1 === 0 ? 0 : 1)))
       if (progress < 1) frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
@@ -87,7 +86,7 @@ function StatItem({ value, label, suffix = '', index }: { value: number; label: 
     return () => observer.disconnect()
   }, [])
   const count = useCountUp(value, active)
-  return <div ref={ref} className={`stat-item reveal ${active ? 'is-visible' : ''}`} style={{ transitionDelay: `${index * 90}ms` }}><strong>{count.toLocaleString("pt-BR")}{suffix}</strong><span>{label}</span></div>
+  return <div ref={ref} className={`stat-item reveal ${active ? 'is-visible' : ''}`} style={{ transitionDelay: `${index * 90}ms` }}><strong>{count.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}{suffix}</strong><span>{label}</span></div>
 }
 
 export default function App() {
