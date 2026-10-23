@@ -115,8 +115,10 @@ export default function App() {
     return () => window.removeEventListener("keydown", close)
   }, [])
   useEffect(() => {
-    const targets = Array.from(document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)'))
-    if (!('IntersectionObserver' in window)) { targets.forEach(target => target.classList.add('is-visible')); return }
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll<HTMLElement>('.reveal').forEach(target => target.classList.add('is-visible'))
+      return
+    }
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -125,8 +127,18 @@ export default function App() {
         }
       })
     }, { threshold: 0.06, rootMargin: '0px 0px -8% 0px' })
-    targets.forEach(target => observer.observe(target))
-    return () => observer.disconnect()
+    const observeNew = (root: ParentNode) => {
+      root.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)').forEach(target => observer.observe(target))
+      if (root instanceof HTMLElement && root.matches('.reveal:not(.is-visible)')) observer.observe(root)
+    }
+    observeNew(document)
+    const mutations = new MutationObserver(records => {
+      records.forEach(record => record.addedNodes.forEach(node => {
+        if (node instanceof HTMLElement) observeNew(node)
+      }))
+    })
+    mutations.observe(document.getElementById('conteudo') ?? document.body, { childList: true, subtree: true })
+    return () => { mutations.disconnect(); observer.disconnect() }
   }, [])
 
   return <div className="site-shell">
