@@ -266,3 +266,7 @@ details[open] > summary .disclosure-mark::after { transform: rotate(0); }
   .vehicle-modal-image img { animation-name: modal-photo-fade; }
   .vehicle-modal-copy .modal-reveal, .vehicle-modal-copy .spec-cell, .vehicle-modal-copy .highlight-line { transform: none; }
 }
+
+/* Background layers stay below text and are never mounted in media scenes. */
+.constellation-surface{position:relative;isolation:isolate}
+.site-constellation-canvas{position:absolute;top:0;left:0;width:100%;z-index:-1;pointer-events:none;max-height:100%;contain:strict}

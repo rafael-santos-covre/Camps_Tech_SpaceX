@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react"
 import Lenis from "lenis"
 import SpaceIntro from "./SpaceIntro"
+import SiteConstellations from "./SiteConstellations"
 import BackgroundMedia from "./BackgroundMedia"
 import DetailModal, { type ModalState } from "./DetailModal"
 import { ApplicationsSection, HistoryTimeline, ImpactSection, SourcesSection } from "./EducationalSections"
@@ -187,6 +188,7 @@ export default function App() {
   }, [])
 
   return <div className="site-shell">
+    <SiteConstellations />
     <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
     <header inert={!introReady} className={`site-header ${introReady && headerHidden && !menuOpen ? "is-scroll-hidden" : ""} ${introReady ? "" : "intro-hidden"} ${scrolled || menuOpen ? "is-solid" : ""}`}>
       <a className="site-wordmark" href="#inicio" onClick={() => setMenuOpen(false)} aria-label="SpaceX — início">SpaceX</a>
