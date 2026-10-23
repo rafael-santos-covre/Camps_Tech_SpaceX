@@ -21,6 +21,7 @@ export function countdownAt(target: number, now: number) {
 export interface LaunchSnapshot {
   fetchedAt: string
   launches: Launch[]
+  stats?: { totalLaunches: number; totalLandings: number; totalReflights: number }
 }
 export function validSnapshot(value: unknown): value is LaunchSnapshot {
   const v = value as LaunchSnapshot | null
@@ -28,7 +29,11 @@ export function validSnapshot(value: unknown): value is LaunchSnapshot {
     v.launches.every(l => l && typeof l.id === 'string' && typeof l.name === 'string' &&
       typeof l.statusId === 'number' && typeof l.precise === 'boolean' &&
       typeof l.vehicle === 'string' && typeof l.location === 'string' &&
-      (l.net === null || (typeof l.net === 'string' && Number.isFinite(Date.parse(l.net)))))
+      (l.net === null || (typeof l.net === 'string' && Number.isFinite(Date.parse(l.net))))) &&
+    (v.stats === undefined || ['totalLaunches', 'totalLandings', 'totalReflights'].every(k => {
+      const n = v.stats?.[k as keyof NonNullable<LaunchSnapshot['stats']>]
+      return Number.isFinite(n) && Number(n) >= 0
+    }))
 }
 export function launchStatus(l: Launch, now: number): string {
   const confirmed: Record<number, string> = {

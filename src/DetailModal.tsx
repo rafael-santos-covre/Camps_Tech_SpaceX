@@ -8,6 +8,7 @@ export interface VehicleLike {
   detailImg?: string
   detailAlt?: string
   detailCredit?: string
+  detailPosition?: string
   alt: string
   credit: string | null
 }
@@ -180,7 +181,8 @@ export default function DetailModal({
               <img
                 src={v.detailImg ?? v.img}
                 alt={v.detailAlt ?? v.alt}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain md:object-cover"
+                style={{ objectPosition: v.detailPosition ?? "center" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               {v.credit && (
