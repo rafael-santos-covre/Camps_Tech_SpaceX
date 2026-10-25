@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-25T00:27:38.340Z",
+  "fetchedAt": "2026-10-25T05:10:23.198Z",
   "launches": [
     {
       "id": "e2886a96-5ce9-4f45-872f-4e25a00be837",
@@ -128,8 +128,8 @@
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
-      "id": "fcbc4550-e69e-4458-a9e6-4a5b6b6b15a5",
-      "name": "SDA Tranche 1 Tracking Layer E",
+      "id": "a9ee8337-127d-4f17-9e3a-a07999f80099",
+      "name": "SDA Tranche 1 Tracking Layer D",
       "net": "2026-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -571,15 +571,6 @@
     {
       "id": "1c4ac109-3f35-42a0-9105-3205ae4a38d4",
       "name": "USSF-155",
-      "net": "2027-06-30T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon Heavy",
-      "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
-    },
-    {
-      "id": "86d12414-1e9e-46f4-865a-0398f162cf28",
-      "name": "USSF-63",
       "net": "2027-06-30T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -1209,7 +1200,7 @@
     },
     {
       "id": "f3385d65-5081-401e-a543-db7f471fe282",
-      "name": "USSF-174",
+      "name": "NGG-2 (USSF-174)",
       "net": "2029-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -1219,6 +1210,15 @@
     {
       "id": "fd017b9e-e227-4cb0-b383-ec821dd4a21b",
       "name": "USSF-186",
+      "net": "2029-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon Heavy",
+      "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "86d12414-1e9e-46f4-865a-0398f162cf28",
+      "name": "USSF-63",
       "net": "2029-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
