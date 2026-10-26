@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-10-26T14:58:44.758Z",
+  "fetchedAt": "2026-10-26T20:25:56.135Z",
   "launches": [
     {
       "id": "e2886a96-5ce9-4f45-872f-4e25a00be837",
       "name": "Starlink Group 15-16",
-      "net": "2026-10-27T04:45:00Z",
+      "net": "2026-10-27T05:46:37Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -20,19 +20,19 @@
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
-      "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
-      "name": "Starlink Group 15-21",
-      "net": "2026-11-05T05:14:00Z",
+      "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
+      "name": "USSF-432",
+      "net": "2026-11-02T01:56:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
-      "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
-      "name": "NROL-195",
-      "net": "2026-11-05T22:34:00Z",
-      "statusId": 8,
+      "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
+      "name": "Starlink Group 15-21",
+      "net": "2026-11-05T05:14:00Z",
+      "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -45,6 +45,15 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
+      "name": "NROL-195",
+      "net": "2026-11-30T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "71df1dd0-d658-4762-b0bc-0fca6886aea7",
@@ -704,15 +713,6 @@
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
-      "id": "7fed6954-5934-43ec-b32e-199d1759f215",
-      "name": "6x Astranis MicroGEO",
-      "net": "2027-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
-    },
-    {
       "id": "387aadc6-68ca-4090-9be7-d57603ad7c79",
       "name": "Blue Ghost Lunar Lander Mission 2",
       "net": "2027-12-31T00:00:00Z",
@@ -992,13 +992,13 @@
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
-      "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
+      "id": "7fed6954-5934-43ec-b32e-199d1759f215",
       "name": "6x Astranis MicroGEO",
       "net": "2028-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "e0311fa4-cbb2-40c7-b211-d7084bd265fc",
