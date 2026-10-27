@@ -281,8 +281,8 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 .constellation-surface{position:relative;isolation:isolate}
 .site-constellation-canvas{position:absolute;top:0;left:0;width:100%;z-index:-1;pointer-events:none;max-height:100%;contain:strict}
 
-/* Keep the launch-list effect on an opaque panel, separate from the photo. */
-.launch-list.constellation-surface{background:#050608}
+/* Extend the star field across the entire launch section. */
+.launches-section.constellation-surface{background:#050608}
 
 @media(prefers-reduced-motion:reduce){.disclosure-mark,.disclosure-mark::before,.disclosure-mark::after{transition:none}}
 

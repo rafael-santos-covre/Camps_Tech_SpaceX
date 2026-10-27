@@ -4,7 +4,7 @@ import { createConstellationMap } from './introConstellations'
 // Background-only canvases: photographic scenes never receive this layer.
 export default function SiteConstellations() {
   useEffect(() => {
-    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('.reading-section, .stats-strip, .sources-section, .site-footer, .launch-list'))
+    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('.reading-section, .stats-strip, .sources-section, .site-footer, .launches-section'))
     const layers = surfaces.map(surface => {
       const canvas = document.createElement('canvas')
       canvas.className = 'site-constellation-canvas'
