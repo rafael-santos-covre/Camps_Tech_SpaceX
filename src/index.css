@@ -295,6 +295,6 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
   transition: grid-template-rows .58s cubic-bezier(.22,.61,.36,1), opacity .38s ease, transform .58s cubic-bezier(.22,.61,.36,1);
 }
 .disclosure-panel-inner { min-height: 0; overflow: hidden; }
-details[open]:not([data-closing]) > .disclosure-panel { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
+details[open][data-expanded]:not([data-closing]) > .disclosure-panel { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
 @media(prefers-reduced-motion:reduce){.disclosure-panel{transition:none;transform:none}}
 details[data-closing] > summary .disclosure-mark::after { transform: rotate(90deg); }
