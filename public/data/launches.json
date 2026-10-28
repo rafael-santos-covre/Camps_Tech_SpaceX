@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-10-28T13:24:05.307Z",
+  "fetchedAt": "2026-10-28T23:26:07.168Z",
   "launches": [
     {
       "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
       "name": "Starlink Group 15-18",
-      "net": "2026-10-30T04:02:00Z",
+      "net": "2026-10-31T03:48:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -13,7 +13,7 @@
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
       "name": "USSF-432",
-      "net": "2026-11-02T01:56:00Z",
+      "net": "2026-11-03T01:42:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -22,8 +22,17 @@
     {
       "id": "3cdb9dee-b5cb-406c-bbd1-06a219930fb7",
       "name": "Starlink Group 15-21",
-      "net": "2026-11-05T02:35:00Z",
+      "net": "2026-11-06T02:21:00Z",
       "statusId": 1,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
+      "name": "USSF-xxx (\"R-5\")",
+      "net": "2026-11-10T03:03:00Z",
+      "statusId": 8,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -45,6 +54,15 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+      "name": "Flight 15",
+      "net": "2026-11-30T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Starship V3",
+      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
     },
     {
       "id": "71df1dd0-d658-4762-b0bc-0fca6886aea7",
@@ -153,15 +171,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
-      "name": "Flight 15",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Starship V3",
-      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
     },
     {
       "id": "e61d353c-db55-4a57-8184-0fab187231e6",
