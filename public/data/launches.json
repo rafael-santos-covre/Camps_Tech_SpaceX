@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-29T02:43:32.260Z",
+  "fetchedAt": "2026-10-29T09:38:28.758Z",
   "launches": [
     {
       "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
@@ -49,6 +49,15 @@
     {
       "id": "56ca6058-7ccc-4ec0-b1b0-fb49f3bfee49",
       "name": "NROL-195",
+      "net": "2026-11-30T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c",
+      "name": "OneWeb 21",
       "net": "2026-11-30T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -441,15 +450,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
-    },
-    {
-      "id": "b0dc988c-ea4a-423f-81b6-6b0fbe7cc17c",
-      "name": "OneWeb 21",
-      "net": "2027-03-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "bb34dbf6-9b46-400a-94d6-a0b6dbd6cb03",
