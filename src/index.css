@@ -298,3 +298,14 @@ summary:focus-visible .disclosure-mark { transform: scale(1.16); }
 details[open][data-expanded]:not([data-closing]) > .disclosure-panel { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
 @media(prefers-reduced-motion:reduce){.disclosure-panel{transition:none;transform:none}}
 details[data-closing] > summary .disclosure-mark::after { transform: rotate(90deg); }
+
+/* Keep long presses and simultaneous fingers inside the game controls. */
+#landing-game-slot, #landing-game-slot * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+#landing-game-slot canvas, .game-touch-controls, .game-touch-controls button {
+  touch-action: none;
+}
+.game-touch-controls button[aria-pressed="true"] { background: #fff; color: #000; }

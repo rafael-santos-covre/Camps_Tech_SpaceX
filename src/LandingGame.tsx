@@ -282,6 +282,7 @@ export default function LandingGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const gameRef = useRef<Game>(newGame())
   const controls = useRef<Controls>({ left: false, right: false, thrust: false })
+  const activePointers = useRef(new Map<number, keyof Controls>())
   const visible = useRef(false)
   const bestRef = useRef(0)
   const wakeRef = useRef<() => void>(() => {})
@@ -386,22 +387,27 @@ export default function LandingGame() {
     if (handled) e.preventDefault()
   }
 
+  const releasePointer = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const key = activePointers.current.get(e.pointerId)
+    if (!key) return
+    activePointers.current.delete(e.pointerId)
+    controls.current[key] = [...activePointers.current.values()].includes(key)
+    setTouch((n) => n + 1)
+  }
+
   const hold = (key: keyof Controls) => ({
-    onPointerDown: (e: React.PointerEvent) => {
+    onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
       e.preventDefault()
       e.currentTarget.setPointerCapture(e.pointerId)
+      activePointers.current.set(e.pointerId, key)
       if (gameRef.current.status !== "playing") startOrRestart()
       controls.current[key] = true
       setTouch((n) => n + 1)
     },
-    onPointerUp: () => {
-      controls.current[key] = false
-      setTouch((n) => n + 1)
-    },
-    onPointerCancel: () => {
-      controls.current[key] = false
-      setTouch((n) => n + 1)
-    },
+    onPointerUp: releasePointer,
+    onPointerCancel: releasePointer,
+    onLostPointerCapture: releasePointer,
+    'aria-pressed': controls.current[key],
     onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
   })
 
@@ -409,11 +415,11 @@ export default function LandingGame() {
     "select-none touch-none flex-1 md:hidden font-display text-[12px] font-600 tracking-[0.15em] uppercase py-4 border border-white/30 text-white/80 active:bg-white active:text-black transition-colors"
 
   return (
-    <div id="landing-game-slot" className="w-full">
+    <div id="landing-game-slot" className="w-full" onContextMenu={(e) => e.preventDefault()}>
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4 border-l-2 border-[#4a9fff] pl-4">
         <div>
           <p className="font-display text-xs tracking-[0.16em] uppercase text-[#4a9fff] mb-1">Como jogar</p>
-          <p className="font-body text-xs sm:text-sm text-white/55 leading-relaxed">No computador: ← / → ou A / D inclinam; ↑, W ou espaço acionam o propulsor. No celular: mantenha pressionado um dos controles abaixo. Toque no simulador para iniciar ou reiniciar.</p>
+          <p className="font-body text-xs sm:text-sm text-white/55 leading-relaxed">No computador: ← / → ou A / D inclinam; ↑, W ou espaço acionam o propulsor. No celular: segure o propulsor e um botão de giro ao mesmo tempo usando dois dedos. Toque no simulador para iniciar ou reiniciar.</p>
         </div>
         <p className="font-display text-[10px] tracking-[0.12em] uppercase text-white/35 shrink-0">5 tentativas curtas no estande</p>
       </div>
@@ -425,7 +431,7 @@ export default function LandingGame() {
         onKeyDown={(e) => setKey(e, true)}
         onKeyUp={(e) => setKey(e, false)}
         onBlur={() => {
-          controls.current = { left: false, right: false, thrust: false }
+          if (!activePointers.current.size) controls.current = { left: false, right: false, thrust: false }
         }}
         onClick={(e) => {
           e.currentTarget.focus()
@@ -433,7 +439,7 @@ export default function LandingGame() {
         }}
         className="block w-full aspect-[16/9] bg-black border border-white/10 focus:border-[#4a9fff]/60 outline-none md:cursor-pointer"
       />
-      <div className="flex gap-2 mt-2">
+      <div className="game-touch-controls flex gap-2 mt-2">
         <button aria-label="Girar para a esquerda" className={btn} {...hold("left")}>
           ◀ Girar
         </button>
