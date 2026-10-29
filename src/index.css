@@ -12,6 +12,13 @@
   --color-accent: #ffffff;
 }
 * { box-sizing: border-box; }
+/* Let visitors trace constellations without selecting text or opening touch menus. */
+html, body, #root, #root * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+#root img, #root a { -webkit-user-drag: none; }
 html { scroll-behavior: auto; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
 body { margin: 0; background: #000; color: #fff; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
 body { overscroll-behavior-y: auto; -webkit-overflow-scrolling: touch; }

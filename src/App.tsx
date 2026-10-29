@@ -94,6 +94,13 @@ function StatItem({ value, label, suffix = '', index }: { value: number; label: 
 }
 
 export default function App() {
+  useEffect(() => {
+    const preventSelection = (event: Event) => event.preventDefault()
+    const events = ['selectstart', 'contextmenu', 'copy', 'cut', 'paste', 'dragstart'] as const
+    events.forEach(type => document.addEventListener(type, preventSelection))
+    return () => events.forEach(type => document.removeEventListener(type, preventSelection))
+  }, [])
+
   const [scrolled, setScrolled] = useState(false)
   const [headerHidden, setHeaderHidden] = useState(false)
   const [introReady, setIntroReady] = useState(false)
