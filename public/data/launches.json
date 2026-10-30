@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-29T21:40:44.464Z",
+  "fetchedAt": "2026-10-30T01:43:46.791Z",
   "launches": [
     {
       "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
@@ -90,15 +90,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "ce1317de-ec94-4479-9b28-38ebf11f13ae",
-      "name": "Telesat Lightspeed 1",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "d3bd7fb2-fac6-49fc-ae52-cee07d2fde67",
@@ -612,6 +603,15 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "ce1317de-ec94-4479-9b28-38ebf11f13ae",
+      "name": "Telesat Lightspeed 1",
+      "net": "2027-09-30T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
