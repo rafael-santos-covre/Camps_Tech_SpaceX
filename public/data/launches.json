@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-10-30T23:58:07.717Z",
+  "fetchedAt": "2026-10-31T05:21:05.935Z",
   "launches": [
     {
       "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
       "name": "Starlink Group 15-18",
-      "net": "2026-10-31T04:02:22Z",
-      "statusId": 1,
+      "net": "2026-10-31T04:04:34Z",
+      "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -1404,15 +1404,6 @@
       "precise": true,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
-    },
-    {
-      "id": "95653d52-bb77-4860-a815-dd7141778d17",
-      "name": "Starlink Group 15-22",
-      "net": "2026-08-26T09:35:11Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     }
   ]
 }
