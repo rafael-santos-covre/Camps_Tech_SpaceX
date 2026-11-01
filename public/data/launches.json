@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-10-31T23:34:16.621Z",
+  "fetchedAt": "2026-11-01T05:09:28.703Z",
   "launches": [
-    {
-      "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
-      "name": "Starlink Group 15-18",
-      "net": "2026-10-31T04:04:34Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
       "name": "USSF-432",
@@ -90,15 +81,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "d3bd7fb2-fac6-49fc-ae52-cee07d2fde67",
-      "name": "Griffin Mission One",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon Heavy",
-      "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
     },
     {
       "id": "11b218b1-5e40-4b9d-854e-50320299239d",
@@ -369,6 +351,15 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "d3bd7fb2-fac6-49fc-ae52-cee07d2fde67",
+      "name": "Griffin Mission One",
+      "net": "2027-01-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon Heavy",
+      "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
     },
     {
       "id": "3624047e-9891-420b-820f-7db4a7570383",
@@ -1233,6 +1224,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "57ce0a39-d035-4f16-a418-bd6108f78199",
+      "name": "Starlink Group 15-18",
+      "net": "2026-10-31T04:04:34Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "e2886a96-5ce9-4f45-872f-4e25a00be837",
