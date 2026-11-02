@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-02T08:02:44.281Z",
+  "fetchedAt": "2026-11-02T18:43:04.432Z",
   "launches": [
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
@@ -13,7 +13,7 @@
     {
       "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
       "name": "USSF-xxx (\"R-5\")",
-      "net": "2026-11-10T03:03:00Z",
+      "net": "2026-11-09T03:17:00Z",
       "statusId": 8,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -22,9 +22,9 @@
     {
       "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
       "name": "Cygnus CRS-2 NG-25",
-      "net": "2026-11-29T16:00:00Z",
-      "statusId": 8,
-      "precise": false,
+      "net": "2026-11-29T15:49:00Z",
+      "statusId": 1,
+      "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
