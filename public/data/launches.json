@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-05T11:59:11.398Z",
+  "fetchedAt": "2026-11-05T19:51:33.278Z",
   "launches": [
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
@@ -74,6 +74,24 @@
       "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
     },
     {
+      "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
+      "name": "CHORUS",
+      "net": "2026-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "e61d353c-db55-4a57-8184-0fab187231e6",
+      "name": "Globalstar 2-R Mission 2 (x 9)",
+      "net": "2026-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
       "id": "71df1dd0-d658-4762-b0bc-0fca6886aea7",
       "name": "SDA Tranche 2 Transport Layer D",
       "net": "2026-12-31T00:00:00Z",
@@ -99,15 +117,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
-    },
-    {
-      "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
-      "name": "CHORUS",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "01ca3653-126a-4c01-94fb-a9467b39cdac",
@@ -162,15 +171,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "e61d353c-db55-4a57-8184-0fab187231e6",
-      "name": "Globalstar 2-R Mission 2 (x 9)",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "dfd444f9-ddda-4b35-8f51-cda7cd801809",
