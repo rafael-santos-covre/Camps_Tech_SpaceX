@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-05T19:51:33.278Z",
+  "fetchedAt": "2026-11-06T00:54:13.654Z",
   "launches": [
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
@@ -18,6 +18,15 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+      "name": "Flight 15",
+      "net": "2026-11-13T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Starship V3",
+      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
     },
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
@@ -65,15 +74,6 @@
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
-      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
-      "name": "Flight 15",
-      "net": "2026-11-30T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Starship V3",
-      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
-    },
-    {
       "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
       "name": "CHORUS",
       "net": "2026-12-31T00:00:00Z",
@@ -117,15 +117,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
-    },
-    {
-      "id": "01ca3653-126a-4c01-94fb-a9467b39cdac",
-      "name": "Inmarsat-7 F1 (GX-7)",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "2d0472b9-463d-49c8-afb1-7925e49a3368",
@@ -756,6 +747,15 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "01ca3653-126a-4c01-94fb-a9467b39cdac",
+      "name": "Inmarsat-7 F1 (GX-7)",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "7ec9195a-d85f-4e01-9ec9-a17f6912c44c",
