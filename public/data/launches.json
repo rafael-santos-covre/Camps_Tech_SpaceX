@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-06T21:22:51.611Z",
+  "fetchedAt": "2026-11-07T01:04:16.661Z",
   "launches": [
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
       "name": "USSF-432",
       "net": "2026-11-07T00:48:42Z",
-      "statusId": 1,
+      "statusId": 6,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -1404,15 +1404,6 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "521f3a1c-f977-4306-9b7f-495858719adf",
-      "name": "Nancy Grace Roman Space Telescope",
-      "net": "2026-08-30T11:26:04Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon Heavy",
-      "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
     }
   ]
 }
