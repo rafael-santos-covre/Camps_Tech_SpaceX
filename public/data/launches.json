@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-07T01:04:16.661Z",
+  "fetchedAt": "2026-11-07T07:39:13.699Z",
   "launches": [
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
       "name": "USSF-432",
       "net": "2026-11-07T00:48:42Z",
-      "statusId": 6,
+      "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
