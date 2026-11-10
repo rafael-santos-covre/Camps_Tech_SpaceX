@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-11-10T09:28:01.893Z",
+  "fetchedAt": "2026-11-10T17:14:48.122Z",
   "launches": [
     {
       "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
       "name": "USSF-627",
-      "net": "2026-11-11T02:49:00Z",
+      "net": "2026-11-12T02:35:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -22,7 +22,7 @@
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
       "name": "USSF-317",
-      "net": "2026-11-14T04:09:00Z",
+      "net": "2026-11-15T03:55:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -31,7 +31,7 @@
     {
       "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
       "name": "USSF-266",
-      "net": "2026-11-17T16:58:00Z",
+      "net": "2026-11-18T16:49:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
