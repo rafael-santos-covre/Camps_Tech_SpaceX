@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-12T16:40:27.237Z",
+  "fetchedAt": "2026-11-12T22:38:29.464Z",
   "launches": [
     {
       "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
@@ -32,6 +32,15 @@
       "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
       "name": "USSF-266",
       "net": "2026-11-18T16:49:00Z",
+      "statusId": 1,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
+      "name": "NROL-136",
+      "net": "2026-11-21T12:30:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
