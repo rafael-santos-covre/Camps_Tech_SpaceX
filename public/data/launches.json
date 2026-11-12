@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-12T00:16:11.592Z",
+  "fetchedAt": "2026-11-12T07:34:25.174Z",
   "launches": [
     {
       "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
       "name": "USSF-627",
       "net": "2026-11-12T04:36:30Z",
-      "statusId": 1,
+      "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -1400,15 +1400,6 @@
       "id": "153ef8ef-b12b-43f4-a4bf-05b225c0cd37",
       "name": "Starlink Group 15-24",
       "net": "2026-09-06T14:26:54Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "63181269-b125-4c36-951c-c9bd9bbc4b55",
-      "name": "Starlink Group 15-23",
-      "net": "2026-09-02T08:42:12Z",
       "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
