@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-11-13T03:17:21.882Z",
+  "fetchedAt": "2026-11-13T11:25:40.585Z",
   "launches": [
-    {
-      "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
-      "name": "USSF-627",
-      "net": "2026-11-12T04:36:30Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
     {
       "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
       "name": "Starlink Group 31-2 (Starship Flight 15)",
@@ -1242,6 +1233,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
+      "name": "USSF-627",
+      "net": "2026-11-12T04:36:30Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "54d471e8-695c-4fa7-a3cf-dbd8b389e8ae",
