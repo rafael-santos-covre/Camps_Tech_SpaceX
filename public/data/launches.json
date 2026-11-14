@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-11-14T19:03:32.601Z",
+  "fetchedAt": "2026-11-14T23:16:49.027Z",
   "launches": [
-    {
-      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
-      "name": "Starlink Group 31-2 (Starship Flight 15)",
-      "net": "2026-11-13T22:47:36Z",
-      "statusId": 9,
-      "precise": true,
-      "vehicle": "Starship V3",
-      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
-    },
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
       "name": "USSF-317",
@@ -1233,6 +1224,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
+      "name": "Starlink Group 31-2 (Starship Flight 15)",
+      "net": "2026-11-13T22:47:36Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Starship V3",
+      "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
     },
     {
       "id": "6aa7b90b-e5ed-45d8-a52e-04fbf399d178",
