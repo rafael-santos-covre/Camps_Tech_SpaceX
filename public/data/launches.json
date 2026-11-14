@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-14T00:15:20.753Z",
+  "fetchedAt": "2026-11-14T06:54:28.076Z",
   "launches": [
     {
       "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
       "name": "Starlink Group 31-2 (Starship Flight 15)",
       "net": "2026-11-13T22:47:36Z",
-      "statusId": 6,
+      "statusId": 9,
       "precise": true,
       "vehicle": "Starship V3",
       "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
