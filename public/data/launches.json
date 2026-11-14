@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-13T18:41:17.738Z",
+  "fetchedAt": "2026-11-14T00:15:20.753Z",
   "launches": [
     {
       "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
       "name": "Starlink Group 31-2 (Starship Flight 15)",
-      "net": "2026-11-13T22:45:00Z",
-      "statusId": 8,
+      "net": "2026-11-13T22:47:36Z",
+      "statusId": 6,
       "precise": true,
       "vehicle": "Starship V3",
       "location": "Orbital Launch Pad 2, SpaceX Starbase, TX, USA"
@@ -1400,15 +1400,6 @@
       "id": "3e0456da-14b1-4ac3-b59e-35fefb1d1530",
       "name": "USSF-153",
       "net": "2026-09-10T15:42:30Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "153ef8ef-b12b-43f4-a4bf-05b225c0cd37",
-      "name": "Starlink Group 15-24",
-      "net": "2026-09-06T14:26:54Z",
       "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
