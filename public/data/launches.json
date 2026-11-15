@@ -1,10 +1,10 @@
 {
-  "fetchedAt": "2026-11-15T17:37:18.720Z",
+  "fetchedAt": "2026-11-15T22:37:43.802Z",
   "launches": [
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
       "name": "USSF-317",
-      "net": "2026-11-18T03:14:00Z",
+      "net": "2026-11-19T03:00:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
