@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-18T12:07:51.158Z",
+  "fetchedAt": "2026-11-18T20:49:32.647Z",
   "launches": [
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
@@ -23,6 +23,15 @@
       "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
       "name": "USSF-266",
       "net": "2026-11-23T16:04:00Z",
+      "statusId": 1,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
+      "name": "USSF-380",
+      "net": "2026-11-28T04:53:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
