@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-20T23:47:42.090Z",
+  "fetchedAt": "2026-11-21T06:17:58.076Z",
   "launches": [
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
       "name": "USSF-317",
       "net": "2026-11-21T04:20:35Z",
-      "statusId": 1,
+      "statusId": 6,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -1404,15 +1404,6 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
-    },
-    {
-      "id": "3e0456da-14b1-4ac3-b59e-35fefb1d1530",
-      "name": "USSF-153",
-      "net": "2026-09-10T15:42:30Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     }
   ]
 }
