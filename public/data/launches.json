@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-11-22T01:02:32.899Z",
+  "fetchedAt": "2026-11-22T08:38:00.591Z",
   "launches": [
-    {
-      "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
-      "name": "USSF-317",
-      "net": "2026-11-21T04:20:35Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
     {
       "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
       "name": "NROL-136",
@@ -1233,6 +1224,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
+      "name": "USSF-317",
+      "net": "2026-11-21T04:20:35Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "0f867f0c-5422-4d44-93b8-d7faaae7019b",
