@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-22T08:38:00.591Z",
+  "fetchedAt": "2026-11-22T16:58:08.005Z",
   "launches": [
     {
       "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
       "name": "NROL-136",
       "net": "2026-11-22T12:23:56Z",
-      "statusId": 1,
+      "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -1395,15 +1395,6 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "ad358a4d-c541-409b-9366-9c2f2da4aeb9",
-      "name": "O3b mPower 11-13",
-      "net": "2026-09-13T18:49:00Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     }
   ]
 }
