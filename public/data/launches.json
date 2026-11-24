@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-11-23T12:14:17.054Z",
+  "fetchedAt": "2026-11-24T00:13:30.826Z",
   "launches": [
-    {
-      "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
-      "name": "NROL-136",
-      "net": "2026-11-22T12:23:56Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
     {
       "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
       "name": "USSF-266",
@@ -36,6 +27,15 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "5591cfa3-6336-41ab-a37a-7c57aa28ab5f",
+      "name": "NROL-132",
+      "net": "2026-12-02T20:30:00Z",
+      "statusId": 8,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
@@ -740,6 +740,15 @@
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
+      "id": "864801e2-48bb-401a-a5d4-89b99cbc0539",
+      "name": "Cygnus CRS-2 NG-26",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
       "id": "01ca3653-126a-4c01-94fb-a9467b39cdac",
       "name": "Inmarsat-7 F1 (GX-7)",
       "net": "2027-12-31T00:00:00Z",
@@ -1224,6 +1233,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
+      "name": "NROL-136",
+      "net": "2026-11-22T12:23:56Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "76617033-4dc0-4448-b50c-e5b0d5a18539",
