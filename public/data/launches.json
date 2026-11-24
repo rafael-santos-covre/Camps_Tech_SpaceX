@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-11-24T10:17:43.231Z",
+  "fetchedAt": "2026-11-24T20:46:53.583Z",
   "launches": [
     {
       "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
       "name": "USSF-266",
       "net": "2026-11-24T16:08:59Z",
-      "statusId": 1,
+      "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
@@ -22,7 +22,7 @@
     {
       "id": "d74afbc7-0de5-491c-be05-4e9c31f736ac",
       "name": "Cygnus CRS-2 NG-25",
-      "net": "2026-11-29T15:50:00Z",
+      "net": "2026-11-29T15:47:00Z",
       "statusId": 1,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
@@ -36,6 +36,15 @@
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "9b9db235-8ffb-4569-b09b-0e852ad231a0",
+      "name": "Amazon Leo (LF-04)",
+      "net": "2026-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
@@ -148,114 +157,6 @@
     {
       "id": "c5783e2b-d458-4b99-9936-4043c236190b",
       "name": "SDA Tranche 1 Transport Layer F",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "dfd444f9-ddda-4b35-8f51-cda7cd801809",
-      "name": "Rivada 1",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "511a3ef8-799e-4723-9293-b954d9d2eb83",
-      "name": "Rivada 10",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "d08d8b46-353b-4eee-ab5e-e1385b329008",
-      "name": "Rivada 11",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "bf5c6fa2-3add-49ff-aad6-c6450148cd89",
-      "name": "Rivada 12",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "20fa8dc4-8cab-41cf-b452-98a2620f7e86",
-      "name": "Rivada 2",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "ab932c60-d808-4825-ab71-b6fe0a745f15",
-      "name": "Rivada 3",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "2f31a7f0-968a-448d-b447-333bf0341078",
-      "name": "Rivada 4",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "fa895702-687b-4ba3-95fb-9462a2c9844b",
-      "name": "Rivada 5",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "46d6822b-82aa-452c-aa34-80b6f052de84",
-      "name": "Rivada 6",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "1fa3741c-3339-4954-a026-2cd9d36161c0",
-      "name": "Rivada 7",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "7d77bd89-af23-4a5a-b632-de0034003a64",
-      "name": "Rivada 8",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "5ce7e9b6-b471-4a88-891f-2a6f21cb369f",
-      "name": "Rivada 9",
       "net": "2026-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -569,6 +470,15 @@
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
     },
     {
+      "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
+      "name": "Vast-PAM-1 (Vast ISS Mission 1)",
+      "net": "2027-07-13T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
       "id": "99875c7b-400c-40e2-b16c-bb9b2a02a0d8",
       "name": "Haven-1 Crew-1",
       "net": "2027-07-31T00:00:00Z",
@@ -594,15 +504,6 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
-    },
-    {
-      "id": "f3a1a032-5cca-4733-9ca8-04a5a1dba222",
-      "name": "Vast-PAM-1 (Vast ISS Mission 1)",
-      "net": "2027-09-30T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
     },
     {
       "id": "c07cac30-849b-4e24-91e2-c064e6db456e",
@@ -765,6 +666,114 @@
       "precise": false,
       "vehicle": "Falcon 9 Block 5",
       "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "dfd444f9-ddda-4b35-8f51-cda7cd801809",
+      "name": "Rivada 1",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "511a3ef8-799e-4723-9293-b954d9d2eb83",
+      "name": "Rivada 10",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "d08d8b46-353b-4eee-ab5e-e1385b329008",
+      "name": "Rivada 11",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "bf5c6fa2-3add-49ff-aad6-c6450148cd89",
+      "name": "Rivada 12",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "20fa8dc4-8cab-41cf-b452-98a2620f7e86",
+      "name": "Rivada 2",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "ab932c60-d808-4825-ab71-b6fe0a745f15",
+      "name": "Rivada 3",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "2f31a7f0-968a-448d-b447-333bf0341078",
+      "name": "Rivada 4",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "fa895702-687b-4ba3-95fb-9462a2c9844b",
+      "name": "Rivada 5",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "46d6822b-82aa-452c-aa34-80b6f052de84",
+      "name": "Rivada 6",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "1fa3741c-3339-4954-a026-2cd9d36161c0",
+      "name": "Rivada 7",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "7d77bd89-af23-4a5a-b632-de0034003a64",
+      "name": "Rivada 8",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
+    },
+    {
+      "id": "5ce7e9b6-b471-4a88-891f-2a6f21cb369f",
+      "name": "Rivada 9",
+      "net": "2027-12-31T00:00:00Z",
+      "statusId": 2,
+      "precise": false,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "a532fa7d-bf0d-449d-a25b-5e7561e88712",
@@ -1091,15 +1100,6 @@
       "location": "Launch Complex 39A Starship Pad, Kennedy Space Center, FL, USA"
     },
     {
-      "id": "9b9db235-8ffb-4569-b09b-0e852ad231a0",
-      "name": "Amazon Leo (LF-04)",
-      "net": "2029-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
-    },
-    {
       "id": "c277ebf9-3ce3-49d6-b212-2f350a2b89ee",
       "name": "Amazon Leo (LF-05)",
       "net": "2029-12-31T00:00:00Z",
@@ -1400,15 +1400,6 @@
       "id": "d1471f9d-e9d0-4146-8e97-90863e48bfc8",
       "name": "Starlink Group 15-27",
       "net": "2026-09-20T01:47:00Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
-    {
-      "id": "17c71937-dd80-406f-bb47-0c9ee9a24276",
-      "name": "USSF-259",
-      "net": "2026-09-17T01:07:56Z",
       "statusId": 3,
       "precise": true,
       "vehicle": "Falcon 9 Block 5",
