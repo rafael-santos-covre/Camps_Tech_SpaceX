@@ -1,15 +1,6 @@
 {
-  "fetchedAt": "2026-11-25T14:10:52.699Z",
+  "fetchedAt": "2026-11-25T23:13:52.050Z",
   "launches": [
-    {
-      "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
-      "name": "USSF-266",
-      "net": "2026-11-24T16:08:59Z",
-      "statusId": 3,
-      "precise": true,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
-    },
     {
       "id": "b0d27def-0a88-44c3-a947-1fd5b8503e2c",
       "name": "USSF-380",
@@ -38,17 +29,17 @@
       "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
-      "id": "9b9db235-8ffb-4569-b09b-0e852ad231a0",
-      "name": "Amazon Leo (LF-04)",
-      "net": "2026-12-31T00:00:00Z",
-      "statusId": 2,
-      "precise": false,
-      "vehicle": "Falcon 9 Block 5",
-      "location": "Unknown Pad, Cape Canaveral SFS, FL, USA"
-    },
-    {
       "id": "8bf5f61e-a7e1-41e6-aede-7b87e4beebab",
       "name": "CHORUS",
+      "net": "2026-12-04T12:55:00Z",
+      "statusId": 1,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 40, Cape Canaveral SFS, FL, USA"
+    },
+    {
+      "id": "9b9db235-8ffb-4569-b09b-0e852ad231a0",
+      "name": "Amazon Leo (LF-04)",
       "net": "2026-12-31T00:00:00Z",
       "statusId": 2,
       "precise": false,
@@ -1233,6 +1224,15 @@
       "precise": false,
       "vehicle": "Falcon Heavy",
       "location": "Launch Complex 39A, Kennedy Space Center, FL, USA"
+    },
+    {
+      "id": "460d9db7-eaf6-4cd9-b095-cff433534c09",
+      "name": "USSF-266",
+      "net": "2026-11-24T16:08:59Z",
+      "statusId": 3,
+      "precise": true,
+      "vehicle": "Falcon 9 Block 5",
+      "location": "Space Launch Complex 4E, Vandenberg SFB, CA, USA"
     },
     {
       "id": "951a341f-236b-42fe-a667-4ab2fcf36eac",
